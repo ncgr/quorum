@@ -1,0 +1,137 @@
+# Quorum Settings
+# 
+# ==> NCBI BLAST Plus Settings
+# blast:
+#   remote: true to execute script on remote machine via
+#     Net::SSH. false to execute locally via system().
+#     See Net::SSH for more information.
+#     http://net-ssh.github.com/ssh/v2/api/index.html
+#
+#   host: Net::SSH.start() host.
+#
+#   user: Net::SSH.start() user.
+#
+#   pass: Net::SSH.start() password -- Optional.
+#
+#   script: Path to run-blast script.
+#
+#   log_dir: run-blast log file directory.
+#
+#   blast_db: Parent Blast database directory.
+#     Execute the rake task below to build your Blast DB.
+#     rake quorum:blastdb:build
+#
+#   tblastn: Collection of Blast DBs under the parent blast_db
+#     to use with tblastn.
+#     Example Usage:
+#     tblastn:
+#       - genome_1 
+#       - genome_2 
+#
+#   blastp: Collection of Blast DBs under the parent blast_db
+#     to use with blastp.
+#     Example Usage:
+#     blastp:
+#       - prot_1 
+#       - prot_2 
+#
+#   blastn: Collection of Blast DBs under the parent blast_db
+#     to use with blastn.
+#     Example Usage:
+#     blastn:
+#       - genome_1 
+#       - genome_2 
+#
+#   blastx: Collection of Blast DBs under the parent blast_db
+#     to use with blastx.
+#     Example Usage:
+#     blastx:
+#       - prot_1 
+#       - prot_2 
+#
+#   blast_threads: Number of Blast threads.
+#
+# RAILS_ROOT/config/initializers/quorum.rb 
+# safely substitutes %{RAILS_ROOT} => ::Rails.root.to_s
+
+development:
+  blast:
+    remote: false
+    host:
+    user:
+    pass:
+    script: %{RAILS_ROOT}/quorum/bin/quorum.rb
+    log_dir: %{RAILS_ROOT}/quorum/log/
+    blast_db: %{RAILS_ROOT}/quorum/blast_db/
+    tblastn:
+      # Example:
+      # - genome_1
+      # - genome_2 
+    blastp:
+      # Example:
+      # - prot_1
+      # - prot_2 
+    blastn:
+      # Example:
+      # - genome_1
+      # - genome_2 
+    blastx:
+      # Example:
+      # - prot_1
+      # - prot_2 
+    blast_threads:
+
+test:
+  blast:
+    remote: false
+    host:
+    user:
+    pass:
+    script: %{RAILS_ROOT}/quorum/bin/quorum
+    log_dir: %{RAILS_ROOT}/quorum/log/
+    blast_db: %{RAILS_ROOT}/quorum/blast_db/
+    tblastn:
+      # Example:
+      # - genome_1
+      # - genome_2 
+    blastp:
+      # Example:
+      # - prot_1
+      # - prot_2 
+    blastn:
+      # Example:
+      # - genome_1
+      # - genome_2 
+    blastx:
+      # Example:
+      # - prot_1
+      # - prot_2 
+    blast_threads:
+
+production:
+  blast:
+    remote: true
+    host:
+    user:
+    pass:
+    script:
+    log_dir:
+    blast_db:
+    tblastn:
+      # Example:
+      # - genome_1
+      # - genome_2 
+    blastp:
+      # Example:
+      # - prot_1
+      # - prot_2 
+    blastn:
+      # Example:
+      # - genome_1
+      # - genome_2 
+    blastx:
+      # Example:
+      # - prot_1
+      # - prot_2 
+    blast_threads:
+

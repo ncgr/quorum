@@ -60,9 +60,9 @@ development:
     host:
     user:
     pass:
-    script: %{RAILS_ROOT}/quorum/bin/quorum.rb
-    log_dir: %{RAILS_ROOT}/quorum/log/
-    blast_db: %{RAILS_ROOT}/quorum/blast_db/
+    script: "%{RAILS_ROOT}/quorum/bin/quorum.rb"
+    log_dir: "%{RAILS_ROOT}/quorum/log/"
+    blast_db: "%{RAILS_ROOT}/quorum/blast_db/"
     tblastn:
       # Example:
       # - genome_1
@@ -87,9 +87,9 @@ test:
     host:
     user:
     pass:
-    script: %{RAILS_ROOT}/quorum/bin/quorum
-    log_dir: %{RAILS_ROOT}/quorum/log/
-    blast_db: %{RAILS_ROOT}/quorum/blast_db/
+    script: "%{RAILS_ROOT}/quorum/bin/quorum"
+    log_dir: "%{RAILS_ROOT}/quorum/log/"
+    blast_db: "%{RAILS_ROOT}/quorum/blast_db/"
     tblastn:
       # Example:
       # - genome_1

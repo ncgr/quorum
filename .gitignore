@@ -6,4 +6,4 @@ test/dummy/log/*.log
 test/dummy/tmp/
 test/dummy/config/initializers/quorum_initializer.rb
 test/dummy/config/quorum_settings.yml
-test/dummy/quorum/
+test/dummy/quorum/**/*

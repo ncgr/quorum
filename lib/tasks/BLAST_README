@@ -15,19 +15,25 @@ Quorum Manual Setup:
 
    See config/quorum_settings.yml for instructions.
 
-2. Tar and compress quorum.
+2. Migrate the database.
+
+     rake quorum:install:migrations
+
+     rake db:migrate
+
+3. Tar and compress quorum.
 
      tar -czvf quorum.tar.gz quorum/
 
-3. Copy newly created tarball to remote machine.
+4. Copy newly created tarball to remote machine.
 
      scp quorum.tar.gz <username>@<host>:/path/to/install
 
-4. Expand the tarball on the remote machine.
+5. Expand the tarball on the remote machine.
 
      tar -xzvf quorum.tar.gz
 
-5. Ensure quorum script dependencies are added to the remote
+6. Ensure quorum script dependencies are added to the remote
    machine's PATH. If the remote machine doens't have a .bashrc
    file, create one 
 
@@ -38,11 +44,7 @@ Quorum Manual Setup:
      vim ~/.bashrc
      export PATH=/path/to/dependencies:$PATH
 
-6. Bounce your web server to enable quorum..
+7. Bounce your web server to enable quorum..
 
 ===================================================================
-
-Thanks for installing Quorum!
-
-Please send bug reports to kas@ncgr.org.
 

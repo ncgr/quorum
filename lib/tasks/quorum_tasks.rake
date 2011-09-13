@@ -36,7 +36,7 @@ namespace :quorum do
       @nucl_file = "NULL" if @type == "prot"
       @prot_file = "NULL" if @type == "nucl"
       
-      puts "This may take a while..."
+      puts "Building your Blast database(s). This may take a while..."
       
       build_blast_db_data
       readme

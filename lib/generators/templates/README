@@ -2,12 +2,14 @@
 
 Quorum Manual Setup:
 
-  1. Ensure you have mounted Quorum in app/config/routes.rb
+1. Build your Blast databases.
 
-       mount Quorum::Engine => "/quorum"
+     rake quorum:blastdb:build
 
-  2. Build your Blast DBs
+   For all available quorum:blastdb:build options
 
-       rake quorum:blastdb:build
+     rake -D 
+
+2. Continue...
 
 ==============================================================================

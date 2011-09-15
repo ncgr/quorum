@@ -21,19 +21,28 @@ Quorum Manual Setup:
 
      rake db:migrate
 
-3. Tar and compress quorum.
+==
+
+Quorum Remote Machine Setup:
+
+1. Ensure your ActiveRecord Database adapter is set *any* supported
+   adapter other than sqlite3.
+
+2. Tar and compress quorum.
 
      tar -czvf quorum.tar.gz quorum/
 
-4. Copy newly created tarball to remote machine.
+3. Copy newly created tarball to remote machine.
 
      scp quorum.tar.gz <username>@<host>:/path/to/install
 
-5. Expand the tarball on the remote machine.
+4. Expand the tarball on the remote machine.
+
+     ssh <username>@<host>        
 
      tar -xzvf quorum.tar.gz
 
-6. Ensure quorum script dependencies are added to the remote
+5. Ensure quorum script dependencies are added to the remote
    machine's PATH. If the remote machine doens't have a .bashrc
    file, create one 
 
@@ -44,7 +53,7 @@ Quorum Manual Setup:
      vim ~/.bashrc
      export PATH=/path/to/dependencies:$PATH
 
-7. Bounce your web server to enable quorum..
+6. Bounce your web server to enable quorum..
 
 ===================================================================
 

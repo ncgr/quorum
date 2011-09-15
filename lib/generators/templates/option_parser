@@ -1,0 +1,150 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../lib'))
+
+require 'trollop'
+require 'active_record'
+
+SEARCH_TOOLS = ["blast"]
+
+module Quorum
+  class OptionParser
+
+    def initialize
+      opts = Trollop::options do
+        text <<-HEAD
+
+Quorum
+
+A flexible bioinformatics search tool.
+
+Options:
+
+HEAD
+        opt :search_tool, "Search tool to execute", :type => :string,
+          :required => true, :short => "-s"
+        opt :id, "Database record ID", :type => :int, :required => true,
+          :short => "-i"
+        opt :env, "Rails environment", :type => :string, :required => true,
+          :short => "-e"      
+        opt :log_directory, "Path to log directory", :type => :string,
+          :required => true, :short => "-l"
+        opt :database, "Database name", :type => :string, :required => true,
+          :short => "-d"
+        opt :database_adapter, "Rails database adapter", :type => :string, 
+          :required => true, :short => "-a"
+        opt :database_host, "Database host", :type => :string, 
+          :required => true, :short => "-k"
+        opt :database_user, "Database username", :type => :string, 
+          :required => true, :short => "-u"
+        opt :database_password, "Database password", :type => :string,
+          :required => true, :short => "-p"
+        opt :blast_database, "Path to Blast database", :type => :string,
+          :required => true, :short => "-b"
+        opt :tblastn, "tblastn directory", :type => :string, :short => "-q"
+        opt :blastp, "blastp directory", :type => :string, :short => "-r"
+        opt :blastn, "blastn directory", :type => :string, :short => "-n"
+        opt :blastx, "blastx directory", :type => :string, :short => "-x"
+        opt :blast_threads, "Number of Blast threads to spawn", :type => :int,
+          :short => "-t"
+      end
+
+      @args = {} # Contains valid opts.
+
+      ## Additional opt validation. ##
+
+      unless SEARCH_TOOLS.include?(opts[:search_tool].downcase)
+        Trollop::die :search_tool, "search_tool not found\n" <<
+        "Available search tools: " + SEARCH_TOOLS.join(", ")
+      end
+
+      @args[:search_tool]   = opts[:search_tool].downcase
+
+      if opts[:tblastn].nil? && opts[:blastp].nil? &&
+         opts[:blastn].nil? &&  opts[:blastx].nil?
+        Trollop::die "at least one blast directory must be present " <<
+        "(tblastn, blastp, blastn, blastx)"
+      end
+
+      @args[:id]  = opts[:id]
+      @args[:env] = opts[:env]
+
+      unless Dir.exists?(opts[:log_directory])
+        Trollop::die :log_directory, "log directory not found\n" <<
+        "Supplied directory: " + opts[:log_directory]
+      end
+
+      @args[:log_directory]     = opts[:log_directory]
+      @args[:database]          = opts[:database]
+      @args[:database_host]     = opts[:database_host]
+      @args[:database_user]     = opts[:database_user]
+      @args[:database_password] = opts[:database_password]
+
+      unless Dir.exists?(opts[:blast_database])
+        Trollop::die :blast_database, "blast database not found\n" <<
+        "Supplied directory: " + opts[:blast_database]
+      end
+
+      @args[:blast_database] = opts[:blast_database]
+
+      if opts[:tblastn]
+        unless Dir.exists?(opts[:tblastn])
+          Trollop::die :tblastn, "tblastn database not found\n" <<
+          "Supplied directory: " + opts[:tblastn]
+        end
+
+        @args[:tblastn] = opts[:tblastn]
+      end
+
+      if opts[:blastp]
+        unless Dir.exists?(opts[:blastp])
+          Trollop::die :blastp, "blastp database not found\n" <<
+          "Supplied directory: " + opts[:blastp]
+        end
+
+        @args[:blastp] = opts[:blastp]
+      end
+
+      if opts[:blastn]
+        unless Dir.exists?(opts[:blastn])
+          Trollop::die :blastn, "blastn database not found\n" <<
+          "Supplied directory: " + opts[:blastn]
+        end
+
+        @args[:blastn] = opts[:blastn]
+      end
+
+      if opts[:blastx]
+        unless Dir.exists?(opts[:blastx])
+          Trollop::die :blastx, "blastx database not found\n" <<
+          "Supplied directory: " + opts[:blastx]
+        end
+
+        @args[:blastx] = opts[:blastx]
+      end
+
+      @args[:blast_threads] = opts[:blast_threads]
+
+      ## Execute search tool ##
+
+      case @args[:search_tool]
+      when "blast"
+        execute_blast
+      end
+
+    end
+
+    #
+    # Execute blast
+    #
+    def execute_blast
+      Quorum::Blast.new(@args)
+    end
+
+  end
+end
+
+if __FILE__ == $0
+  Quorum::OptionParser.new  
+end
+

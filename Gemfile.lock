@@ -138,7 +138,7 @@ PLATFORMS
 DEPENDENCIES
   capybara
   database_cleaner
-  factory_girl_rails
+  factory_girl_rails (~> 1.2.0)
   quorum!
-  rspec-rails
+  rspec-rails (~> 2.6)
   sqlite3

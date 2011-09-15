@@ -1,5 +1,5 @@
 
-ZOMG!! Thanks for installing Quorum!
+ZOMG!! Thanks for installing Quorum!!
 
 Please send bug reports to kas@ncgr.org.
 
@@ -7,7 +7,15 @@ Please send bug reports to kas@ncgr.org.
 
 Quorum Manual Setup:
 
-1. Build your Blast databases.
+1. Ensure you have defined root_url in your config/routes.rb.
+   If you are deploying Quorum as a standalone application, 
+   add the below after the engine is mounted. 
+
+     mount Quorum::Engine => "/quorum"
+
+     match "/" => redirect("/quorum")
+
+2. Build your Blast databases.
 
      rake quorum:blastdb:build
 
@@ -15,6 +23,5 @@ Quorum Manual Setup:
 
      rake -D 
 
-2. Continue...
-
 ==============================================================================
+

@@ -1,1 +1,25 @@
-<h1>Blast#New</h1>
+<h1>Blast</h1>
+
+<%= form_for @blast, :html => {:id => "quorum_blast"} do |f| %>
+	<div>
+		<span class="radio-form">
+			Query sequences are 
+			<%= f.radio_button :sequence_type, 'nucleic_acid', :checked => true %> Nucleic Acid 
+			<%= f.radio_button :sequence_type, 'amino_acid' %> Peptide 
+		</span>
+	</div>
+	<div>
+		<%= f.text_area :sequence %>
+	</div>
+	<div>
+		<%= f.file_field :sequence_file %>
+	</div>
+	<div>
+    <%= f.submit "Submit" %>&nbsp;&nbsp;
+    <%= submit_tag "Reset", :name => "reset", 
+      :type => "button", :id => "quorum_blast_reset" %>
+	</div>
+  <div id="options">
+
+  </div>
+<% end %>

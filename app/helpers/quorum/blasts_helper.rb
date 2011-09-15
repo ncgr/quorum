@@ -1,4 +1,4 @@
 module Quorum
-  module BlastHelper
+  module BlastsHelper
   end
 end

@@ -3,17 +3,23 @@
 # ==> NCBI BLAST Plus Settings
 # blast:
 #   remote: true to execute script on remote machine via
-#     Net::SSH. false to execute locally via system().
+#     Net::SSH. false to execute locally via Kernel#system.
 #     See Net::SSH for more information.
 #     http://net-ssh.github.com/ssh/v2/api/index.html
 #
-#   host: Net::SSH.start() host.
+#   ssh_host: Net::SSH.start() host.
 #
-#   user: Net::SSH.start() user.
+#   ssh_user: Net::SSH.start() user.
 #
-#   pass: Net::SSH.start() password -- Optional.
+#   ssh_options: Net::SSH.start() optional params.
+#     See http://net-ssh.github.com/ssh/v2/api/classes/Net/SSH.html#M000002
+#     for a complete list of options.
+#     Example Usage:
+#     ssh_options:
+#       password: "secret password"
+#       port: 8888
 #
-#   script: Path to run-blast script.
+#   script: Path to option_parser script.
 #
 #   log_dir: run-blast log file directory.
 #
@@ -51,16 +57,18 @@
 #
 #   blast_threads: Number of Blast threads.
 #
-# RAILS_ROOT/config/initializers/quorum.rb 
+# RAILS_ROOT/config/initializers/quorum_initializer.rb 
 # safely substitutes %{RAILS_ROOT} => ::Rails.root.to_s
 
 development:
   blast:
     remote: false
-    host:
-    user:
-    pass:
-    script: "%{RAILS_ROOT}/quorum/bin/quorum.rb"
+    ssh_host:
+    ssh_user:
+    ssh_options:
+      # Example:
+      # password: "secret password"
+    script: "%{RAILS_ROOT}/quorum/bin/option_parser"
     log_dir: "%{RAILS_ROOT}/quorum/log/"
     blast_db: "%{RAILS_ROOT}/quorum/blast_db/"
     tblastn:
@@ -84,10 +92,12 @@ development:
 test:
   blast:
     remote: false
-    host:
-    user:
-    pass:
-    script: "%{RAILS_ROOT}/quorum/bin/quorum"
+    ssh_host:
+    ssh_user:
+    ssh_options:
+      # Example:
+      # password: "secret password"
+    script: "%{RAILS_ROOT}/quorum/bin/option_parser"
     log_dir: "%{RAILS_ROOT}/quorum/log/"
     blast_db: "%{RAILS_ROOT}/quorum/blast_db/"
     tblastn:
@@ -111,12 +121,14 @@ test:
 production:
   blast:
     remote: true
-    host:
-    user:
-    pass:
-    script:
-    log_dir:
-    blast_db:
+    ssh_host:
+    ssh_user:
+    ssh_options:
+      # Example:
+      # password: "secret password"
+    script: "%{RAILS_ROOT}/quorum/bin/option_parser"
+    log_dir: "%{RAILS_ROOT}/quorum/log/"
+    blast_db: "%{RAILS_ROOT}/quorum/blast_db/"
     tblastn:
       # Example:
       # - genome_1

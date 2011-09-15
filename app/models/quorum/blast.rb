@@ -1,7 +1,7 @@
 module Quorum
   class Blast < ActiveRecord::Base
 
-    attr_accessible :sequence_type, :sequence
+    attr_accessible :sequence_type, :sequence 
 
     validates_format_of :sequence_type, 
       :with => /[a-z_]+/,
@@ -12,21 +12,12 @@ module Quorum
       :message => " - Please insert valid sequences.",
       :allow_blank => false
 
-    validate :validate_sequence_size
-
     #
-    # Validates size of the user's sequence(s) against max. 
-    # Max defaults to 50KB.
+    # Create a unique hash based on self.sequence.
     #
-    def validate_sequence_size
-      max  = 50000
-      size = self.sequence.bytesize
-
-      if size > max
-        errors.add(:sequence_size_too_large, 
-                   "- Your sequence(s) exceed the size limit of 50KB.")
-      end
+    def create_unique_hash
+      return nil if self.sequence.blank?
+      Digest::MD5.hexdigest(self.sequence).to_s + "-" + Time.now.to_f.to_s
     end
-
   end
 end

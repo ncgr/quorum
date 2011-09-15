@@ -1,0 +1,7 @@
+en:
+  quorum:
+    blasts:
+      encoding_error: "Please enter your sequence(s) in Plain Text as FASTA."
+      save_error: "Unable to save Blast data."
+      error_75: "Your search returned error code 75."
+      error_127: "Quorum or system executable not found."

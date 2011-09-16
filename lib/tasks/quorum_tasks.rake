@@ -21,9 +21,9 @@ namespace :quorum do
       @nucl_file  = ENV['NUCL_FILE_NAME'] || 'contigs.fa'
       @rebuild_db = ENV['REBUILD_DB'] || true
 
-      @blastdb_dir = "#{::Rails.root.to_s}/quorum/blastdb"
-      @gff_dir     = "#{::Rails.root.to_s}/quorum/gff3"
-      @log_dir     = "#{::Rails.root.to_s}/quorum/log"
+      @blastdb_dir = File.join(::Rails.root.to_s, "quorum", "blastdb")
+      @gff_dir     = File.join(::Rails.root.to_s, "quorum", "gff3")
+      @log_dir     = File.join(::Rails.root.to_s, "quorum", "log")
 
       @type      = @type.downcase.strip
       @prot_file = @prot_file.downcase.strip
@@ -49,6 +49,9 @@ module Blast
   # Valid values for @type.
   VALID_TYPES = ["both", "prot", "nucl"]
 
+  # Blast dependencies
+	DEPENDENCIES = ["makeblastdb"]
+
 	# File bz2 and gz extensions.
 	GZIP = /\.(tgz$)|(tar.gz$)/
 	BZIP = /\.(tbz$)|(tar.bz2$)/
@@ -57,8 +60,7 @@ module Blast
 	# Check build_blast_db dependencies.
 	#
 	def check_dependencies
-	  @binaries = ["makeblastdb"]
-	  @binaries.each do |b|
+	  DEPENDENCIES.each do |b|
 	    system("which #{b} >& /dev/null")
 	    if $?.exitstatus > 0
 	      raise "Dependency not found. Please add `#{b}` to your PATH."
@@ -88,11 +90,14 @@ module Blast
 	# Extracts and concatenates files from tarballs.
 	#
 	def extract_files(src, file, flag, path)
-	  system("tar -x#{flag}Of #{src} #{file} >> #{path} 2>> \
-	         #{@log_dir}/extract_data_error.log")
+    extract_data_error = File.join(@log_dir, "extract_data_error.log")
+	  
+    cmd = "tar -x#{flag}Of #{src} #{file} >> #{path} 2>> " <<
+	    "#{extract_data_error}"
+    system(cmd)
     if $?.exitstatus > 0
       raise "Data extraction error. " <<
-        "See #{@log_dir}/extract_data_error.log for details."
+        "See #{extract_data_error} for details."
     end
 	end
 	
@@ -101,16 +106,20 @@ module Blast
 	#
 	def execute_makeblastdb(type, title, input)
     puts "Executing makeblastdb for #{title} dbtype #{type}..."
-	  output = @blastdb_dir + "/" + title
-	  system("makeblastdb \
-	         -dbtype #{type} \
-	         -title #{title} \
-	         -in #{input} \
-	         -out #{output} \
-	         -hash_index >> #{@log_dir}/makeblastdb.log")
+
+    makeblast_log = File.join(@log_dir, "makeblastdb.log")
+    output        = File.join(File.dirname(input), title)
+
+    cmd = "makeblastdb " <<
+      "-dbtype #{type} " <<
+      "-title #{title} " <<
+      "-in #{input} " <<
+      "-out #{output} " <<
+      "-hash_index >> #{makeblast_log}"
+    system(cmd)
     if $?.exitstatus > 0
       raise "makeblastdb error. " <<
-        "See #{@log_dir}/makeblastdb.log for details."
+        "See #{makeblast_log} for details."
     end
 	end
 	
@@ -118,8 +127,8 @@ module Blast
 	# Builds a Blast database from parse_blast_db_data.
 	#
 	def build_blast_db(blastdb, title)
-	  contigs  = blastdb + "/contigs.fa"
-	  peptides = blastdb + "/peptides.fa"
+	  contigs  = File.join(blastdb, "contigs.fa")
+	  peptides = File.join(blastdb, "peptides.fa")
 
     found = false # set to true is data is found.
 
@@ -163,8 +172,8 @@ module Blast
 	    end
 	
 	    dataset = d.split('/').last
-	    blastdb = @blastdb_dir + "/" + dataset
-	    gff     = @gff_dir + "/" + dataset
+	    blastdb = File.join(@blastdb_dir, dataset)
+	    gff     = File.join(@gff_dir, dataset)
 	    Dir.mkdir(blastdb)
 	    Dir.mkdir(gff)
 	
@@ -179,11 +188,11 @@ module Blast
 	      files = files.split(/\n/)
 	      files.each do |f|
 	        if f.include?(@prot_file)
-	          extract_files(s, f, flag, blastdb + "/peptides.fa")
+	          extract_files(s, f, flag, File.join(blastdb, "peptides.fa"))
 	        elsif f.include?(@nucl_file)
-	          extract_files(s, f, flag, blastdb + "/contigs.fa")
+	          extract_files(s, f, flag, File.join(blastdb, "contigs.fa"))
 	        elsif f.include?("gff")
-	          extract_files(s, f, flag, gff + "/annots.gff")
+	          extract_files(s, f, flag, File.join(gff, "annots.gff"))
           end
 	      end
 	    end
@@ -195,7 +204,7 @@ module Blast
   # Display BLAST_README
   #
   def readme
-    file = File.readlines(File.dirname(__FILE__) + "/BLAST_README")
+    file = File.readlines(File.join(File.dirname(__FILE__), "BLAST_README"))
     file.each { |f| print f }
   end
 end

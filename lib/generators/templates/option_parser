@@ -4,10 +4,15 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '../lib'))
 
 require 'trollop'
 require 'active_record'
+require 'blast'
 
 SEARCH_TOOLS = ["blast"]
+BINARIES     = ["tblastn", "blastp", "blastn", "blastx", "seqret"]
 
 module Quorum
+  #
+  # Parse Options for Quorum Search Tools
+  #
   class OptionParser
 
     def initialize
@@ -58,7 +63,7 @@ HEAD
         "Available search tools: " + SEARCH_TOOLS.join(", ")
       end
 
-      @args[:search_tool]   = opts[:search_tool].downcase
+      @args[:search_tool] = opts[:search_tool].downcase
 
       if opts[:tblastn].nil? && opts[:blastp].nil? &&
          opts[:blastn].nil? &&  opts[:blastx].nil?
@@ -74,11 +79,7 @@ HEAD
         "Supplied directory: " + opts[:log_directory]
       end
 
-      @args[:log_directory]     = opts[:log_directory]
-      @args[:database]          = opts[:database]
-      @args[:database_host]     = opts[:database_host]
-      @args[:database_user]     = opts[:database_user]
-      @args[:database_password] = opts[:database_password]
+      @args[:log_directory] = opts[:log_directory]
 
       unless Dir.exists?(opts[:blast_database])
         Trollop::die :blast_database, "blast database not found\n" <<
@@ -88,7 +89,7 @@ HEAD
       @args[:blast_database] = opts[:blast_database]
 
       if opts[:tblastn]
-        unless Dir.exists?(opts[:tblastn])
+        unless Dir.exists?(File.join(@args[:blast_database], opts[:tblastn]))
           Trollop::die :tblastn, "tblastn database not found\n" <<
           "Supplied directory: " + opts[:tblastn]
         end
@@ -97,7 +98,7 @@ HEAD
       end
 
       if opts[:blastp]
-        unless Dir.exists?(opts[:blastp])
+        unless Dir.exists?(File.join(@args[:blast_database], opts[:blastp]))
           Trollop::die :blastp, "blastp database not found\n" <<
           "Supplied directory: " + opts[:blastp]
         end
@@ -106,7 +107,7 @@ HEAD
       end
 
       if opts[:blastn]
-        unless Dir.exists?(opts[:blastn])
+        unless Dir.exists?(File.join(@args[:blast_database], opts[:blastn]))
           Trollop::die :blastn, "blastn database not found\n" <<
           "Supplied directory: " + opts[:blastn]
         end
@@ -115,7 +116,7 @@ HEAD
       end
 
       if opts[:blastx]
-        unless Dir.exists?(opts[:blastx])
+        unless Dir.exists?(File.join(@args[:blast_database], opts[:blastx]))
           Trollop::die :blastx, "blastx database not found\n" <<
           "Supplied directory: " + opts[:blastx]
         end
@@ -125,20 +126,42 @@ HEAD
 
       @args[:blast_threads] = opts[:blast_threads]
 
+      ## Check System Dependancies ##
+
+      check_dependencies
+
+      ## Establish ActiveRecord Connection ##
+
+      begin
+        ActiveRecord::Base.establish_connection(
+          :adapter  => opts[:database_adapter],
+          :host     => opts[:database_host],
+          :username => opts[:database_user],
+          :password => opts[:database_password],
+          :database => opts[:database]
+        )
+      rescue Exception => e
+        Trollop::die puts e.message
+      end
+
       ## Execute search tool ##
 
       case @args[:search_tool]
       when "blast"
-        execute_blast
+        Quorum::Blast.new(@args)
       end
-
     end
 
     #
-    # Execute blast
+    # Check system dependencies.
     #
-    def execute_blast
-      Quorum::Blast.new(@args)
+    def check_dependencies
+      BINARIES.each do |b|
+        system("which #{b} >& /dev/null")
+        if $?.exitstatus > 0
+          Trollop::die "Quorum dependency not found. Please add `#{b}` to your PATH."
+        end
+      end
     end
 
   end

@@ -30,7 +30,7 @@ module Quorum
       if @blast.save
         execute_system_command
         if @exit_status != :error_0
-          @blast.destroy
+          #@blast.destroy
           set_flash_message(:error, @exit_status)
           redirect_to :action => "new"
           return

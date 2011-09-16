@@ -69,8 +69,8 @@ development:
       # Example:
       # password: "secret password"
     script: "%{RAILS_ROOT}/quorum/bin/option_parser"
-    log_dir: "%{RAILS_ROOT}/quorum/log/"
-    blast_db: "%{RAILS_ROOT}/quorum/blast_db/"
+    log_dir: "%{RAILS_ROOT}/quorum/log"
+    blast_db: "%{RAILS_ROOT}/quorum/blastdb"
     tblastn:
       # Example:
       # - genome_1
@@ -98,8 +98,8 @@ test:
       # Example:
       # password: "secret password"
     script: "%{RAILS_ROOT}/quorum/bin/option_parser"
-    log_dir: "%{RAILS_ROOT}/quorum/log/"
-    blast_db: "%{RAILS_ROOT}/quorum/blast_db/"
+    log_dir: "%{RAILS_ROOT}/quorum/log"
+    blast_db: "%{RAILS_ROOT}/quorum/blastdb"
     tblastn:
       # Example:
       # - genome_1
@@ -127,8 +127,8 @@ production:
       # Example:
       # password: "secret password"
     script: "%{RAILS_ROOT}/quorum/bin/option_parser"
-    log_dir: "%{RAILS_ROOT}/quorum/log/"
-    blast_db: "%{RAILS_ROOT}/quorum/blast_db/"
+    log_dir: "%{RAILS_ROOT}/quorum/log"
+    blast_db: "%{RAILS_ROOT}/quorum/blastdb"
     tblastn:
       # Example:
       # - genome_1

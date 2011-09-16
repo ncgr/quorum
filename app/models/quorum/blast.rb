@@ -12,12 +12,5 @@ module Quorum
       :message => " - Please insert valid sequences.",
       :allow_blank => false
 
-    #
-    # Create a unique hash based on self.sequence.
-    #
-    def create_unique_hash
-      return nil if self.sequence.blank?
-      Digest::MD5.hexdigest(self.sequence).to_s + "-" + Time.now.to_f.to_s
-    end
   end
 end

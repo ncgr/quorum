@@ -57,21 +57,7 @@ module Quorum
 
       tblastn = blastp = blastn = blastx = nil
 
-      ## QUORUM['blast'] collections ##
-      unless QUORUM['blast']['tblastn'].nil?
-        tblastn = QUORUM['blast']['tblastn'].join(';')
-      end
-      unless QUORUM['blast']['blastp'].nil?
-        blastp = QUORUM['blast']['blastp'].join(';')
-      end
-      unless QUORUM['blast']['blastn'].nil?
-        blastn = QUORUM['blast']['blastn'].join(';')
-      end
-      unless QUORUM['blast']['blastx'].nil?
-        blastx = QUORUM['blast']['blastx'].join(';')
-      end
-
-      # command
+      # System command
       cmd = "#{QUORUM['blast']['script']} " <<
         "-s blast -i #{@blast.id} " <<
         "-e #{::Rails.env.to_s} -l #{QUORUM['blast']['log_dir']} " <<
@@ -81,8 +67,25 @@ module Quorum
         "-u #{ActiveRecord::Base.configurations[::Rails.env.to_s]['username']} " <<
         "-p #{ActiveRecord::Base.configurations[::Rails.env.to_s]['password']} " <<
         "-b #{QUORUM['blast']['blast_db']} " <<
-        "-q #{tblastn} -r #{blastp} -n #{blastn} -x #{blastx} " <<
-        "-t #{QUORUM['blast']['blast_threads']}"
+        "-t #{QUORUM['blast']['blast_threads']} "
+
+      ## Optional QUORUM['blast'] collections ##
+      unless QUORUM['blast']['tblastn'].nil?
+        tblastn = QUORUM['blast']['tblastn'].join(';')
+        cmd << "-q " << tblastn << " "
+      end
+      unless QUORUM['blast']['blastp'].nil?
+        blastp = QUORUM['blast']['blastp'].join(';')
+        cmd << "-r " << blastp << " "
+      end
+      unless QUORUM['blast']['blastn'].nil?
+        blastn = QUORUM['blast']['blastn'].join(';')
+        cmd << "-n " << blastn << " "
+      end
+      unless QUORUM['blast']['blastx'].nil?
+        blastx = QUORUM['blast']['blastx'].join(';')
+        cmd << "-x " << blastx << " "
+      end
 
       logger.debug "\n-- quorum command --\n" + cmd + "\n\n"
 

@@ -11,7 +11,7 @@ namespace :quorum do
     "PROT_FILE_NAME= -- defaults to peptides.fa. " <<
     "NUCL_FILE_NAME= -- defaults to contigs.fa. " <<
     "REBUILD_DB= {true or false} -- remove existing blast database(s). " <<
-    "defaults to true)"
+    "defaults to false)"
     task :build do
       include Blast
 
@@ -19,7 +19,7 @@ namespace :quorum do
       @type       = ENV['TYPE'] || 'both'
       @prot_file  = ENV['PROT_FILE_NAME'] || 'peptides.fa'
       @nucl_file  = ENV['NUCL_FILE_NAME'] || 'contigs.fa'
-      @rebuild_db = ENV['REBUILD_DB'] || true
+      @rebuild_db = ENV['REBUILD_DB'] || false
 
       @blastdb_dir = File.join(::Rails.root.to_s, "quorum", "blastdb")
       @gff_dir     = File.join(::Rails.root.to_s, "quorum", "gff3")
@@ -74,10 +74,10 @@ module Blast
 	def make_directories
     begin
 	    `rm -rf #{@blastdb_dir}` if File.directory?(@blastdb_dir) && @rebuild_db
-	    Dir.mkdir(@blastdb_dir)
+	    Dir.mkdir(@blastdb_dir) unless File.directory?(@blastdb_dir)
 	
 	    `rm -rf #{@gff_dir}` if File.directory?(@gff_dir) && @rebuild_db
-	    Dir.mkdir(@gff_dir)
+	    Dir.mkdir(@gff_dir) unless File.directory?(@gff_dir)
 	
 	    Dir.mkdir(@log_dir) unless File.directory?(@log_dir)
     rescue SystemCallError => e
@@ -108,7 +108,7 @@ module Blast
     puts "Executing makeblastdb for #{title} dbtype #{type}..."
 
     makeblast_log = File.join(@log_dir, "makeblastdb.log")
-    output        = File.join(File.dirname(input), title)
+    output        = File.dirname(input)
 
     cmd = "makeblastdb " <<
       "-dbtype #{type} " <<

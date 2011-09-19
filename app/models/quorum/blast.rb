@@ -9,8 +9,8 @@ module Quorum
       :allow_blank => false
     validates_length_of :sequence, 
       :minimum => 20,
-      :message => " - Please insert valid sequences.",
-      :allow_blank => false
+      :message => " - Please upload sequences in FASTA format.",
+      :allow_blank => false  
 
   end
 end

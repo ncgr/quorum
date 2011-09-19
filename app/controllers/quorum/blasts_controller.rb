@@ -16,7 +16,7 @@ module Quorum
 
       @blast = Blast.new(params[:blast])
 
-      @blast.sequence = file if @blast.sequence.blank?
+      @blast.sequence << file if file
 
       begin
         ActiveSupport::Multibyte::Unicode.u_unpack(@blast.sequence)
@@ -36,8 +36,7 @@ module Quorum
           return
         end
       else
-        set_flash_message(:error, :save_error)
-        redirect_to :action => "new"
+        render :action => "new"
         return 
       end
       redirect_to blast_path(@blast)

@@ -29,8 +29,8 @@ module Quorum
 
       if @blast.save
         execute_system_command
-        if @exit_status != :error_0
-          #@blast.destroy
+        if @exit_status.to_s != :error_0.to_s
+          @blast.destroy
           set_flash_message(:error, @exit_status)
           redirect_to :action => "new"
           return
@@ -40,7 +40,7 @@ module Quorum
         redirect_to :action => "new"
         return 
       end
-      redirect_to blasts_path(@blast)
+      redirect_to blast_path(@blast)
     end
 
     def show

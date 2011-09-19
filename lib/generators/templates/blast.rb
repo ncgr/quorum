@@ -197,7 +197,6 @@ module Quorum
         @blast.results = file.read
         if @blast.save
           remove_files
-          exit 0
         else
           logger(
             "ActiveRecord",

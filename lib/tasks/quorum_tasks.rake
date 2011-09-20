@@ -2,6 +2,10 @@
 # Quourm Rake Tasks
 #
 
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib'))
+
+require 'build_blast_db'
+
 namespace :quorum do
   namespace :blastdb do
     desc "Build Blast Database (options: DIR=/path/to/data " << 
@@ -13,198 +17,38 @@ namespace :quorum do
     "REBUILD_DB= {true or false} -- remove existing blast database(s). " <<
     "defaults to false)"
     task :build do
-      include Blast
 
-      @dir        = ENV['DIR'].split(':') unless ENV['DIR'].nil?
-      @type       = ENV['TYPE'] || 'both'
-      @prot_file  = ENV['PROT_FILE_NAME'] || 'peptides.fa'
-      @nucl_file  = ENV['NUCL_FILE_NAME'] || 'contigs.fa'
-      @rebuild_db = ENV['REBUILD_DB'] || false
+      args = {}
 
-      @blastdb_dir = File.join(::Rails.root.to_s, "quorum", "blastdb")
-      @gff_dir     = File.join(::Rails.root.to_s, "quorum", "gff3")
-      @log_dir     = File.join(::Rails.root.to_s, "quorum", "log")
+      args[:dir]        = ENV['DIR'].split(':') unless ENV['DIR'].nil?
+      args[:type]       = ENV['TYPE'] || 'both'
+      args[:prot_file]  = ENV['PROT_FILE_NAME'] || 'peptides.fa'
+      args[:nucl_file]  = ENV['NUCL_FILE_NAME'] || 'contigs.fa'
+      args[:rebuild_db] = ENV['REBUILD_DB'] || false
 
-      @type      = @type.downcase.strip
-      @prot_file = @prot_file.downcase.strip
-      @nucl_file = @nucl_file.downcase.strip
+      args[:blastdb_dir] = File.join(::Rails.root.to_s, "quorum", "blastdb")
+      args[:gff_dir]     = File.join(::Rails.root.to_s, "quorum", "gff3")
+      args[:log_dir]     = File.join(::Rails.root.to_s, "quorum", "log")
 
-      unless Blast::VALID_TYPES.include?(@type)
-        raise "Unknow type: #{@type}. Please provide one: both, nucl, or prot."
+      args[:type]      = args[:type].downcase.strip
+      args[:prot_file] = args[:prot_file].downcase.strip
+      args[:nucl_file] = args[:nucl_file].downcase.strip
+
+      unless Quorum::BuildBlastDB::VALID_TYPES.include?(args[:type])
+        raise "Unknow type: #{args[:type]}. " << 
+          "Please provide one: both, nucl, or prot."
       end
 
-      @nucl_file = "NULL" if @type == "prot"
-      @prot_file = "NULL" if @type == "nucl"
+      args[:nucl_file] = "NULL" if args[:type] == "prot"
+      args[:prot_file] = "NULL" if args[:type] == "nucl"
       
       puts "Building your Blast database(s). This may take a while..."
       
-      build_blast_db_data
-      readme
+      blast = Quorum::BuildBlastDB.new(args)
+
+      blast.build_blast_db_data
+      blast.readme
     end
   end
 end
 
-module Blast
-
-  # Valid values for @type.
-  VALID_TYPES = ["both", "prot", "nucl"]
-
-  # Blast dependencies
-	DEPENDENCIES = ["makeblastdb"]
-
-	# File bz2 and gz extensions.
-	GZIP = /\.(tgz$)|(tar.gz$)/
-	BZIP = /\.(tbz$)|(tar.bz2$)/
-	
-	#
-	# Check build_blast_db dependencies.
-	#
-	def check_dependencies
-	  DEPENDENCIES.each do |b|
-	    system("which #{b} >& /dev/null")
-	    if $?.exitstatus > 0
-	      raise "Dependency not found. Please add `#{b}` to your PATH."
-	    end
-	  end
-	end
-	
-	#
-	# Make Quorum directories.
-	#
-	def make_directories
-    begin
-	    `rm -rf #{@blastdb_dir}` if File.directory?(@blastdb_dir) && @rebuild_db
-	    Dir.mkdir(@blastdb_dir) unless File.directory?(@blastdb_dir)
-	
-	    `rm -rf #{@gff_dir}` if File.directory?(@gff_dir) && @rebuild_db
-	    Dir.mkdir(@gff_dir) unless File.directory?(@gff_dir)
-	
-	    Dir.mkdir(@log_dir) unless File.directory?(@log_dir)
-    rescue SystemCallError => e
-      puts e.message
-      raise "Unable to make directory."
-    end
-	end
-	
-	#
-	# Extracts and concatenates files from tarballs.
-	#
-	def extract_files(src, file, flag, path)
-    extract_data_error = File.join(@log_dir, "extract_data_error.log")
-	  
-    cmd = "tar -x#{flag}Of #{src} #{file} >> #{path} 2>> " <<
-	    "#{extract_data_error}"
-    system(cmd)
-    if $?.exitstatus > 0
-      raise "Data extraction error. " <<
-        "See #{extract_data_error} for details."
-    end
-	end
-	
-	#
-	# Execute makeblastdb on an extracted dataset.
-	#
-	def execute_makeblastdb(type, title, input)
-    puts "Executing makeblastdb for #{title} dbtype #{type}..."
-
-    makeblast_log = File.join(@log_dir, "makeblastdb.log")
-    output        = File.dirname(input)
-
-    cmd = "makeblastdb " <<
-      "-dbtype #{type} " <<
-      "-title #{title} " <<
-      "-in #{input} " <<
-      "-out #{output} " <<
-      "-hash_index >> #{makeblast_log}"
-    system(cmd)
-    if $?.exitstatus > 0
-      raise "makeblastdb error. " <<
-        "See #{makeblast_log} for details."
-    end
-	end
-	
-	#
-	# Builds a Blast database from parse_blast_db_data.
-	#
-	def build_blast_db(blastdb, title)
-	  contigs  = File.join(blastdb, "contigs.fa")
-	  peptides = File.join(blastdb, "peptides.fa")
-
-    found = false # set to true is data is found.
-
-	  if File.exists?(contigs) && File.readable?(contigs)
-	    execute_makeblastdb("nucl", title, contigs)
-      found = true
-    end
-	  if File.exists?(peptides) && File.readable?(peptides)
-	    execute_makeblastdb("prot", title, peptides)
-      found = true
-    end
-
-    unless found
-      raise "Extracted data not found for #{contigs} or #{peptides}. " <<
-        "Make sure you supplied the correct data directory and file names."
-    end
-	end
-	
-	#
-	# Parse Blast database data.
-	#
-	def build_blast_db_data
-	  if @dir.blank?
-	    raise "DIR must be set to continue. Execute `rake -D` for more information."
-	  end
-	
-	  check_dependencies
-	
-	  make_directories
-	  
-	  @dir.each do |d|
-	    unless File.directory?(d)    
-	      raise "Directory not found: #{d}"
-	    end
-	
-	    @data = Dir.glob("#{d}/*.{tgz,tar.gz,tbz,tar.bz2}")
-	
-	    if @data.blank?
-	      raise "Data not found. Please check your directory and try " <<
-	        "again.\nDirectory Entered: #{d}"
-	    end
-	
-	    dataset = d.split('/').last
-	    blastdb = File.join(@blastdb_dir, dataset)
-	    gff     = File.join(@gff_dir, dataset)
-	    Dir.mkdir(blastdb)
-	    Dir.mkdir(gff)
-	
-	    @data.each do |s|
-	      if s =~ GZIP
-	        files = `tar -tzf #{s}` 
-	        flag  = "z"
-	      elsif s =~ BZIP
-	        files = `tar -tjf #{s}`
-	        flag  = "j"       
-	      end
-	      files = files.split(/\n/)
-	      files.each do |f|
-	        if f.include?(@prot_file)
-	          extract_files(s, f, flag, File.join(blastdb, "peptides.fa"))
-	        elsif f.include?(@nucl_file)
-	          extract_files(s, f, flag, File.join(blastdb, "contigs.fa"))
-	        elsif f.include?("gff")
-	          extract_files(s, f, flag, File.join(gff, "annots.gff"))
-          end
-	      end
-	    end
-	    build_blast_db(blastdb, dataset)
-	  end
-	end
-
-  #
-  # Display BLAST_README
-  #
-  def readme
-    file = File.readlines(File.join(File.dirname(__FILE__), "BLAST_README"))
-    file.each { |f| print f }
-  end
-end

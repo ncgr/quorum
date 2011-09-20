@@ -3,8 +3,8 @@ module Quorum
     class InstallGenerator < Rails::Generators::Base
       source_root File.expand_path("../../templates", __FILE__)
 
-      desc "Creates a Quorum initializer, quorum_settings.yml and " <<
-           "executable files."
+      desc "Creates Quorum initializer, settings and " <<
+           "search tool files."
 
       def copy_initializer
         template "quorum_initializer.rb", 
@@ -25,7 +25,11 @@ module Quorum
       end
 
       def create_quorum_tmp_dir
-        Dir.mkdir("tmp/quorum") unless File.directory?("tmp/quorum")
+        Dir.mkdir("quorum/tmp") unless File.directory?("quorum/tmp")
+      end
+
+      def create_quorum_log_dir
+        Dir.mkdir("quorum/log") unless File.directory?("quorum/log")
       end
 
       def add_mount_engine

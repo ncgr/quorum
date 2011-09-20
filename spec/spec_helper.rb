@@ -33,8 +33,9 @@ RSpec.configure do |config|
   config.include Capybara::DSL, :example_group => { :file_path => /\bspec\/requests\// }
 
   ## DatabaseCleaner ##
+  DatabaseCleaner.logger = Rails.logger
   config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean_with(:truncation)
   end
 

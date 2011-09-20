@@ -21,7 +21,7 @@ Quorum Manual Setup:
 
      rake db:migrate
 
-==
+===================================================================
 
 Quorum Remote Machine Setup:
 
@@ -52,8 +52,6 @@ Quorum Remote Machine Setup:
 
      vim ~/.bashrc
      export PATH=/path/to/dependencies:$PATH
-
-6. Bounce your web server to enable quorum..
 
 ===================================================================
 

@@ -52,21 +52,20 @@ module Quorum
     # Execute system command based on config/quorum_settings.yml
     #
     def execute_system_command
-      @exit_status = :error_75  # Default failure.
-
       tblastn = blastp = blastn = blastx = nil
 
       # System command
       cmd = "#{QUORUM['blast']['script']} " <<
         "-s blast -i #{@blast.id} " <<
         "-e #{::Rails.env.to_s} -l #{QUORUM['blast']['log_dir']} " <<
+        "-m #{QUORUM['blast']['tmp_dir']} " <<
         "-d #{ActiveRecord::Base.configurations[::Rails.env.to_s]['database']} " <<
         "-a #{ActiveRecord::Base.configurations[::Rails.env.to_s]['adapter']} " <<
         "-k #{ActiveRecord::Base.configurations[::Rails.env.to_s]['host']} " <<
         "-u #{ActiveRecord::Base.configurations[::Rails.env.to_s]['username']} " <<
         "-p #{ActiveRecord::Base.configurations[::Rails.env.to_s]['password']} " <<
         "-b #{QUORUM['blast']['blast_db']} " <<
-        "-t #{QUORUM['blast']['blast_threads']} "
+        "-t #{QUORUM['blast']['blast_threads'] || 1} "
 
       ## Optional QUORUM['blast'] collections ##
       unless QUORUM['blast']['tblastn'].nil?

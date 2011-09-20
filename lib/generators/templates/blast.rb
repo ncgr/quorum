@@ -9,6 +9,7 @@ module Quorum
     def initialize(args)
       @id             = args[:id]
       @log_directory  = args[:log_directory]
+      @tmp            = args[:tmp_directory]
       @blast_database = args[:blast_database]
       @blast_threads  = args[:blast_threads]
 
@@ -40,10 +41,10 @@ module Quorum
     end
 
     #
-    # Removes instance files in @log_directory prefixed with @hash.
+    # Removes instance files in @tmp prefixed with @hash.
     #
     def remove_files
-      `rm #{File.join(@log_directory, @hash)}*`
+      `rm #{File.join(@tmp, @hash)}*` if @hash
     end
 
     #
@@ -53,7 +54,7 @@ module Quorum
       File.open(File.join(@log_directory, "blast.log"), "a") do |log|
         log.puts ""
         log.puts Time.now.to_s + " " + program
-        log.puts "Message: " + message
+        log.puts message
         log.puts ""
       end
 
@@ -77,8 +78,8 @@ module Quorum
     def find_blast_data
       begin
         @blast = Blast.find(@id)
-      rescue RecordNotFound => e
-        logger("ActiveRecord", e.message, 255)
+      rescue Exception => e
+        logger("ActiveRecord", e.message, 80)
       end
 
       @type     = @blast.sequence_type
@@ -89,12 +90,12 @@ module Quorum
     # Write input sequence to file.
     #
     def write_input_sequence_to_file
-      seq = File.join(@log_directory, @hash + ".seq") 
+      seq = File.join(@tmp, @hash + ".seq") 
       File.open(seq, "w") do |f|
         f << @sequence
       end
 
-      @fasta = File.join(@log_directory, @hash + ".fa")
+      @fasta = File.join(@tmp, @hash + ".fa")
 
       # Force FASTA format.
       cmd = "seqret -filter -sformat pearson -osformat fasta < #{seq} " <<
@@ -104,7 +105,7 @@ module Quorum
         logger(
           "seqret", 
           "Input sequence not in FASTA format.",
-          255
+          70
         )
       end
     end
@@ -115,8 +116,11 @@ module Quorum
     def generate_blast_cmd
       @cmd = ""
 
-      @rep  = File.join(@log_directory, @hash + ".rep") 
-      @prot = File.join(@log_directory, @hash + ".prot")
+      @rep  = File.join(@tmp, @hash + ".rep") 
+      @prot = File.join(@tmp, @hash + ".prot")
+
+      File.new(@rep, "w")
+      File.new(@prot, "w")
 
       if @type == "nucleic_acid"
         if @blastn
@@ -162,7 +166,7 @@ module Quorum
             "-num_threads #{@blast_threads} " <<
             "-evalue 0.5e-10 " <<
             "-out #{@prot}"
-          @cmd << blastx
+          @cmd << blastp
         end
       end
     end
@@ -179,11 +183,11 @@ module Quorum
 
       generate_blast_cmd 
 
-      logger("Blast", @cmd)
+      logger("NCBI Blast", @cmd)
 
       system(@cmd)
 
-      system("cat #{@prot} >> #{@rep}") if @prot
+      system("cat #{@prot} >> #{@rep}")
 
       file = File.open(@rep, "r")
 
@@ -191,7 +195,7 @@ module Quorum
         logger(
           "NCBI Blast", 
           "Blast report empty.", 
-          255
+          71
         )
       else
         @blast.results = file.read
@@ -201,7 +205,7 @@ module Quorum
           logger(
             "ActiveRecord",
             "Unable to save Blast results to database.",
-            255
+            81
           )
         end
       end

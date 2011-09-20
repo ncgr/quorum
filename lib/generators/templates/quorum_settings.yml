@@ -21,7 +21,9 @@
 #
 #   script: Path to option_parser script.
 #
-#   log_dir: run-blast log file directory.
+#   log_dir: Path to log file directory.
+#
+#   tmp_dir: Path to tmp file directory.
 #
 #   blast_db: Parent Blast database directory.
 #     Execute the rake task below to build your Blast DB.
@@ -55,7 +57,8 @@
 #       - prot_1 
 #       - prot_2 
 #
-#   blast_threads: Number of Blast threads.
+#   blast_threads: Number of Blast threads. >= 1
+#     Defaults to 1.
 #
 # RAILS_ROOT/config/initializers/quorum_initializer.rb 
 # safely substitutes %{RAILS_ROOT} => ::Rails.root.to_s
@@ -68,8 +71,10 @@ development:
     ssh_options:
       # Example:
       # password: "secret password"
+      # port: 8888
     script: "%{RAILS_ROOT}/quorum/bin/option_parser"
     log_dir: "%{RAILS_ROOT}/quorum/log"
+    tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
     tblastn:
       # Example:
@@ -87,7 +92,7 @@ development:
       # Example:
       # - prot_1
       # - prot_2 
-    blast_threads:
+    blast_threads: 4
 
 test:
   blast:
@@ -97,8 +102,10 @@ test:
     ssh_options:
       # Example:
       # password: "secret password"
+      # port: 8888
     script: "%{RAILS_ROOT}/quorum/bin/option_parser"
     log_dir: "%{RAILS_ROOT}/quorum/log"
+    tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
     tblastn:
       # Example:
@@ -116,7 +123,7 @@ test:
       # Example:
       # - prot_1
       # - prot_2 
-    blast_threads:
+    blast_threads: 4
 
 production:
   blast:
@@ -126,9 +133,11 @@ production:
     ssh_options:
       # Example:
       # password: "secret password"
-    script: "%{RAILS_ROOT}/quorum/bin/option_parser"
-    log_dir: "%{RAILS_ROOT}/quorum/log"
-    blast_db: "%{RAILS_ROOT}/quorum/blastdb"
+      # port: 8888
+    script:
+    log_dir:
+    tmp_dir:
+    blast_db:
     tblastn:
       # Example:
       # - genome_1
@@ -145,5 +154,5 @@ production:
       # Example:
       # - prot_1
       # - prot_2 
-    blast_threads:
+    blast_threads: 8
 

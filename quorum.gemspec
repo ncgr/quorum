@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Quorum::VERSION
   s.authors     = ["Ken Seal"]
   s.email       = ["kas@ncgr.org"]
-  s.homepage    = "https://github.com/hunzinker/quorum"
+  s.homepage    = "https://github.com/ncgr/quorum"
   s.summary     = "Flexible bioinformatics search tool."
   s.description = "Flexible bioinformatics search tool."
 
@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.1.0"
   s.add_dependency "jquery-rails"
 
-  s.add_development_dependency "sqlite3"
   s.add_development_dependency "mysql2"
   s.add_development_dependency "rspec-rails", "~> 2.6"
   s.add_development_dependency "capybara"

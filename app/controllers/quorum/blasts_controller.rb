@@ -64,10 +64,12 @@ module Quorum
         "-k #{ActiveRecord::Base.configurations[::Rails.env.to_s]['host']} " <<
         "-u #{ActiveRecord::Base.configurations[::Rails.env.to_s]['username']} " <<
         "-p #{ActiveRecord::Base.configurations[::Rails.env.to_s]['password']} " <<
-        "-b #{QUORUM['blast']['blast_db']} " <<
-        "-t #{QUORUM['blast']['blast_threads'] || 1} "
+        "-b #{QUORUM['blast']['blast_db']} "
 
       ## Optional QUORUM['blast'] collections ##
+      unless QUORUM['blast']['blast_threads'].nil?
+        cmd << "-t #{QUORUM['blast']['blast_threads']} "
+      end
       unless QUORUM['blast']['tblastn'].nil?
         tblastn = QUORUM['blast']['tblastn'].join(';')
         cmd << "-q " << tblastn << " "

@@ -9,4 +9,4 @@ en:
       error_80: "ActiveRecord Error: Record not found."
       error_81: "ActiveRecord Error: Unable to save record."
       error_127: "Quorum or system executable not found."
-      error_255: "Quorum option_parser error."
+      error_255: "Quorum option_parser error. Please ensure your quorum_settings.yml file is properly set."

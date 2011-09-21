@@ -1,13 +1,15 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH.unshift(File.expand_path("../lib", __FILE__))
+$LOAD_PATH.unshift(File.expand_path("../../lib", __FILE__))
 
 require 'trollop'
 require 'active_record'
 require 'blast'
 
-SEARCH_TOOLS = ["blast"]
-BINARIES     = ["tblastn", "blastp", "blastn", "blastx", "seqret"]
+# Quorum search tools and dependencies.
+SEARCH_TOOLS = {
+  "blast" => ["tblastn", "blastp", "blastn", "blastx", "seqret"]
+}
 
 module Quorum
   #
@@ -29,8 +31,8 @@ HEAD
 
         # Search tool
         opt :search_tool, "Search tool to execute. Available tools: " << 
-          "#{SEARCH_TOOLS.join(',')}", :type => :string, :required => true, 
-          :short => "-s"
+          "#{SEARCH_TOOLS.keys.join(', ')}", :type => :string, 
+          :required => true, :short => "-s"
 
         # General settings
         opt :id, "Database record ID", :type => :int, :required => true,
@@ -56,23 +58,23 @@ HEAD
 
         # Blast specific settings
         opt :blast_database, "Path to Blast database", :type => :string,
-          :required => true, :short => "-b"
+          :short => "-b"
         opt :tblastn, "tblastn directory name", :type => :string, 
           :short => "-q"
         opt :blastp, "blastp directory name", :type => :string, :short => "-r"
         opt :blastn, "blastn directory name", :type => :string, :short => "-n"
         opt :blastx, "blastx directory name", :type => :string, :short => "-x"
         opt :blast_threads, "Number of Blast threads to spawn", :type => :int,
-          :short => "-t"
+          :short => "-t", :default => 1
       end
 
       @args = {} # Contains valid opts.
 
       ## Additional opt validation. ##
 
-      unless SEARCH_TOOLS.include?(opts[:search_tool].downcase)
+      unless SEARCH_TOOLS.keys.include?(opts[:search_tool].downcase)
         Trollop::die :search_tool, "search_tool not found\n" <<
-        "Available search tools: " + SEARCH_TOOLS.join(", ")
+        "Available search tools: " + SEARCH_TOOLS.keys.join(", ")
       end
 
       @args[:search_tool] = opts[:search_tool].downcase
@@ -86,7 +88,7 @@ HEAD
           "(tblastn, blastp, blastn, blastx)"
         end
 
-        unless Dir.exists?(opts[:blast_database])
+        unless opts[:blast_database] && Dir.exists?(opts[:blast_database])
           Trollop::die :blast_database, "blast database not found\n" <<
           "Supplied directory: " + opts[:blast_database]
         end
@@ -173,10 +175,11 @@ HEAD
     # Check system dependencies.
     #
     def check_dependencies
-      BINARIES.each do |b|
+      SEARCH_TOOLS[@args[:search_tool]].each do |b|
         system("which #{b} >& /dev/null")
         if $?.exitstatus > 0
-          Trollop::die "Quorum dependency not found. Please add `#{b}` to your PATH."
+          Trollop::die "Quorum dependency not found for tool " <<
+          "#{@args[:search_tool].to_s}. Please add `#{b}` to your PATH."
         end
       end
     end

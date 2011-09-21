@@ -49,4 +49,76 @@ describe "Blasts" do
     end
   end
 
+  describe "submit nucleotide sequences in text area" do
+    it "returns results" do
+      visit new_blast_path
+      current_path.should eq(new_blast_path)
+
+      fill_in "blast_sequence", 
+        :with => File.open(
+          File.expand_path("../../data/nucl_seqs.txt", __FILE__)
+        ).read
+      click_button "Submit"
+
+      page.should have_content("Blast Results") 
+    end
+  end
+
+  describe "submit protein sequences in text area" do
+    it "returns results" do
+      visit new_blast_path
+      current_path.should eq(new_blast_path)
+
+      choose "blast_sequence_type_amino_acid"
+      fill_in "blast_sequence", 
+        :with => File.open(
+          File.expand_path("../../data/prot_seqs.txt", __FILE__)
+        ).read
+      click_button "Submit"
+
+      page.should have_content("Blast Results") 
+    end
+  end
+
+  describe "submit protein sequences in attached file" do
+    it "returns results" do
+      visit new_blast_path
+      current_path.should eq(new_blast_path)
+
+      choose "blast_sequence_type_amino_acid"
+      prot_seqs = File.expand_path("../../data/prot_seqs.txt", __FILE__)
+      attach_file "blast_sequence_file", prot_seqs
+      click_button "Submit"
+
+      page.should have_content("Blast Results") 
+    end
+  end
+
+  describe "submit nucleotide sequences in attached file" do
+    it "returns results" do
+      visit new_blast_path
+      current_path.should eq(new_blast_path)
+
+      nucl_seqs = File.expand_path("../../data/nucl_seqs.txt", __FILE__)
+      attach_file "blast_sequence_file", nucl_seqs
+      click_button "Submit"
+
+      page.should have_content("Blast Results") 
+    end
+  end
+
+  describe "submit nucleotide sequences in attached file and in text area" do
+    it "concatenates sequences and returns results" do
+      visit new_blast_path
+      current_path.should eq(new_blast_path)
+
+      nucl_seqs = File.expand_path("../../data/nucl_seqs.txt", __FILE__)
+      fill_in "blast_sequence", :with => File.open(nucl_seqs).read
+      attach_file "blast_sequence_file", nucl_seqs
+      click_button "Submit"
+
+      page.should have_content("Blast Results") 
+    end
+  end
+
 end

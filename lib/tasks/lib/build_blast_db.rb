@@ -23,6 +23,8 @@ module Quorum
       @blastdb_dir = args.delete(:blastdb_dir)
       @gff_dir     = args.delete(:gff_dir)
       @log_dir     = args.delete(:log_dir)
+
+      build_blast_db_data
     end
 
     #
@@ -53,7 +55,7 @@ module Quorum
         puts e.message
         raise "Unable to make directory. " << 
           "Perhaps you forgot to execute the quorum initializer. \n\n" <<
-          "rails g quorum:install"
+          "rails generate quorum:install"
       end
     end
 
@@ -119,6 +121,14 @@ module Quorum
     end
 
     #
+    # Display BLAST_README
+    #
+    def readme
+      file = File.readlines(File.join(File.dirname(__FILE__), "BLAST_README"))
+      file.each { |f| print f }
+    end
+
+    #
     # Parse Blast database data.
     #
     def build_blast_db_data
@@ -170,14 +180,8 @@ module Quorum
         end
         build_blast_db(blastdb, dataset)
       end
+      readme
     end
 
-    #
-    # Display BLAST_README
-    #
-    def readme
-      file = File.readlines(File.join(File.dirname(__FILE__), "BLAST_README"))
-      file.each { |f| print f }
-    end
   end
 end

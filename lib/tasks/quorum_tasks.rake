@@ -44,10 +44,7 @@ namespace :quorum do
       
       puts "Building your Blast database(s). This may take a while..."
       
-      blast = Quorum::BuildBlastDB.new(args)
-
-      blast.build_blast_db_data
-      blast.readme
+      Quorum::BuildBlastDB.new(args)
     end
   end
 end

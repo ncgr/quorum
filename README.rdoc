@@ -1,3 +1,133 @@
 = Quorum
 
-This project rocks and uses MIT-LICENSE.
+A flexible bioinformatics search tool.
+
+Quorum is a Rails 3.1 mountable engine that supports the following 
+bioinformatics search tools.
+
+* NCBI Blast+ (http://blast.ncbi.nlm.nih.gov/)
+
+Dependencies:
+
+* Rails >= 3.1.0
+* NCBI Blast+ (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
+* Emboss (http://emboss.sourceforge.net/)
+
+== Installation
+
+Use the latest stable Rails release with Quorum.
+
+  gem install quorum
+
+After you install Quorum and add it to your Gemfile, run the generator.
+
+  rails generate quorum:install
+
+Migrate the database.
+
+  rake quorum:install:migrations
+  rake db:migrate
+
+The generator will create a directory in your application's root path
+
+  quorum/  
+
+as well as the necessary config files to run and customize Quorum. You
+MUST customize config/quorum_settings.yml before using Quorum. See Remote
+Machine Setup below if you choose to execute Quorum remotely.
+
+== Getting Started
+
+=== NCBI Blast Setup
+
+Build your NCBI Blast+ database(s) using the rake task below.
+
+  rake quorum:blastdb:build
+
+Arguments:
+
+*Required*
+
+* DIR= - path to {.tgz, .tar.gz, .tbz, .tar.bz2} files containg raw data.
+Separate multiple directories with a colon (:).
+
+  DIR=/path/to/dir:/path/to/another/dir
+
+*Optional*
+
+* TYPE= - type of Blast database to build {both, prot, nucl}. Defaults to
+both.
+
+* PROT_FILE_NAME= - name of the file containing protein data. Defaults to
+peptides.fa.
+
+* NUCL_FILE_NAME= - name of the file containing nucleotide data. Defaults
+to contigs.fa.
+
+* REBUILD_DB= - removes existing blast database(s) before building {true or
+false}. Defaults to false. 
+
+For a full list of supported arguments.
+
+  rake -D
+
+Don't forget to update config/quorum_settings.yml with your newly created 
+database(s).
+
+=== Remote Machine Setup -- Recommended for Production Use
+
+Follow the steps below to execute Quorum remotely via Net::SSH.
+
+* Ensure your ActiveRecord Database adapter in config/database.yml is set to 
+*any* supported adapter other than sqlite3.
+
+* Ensure you have supplied the necessary information in 
+config/quorum_settings.yml to execute Quorum remotely.
+
+  remote: true
+  ssh_host: remote.machine.org
+  ssh_user: remote_user
+  
+Net::SSH.start() optional params.
+
+  ssh_options:
+    password: "secret"
+    port: 8888
+
+* Tar and compress quorum.
+
+  tar -czvf quorum.tar.gz quorum/
+
+* Copy the newly created tarball to the remote machine.
+
+  scp quorum.tar.gz <username>@<host>:/path/to/install
+
+* Expand the tarball on the remote machine.
+
+  ssh <username>@<host>        
+
+  tar -xzvf quorum.tar.gz
+
+* Ensure quorum script dependencies are added to the remote machine's PATH. 
+If the remote machine doens't have a .bashrc file, create one
+
+  touch ~/.bashrc
+
+and add script dependencies to the PATH.
+
+  vim ~/.bashrc
+  export PATH=/path/to/dependencies:$PATH
+
+=== I18n
+
+To customize Quorum flash messages, edit config/locales/quorum.en.yml.
+
+== Additional Information
+
+=== Maintained By
+
+* Ken Seal (https://github.com/hunzinker)
+
+== License
+
+MIT License. Copyright 2011 NCGR http://ncgr.org/

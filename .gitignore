@@ -5,7 +5,3 @@ spec/dummy/db/*.sqlite3
 spec/dummy/db/migrate/
 spec/dummy/log/*.log
 spec/dummy/tmp/
-spec/dummy/config/initializers/quorum_initializer.rb
-spec/dummy/config/quorum_settings.yml
-spec/dummy/config/locales/
-spec/dummy/quorum/**/*

@@ -65,7 +65,7 @@ HEAD
         opt :blastn, "blastn directory name", :type => :string, :short => "-n"
         opt :blastx, "blastx directory name", :type => :string, :short => "-x"
         opt :blast_threads, "Number of Blast threads to spawn", :type => :int,
-          :short => "-t", :default => 1
+          :short => "-t"
       end
 
       @args = {} # Contains valid opts.

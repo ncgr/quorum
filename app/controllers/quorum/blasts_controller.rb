@@ -22,7 +22,7 @@ module Quorum
         ActiveSupport::Multibyte::Unicode.u_unpack(@blast.sequence)
       rescue ActiveSupport::Multibyte::EncodingError => e
         logger.error e.message
-        set_flash_message(:error, :encoding_error)
+        set_flash_message(:error, :error_encoding)
         redirect_to :action => "new"
         return
       end
@@ -55,65 +55,38 @@ module Quorum
       tblastn = blastp = blastn = blastx = nil
 
       # System command
-      cmd = "#{QUORUM['blast']['script']} " <<
-        "-s blast -i #{@blast.id} " <<
-        "-e #{::Rails.env.to_s} -l #{QUORUM['blast']['log_dir']} " <<
-        "-m #{QUORUM['blast']['tmp_dir']} " <<
+      cmd = "#{Quorum.blast_script} -s blast -i #{@blast.id} " <<
+        "-e #{::Rails.env.to_s} -l #{Quorum.blast_log_dir} " <<
+        "-m #{Quorum.blast_tmp_dir} " <<
         "-d #{ActiveRecord::Base.configurations[::Rails.env.to_s]['database']} " <<
         "-a #{ActiveRecord::Base.configurations[::Rails.env.to_s]['adapter']} " <<
         "-k #{ActiveRecord::Base.configurations[::Rails.env.to_s]['host']} " <<
         "-u #{ActiveRecord::Base.configurations[::Rails.env.to_s]['username']} " <<
         "-p #{ActiveRecord::Base.configurations[::Rails.env.to_s]['password']} " <<
-        "-b #{QUORUM['blast']['blast_db']} "
+        "-b #{Quorum.blast_db} -t #{Quorum.blast_threads} "
 
-      ## Optional QUORUM['blast'] collections ##
-      unless QUORUM['blast']['blast_threads'].nil?
-        cmd << "-t #{QUORUM['blast']['blast_threads']} "
-      end
-      unless QUORUM['blast']['tblastn'].nil?
-        tblastn = QUORUM['blast']['tblastn'].join(';')
+      ## Optional Quorum. collections ##
+      unless Quorum.tblastn.nil?
+        tblastn = Quorum.tblastn.join(';')
         cmd << "-q " << tblastn << " "
       end
-      unless QUORUM['blast']['blastp'].nil?
-        blastp = QUORUM['blast']['blastp'].join(';')
+      unless Quorum.blastp.nil?
+        blastp = Quorum.blastp.join(';')
         cmd << "-r " << blastp << " "
       end
-      unless QUORUM['blast']['blastn'].nil?
-        blastn = QUORUM['blast']['blastn'].join(';')
+      unless Quorum.blastn.nil?
+        blastn = Quorum.blastn.join(';')
         cmd << "-n " << blastn << " "
       end
-      unless QUORUM['blast']['blastx'].nil?
-        blastx = QUORUM['blast']['blastx'].join(';')
+      unless Quorum.blastx.nil?
+        blastx = Quorum.blastx.join(';')
         cmd << "-x " << blastx << " "
       end
 
-      logger.debug "\n-- quorum command --\n" + cmd + "\n\n"
-
-      if QUORUM['blast']['remote']
-        # Execute the script on the remote machine.
-        Net::SSH.start(QUORUM['blast']['ssh_host'], 
-                       QUORUM['blast']['ssh_user'],
-                       QUORUM['blast']['ssh_options']) do |ssh|
-          ssh.open_channel do |ch|
-            ch.exec(cmd) do |ch, success|
-              unless success 
-                puts "Channel exec() failed. :("
-              else
-                # Read the exit status of the remote process.
-                ch.on_request("exit-status") do |ch, data|
-                  @exit_status = data.read_long
-                end
-              end
-            end
-          end
-          ssh.loop
-        end
-      else
-        system(cmd)
-        @exit_status = $?.exitstatus
-      end
-      @exit_status = "error_" + @exit_status.to_s
-      @exit_status.to_sym
+      @exit_status = execute_cmd(
+        cmd, Quorum.blast_remote, Quorum.blast_ssh_host,
+        Quorum.blast_ssh_user, Quorum.blast_ssh_options
+      )
     end
   end
 end

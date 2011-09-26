@@ -1,4 +1,8 @@
 # Quorum Settings
+#
+# ==> General
+# Quorum initializer safely substitutes %{RAILS_ROOT} with
+# ::Rails.root.to_s.
 # 
 # ==> NCBI BLAST Plus Settings
 # blast:
@@ -19,13 +23,13 @@
 #       password: "secret password"
 #       port: 8888
 #
-#   script: Path to option_parser script.
+#   script: Absolute path to option_parser script.
 #
-#   log_dir: Path to log file directory.
+#   log_dir: Absolute path to log file directory.
 #
-#   tmp_dir: Path to tmp file directory.
+#   tmp_dir: Absolute path to tmp file directory.
 #
-#   blast_db: Parent Blast database directory.
+#   blast_db: Absolute path to NCBI Blast database directory.
 #     Execute the rake task below to build your Blast DB.
 #     rake quorum:blastdb:build
 #
@@ -60,8 +64,6 @@
 #   blast_threads: Number of Blast threads. >= 1
 #     Defaults to 1.
 #
-# RAILS_ROOT/config/initializers/quorum_initializer.rb 
-# safely substitutes %{RAILS_ROOT} => ::Rails.root.to_s
 
 development:
   blast:

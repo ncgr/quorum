@@ -1,7 +1,8 @@
 # Quorum Settings
 #
 # ==> General
-# Quorum initializer safely substitutes %{RAILS_ROOT} with ::Rails.root.to_s.
+# Quorum initializer safely substitutes %{RAILS_ROOT} with
+# ::Rails.root.to_s.
 # 
 # ==> NCBI BLAST Plus Settings
 # blast:
@@ -81,19 +82,23 @@ development:
       # Example:
       # - genome_1
       # - genome_2 
+      - tmp
     blastp:
       # Example:
       # - prot_1
       # - prot_2 
+      - tmp
     blastn:
       # Example:
       # - genome_1
       # - genome_2 
+      - tmp
     blastx:
       # Example:
       # - prot_1
       # - prot_2 
-    blast_threads:
+      - tmp
+    blast_threads: 4
 
 test:
   blast:
@@ -112,19 +117,23 @@ test:
       # Example:
       # - genome_1
       # - genome_2 
+      - tmp
     blastp:
       # Example:
       # - prot_1
       # - prot_2 
+      - tmp
     blastn:
       # Example:
       # - genome_1
       # - genome_2 
+      - tmp
     blastx:
       # Example:
       # - prot_1
       # - prot_2 
-    blast_threads:
+      - tmp
+    blast_threads: 4
 
 production:
   blast:

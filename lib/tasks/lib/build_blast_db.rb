@@ -23,8 +23,6 @@ module Quorum
       @blastdb_dir = args.delete(:blastdb_dir)
       @gff_dir     = args.delete(:gff_dir)
       @log_dir     = args.delete(:log_dir)
-
-      build_blast_db_data
     end
 
     #
@@ -134,6 +132,11 @@ module Quorum
     def build_blast_db_data
       if @dir.blank?
         raise "DIR must be set to continue. Execute `rake -D` for more information."
+      end
+
+      unless VALID_TYPES.include?(@type)
+        raise "Unknown type: #{@type}. " << 
+          "Please provide one: both, nucl or prot."
       end
 
       check_dependencies

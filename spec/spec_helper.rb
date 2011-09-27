@@ -50,4 +50,8 @@ RSpec.configure do |config|
   # This will include the routing helpers in the specs so that we can use
   # quorum_path, etc., to get to the routes.
   config.include Quorum::Engine.routes.url_helpers
+
+  config.treat_symbols_as_metadata_keys_with_true_values = true
+  config.filter_run :focus => true
+  config.run_all_when_everything_filtered = true
 end

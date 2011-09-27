@@ -33,18 +33,13 @@ namespace :quorum do
       args[:type]      = args[:type].downcase.strip
       args[:prot_file] = args[:prot_file].downcase.strip
       args[:nucl_file] = args[:nucl_file].downcase.strip
-
-      unless Quorum::BuildBlastDB::VALID_TYPES.include?(args[:type])
-        raise "Unknow type: #{args[:type]}. " << 
-          "Please provide one: both, nucl, or prot."
-      end
-
       args[:nucl_file] = "NULL" if args[:type] == "prot"
       args[:prot_file] = "NULL" if args[:type] == "nucl"
       
       puts "Building your Blast database(s). This may take a while..."
       
-      Quorum::BuildBlastDB.new(args)
+      build = Quorum::BuildBlastDB.new(args)
+      build.build_blast_db_data
     end
   end
 end

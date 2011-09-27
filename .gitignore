@@ -6,3 +6,4 @@ spec/dummy/db/migrate/
 spec/dummy/log/*.log
 spec/dummy/tmp/
 spec/dummy/config/database.yml
+spec/dummy/quorum/log/*

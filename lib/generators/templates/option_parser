@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(File.expand_path("../../lib", __FILE__))
 
 require 'trollop'
 require 'active_record'
-require 'blast'
+require 'execute_blast'
 
 # Quorum search tools and dependencies.
 SEARCH_TOOLS = {
@@ -167,7 +167,8 @@ HEAD
 
       case @args[:search_tool]
       when "blast"
-        Quorum::Blast.new(@args)
+        blast = Quorum::ExecuteBlast.new(@args)
+        blast.blast
       end
     end
 

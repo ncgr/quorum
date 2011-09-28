@@ -2,7 +2,7 @@ module Quorum
   #
   # Blast Search Tool
   #
-  class Blast < ActiveRecord::Base
+  class ExecuteBlast < ActiveRecord::Base
     
     set_table_name "quorum_blasts"
 
@@ -26,7 +26,7 @@ module Quorum
         @blastp.map! { |d| File.join(@blast_database, d) }
         @blastp = @blastp.join(' ')
       end
-      if args[:tblastn]
+      if args[:blastn]
         @blastn = args[:blastn].split(';')
         @blastn.map! { |d| File.join(@blast_database, d) }
         @blastn = @blastn.join(' ')
@@ -36,8 +36,6 @@ module Quorum
         @blastx.map! { |d| File.join(@blast_database, d) }
         @blastx = @blastx.join(' ')
       end
-
-      execute_blast
     end
 
     #
@@ -68,7 +66,7 @@ module Quorum
     # Create a unique hash based on @blast.sequence.
     #
     def create_unique_hash
-      @hash = Digest::MD5.hexdigest(@blast.sequence).to_s + "-" + 
+      @hash = Digest::MD5.hexdigest(@sequence).to_s + "-" + 
         Time.now.to_i.to_s
     end
 
@@ -77,7 +75,7 @@ module Quorum
     #
     def find_blast_data
       begin
-        @blast = Blast.find(@id)
+        @blast = ExecuteBlast.find(@id)
       rescue Exception => e
         logger("ActiveRecord", e.message, 80)
       end
@@ -174,7 +172,7 @@ module Quorum
     #
     # Execute Blast on a given dataset.
     #
-    def execute_blast
+    def blast
       find_blast_data
 
       create_unique_hash

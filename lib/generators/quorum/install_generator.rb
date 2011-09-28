@@ -12,7 +12,7 @@ module Quorum
         template "quorum_settings.yml", "config/quorum_settings.yml"
         template "option_parser", "quorum/bin/option_parser"
         template "trollop.rb", "quorum/lib/trollop.rb"
-        template "blast.rb", "quorum/lib/blast.rb"
+        template "execute_blast.rb", "quorum/lib/execute_blast.rb"
       end
 
       def copy_locale

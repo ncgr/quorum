@@ -29,7 +29,7 @@ describe "Quorum" do
 
   it "checks for quorum/lib files" do
     File.exists?(
-      File.join(@dummy_path, "quorum", "lib", "blast.rb")
+      File.join(@dummy_path, "quorum", "lib", "execute_blast.rb")
     ).should be_true
 
     File.exists?(

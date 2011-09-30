@@ -27,16 +27,14 @@ A flexible bioinformatics search tool.
 
 Options:
 
-HEAD
+        HEAD
 
         # Search tool
         opt :search_tool, "Search tool to execute. Available tools: " << 
-          "#{SEARCH_TOOLS.keys.join(', ')}", :type => :string, 
+        "#{SEARCH_TOOLS.keys.join(', ')}", :type => :string, 
           :required => true, :short => "-s"
 
         # General settings
-        opt :id, "Database record ID", :type => :int, :required => true,
-          :short => "-i"
         opt :env, "Rails environment", :type => :string, :required => true,
           :short => "-e"      
         opt :log_directory, "Path to log directory", :type => :string,
@@ -45,6 +43,7 @@ HEAD
           :required => true, :short => "-m"
 
         # ActiveRecord database settings
+        opt :id, "Database record ID", :type => :int, :required => true
         opt :database, "Database name", :type => :string, :required => true,
           :short => "-d"
         opt :database_adapter, "ActiveRecord database adapter", 
@@ -66,6 +65,17 @@ HEAD
         opt :blastx, "blastx directory name", :type => :string, :short => "-x"
         opt :blast_threads, "Number of Blast threads to spawn", :type => :int,
           :short => "-t"
+        opt :expectation, "Blast expectation value", :type => :string,
+          :short => "-v"
+        opt :max_score, "Blast max score", :type => :int, :short => "-c"
+        opt :min_bit_score, "Blast min bit score", :type => :float,
+          :short => "-j"
+        opt :gapped_alignments, "Blast gapped alignments", :type => :boolean,
+          :short => "-g"
+        opt :gap_opening_penalty, "Blast gap opening penalty", 
+          :type => :float, :short => "-o"
+        opt :gap_extension_penalty, "Blast gap extension penalty",
+          :type => :float, :short => "-y"
       end
 
       @args = {} # Contains valid opts.
@@ -131,8 +141,14 @@ HEAD
           @args[:blastx] = opts[:blastx]
         end
 
-        @args[:blast_threads] = opts[:blast_threads]
-     end
+        @args[:blast_threads]         = opts[:blast_threads]
+        @args[:expectation]           = opts[:expectation]
+        @args[:max_score]             = opts[:max_score]
+        @args[:min_bit_score]         = opts[:min_bit_score]
+        @args[:gapped_alignments]     = opts[:gapped_alignments]
+        @args[:gap_opening_penalty]   = opts[:gap_opening_penalty]
+        @args[:gap_extension_penalty] = opts[:gap_extension_penalty]
+      end
 
       @args[:id]  = opts[:id]
       @args[:env] = opts[:env]

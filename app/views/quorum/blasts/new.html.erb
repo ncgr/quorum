@@ -1,26 +1,84 @@
-<h1>Blast</h1>
+<div id="blasts-new">
+  <h1>NCBI Blast</h1>
 
-<%= form_for @blast, :html => {:id => "quorum_blast"} do |f| %>
-  <%= render "shared/error_messages", :target => @blast %>
-	<div>
-		<span class="radio-form">
-			Query sequences are 
-			<%= f.radio_button :sequence_type, 'nucleic_acid', :checked => true %> Nucleic Acid 
-			<%= f.radio_button :sequence_type, 'amino_acid' %> Peptide 
-		</span>
-	</div>
-	<div>
-		<%= f.text_area :sequence %>
-	</div>
-	<div>
-		<%= f.file_field :sequence_file %>
-	</div>
-	<div>
-    <%= f.submit "Submit" %>&nbsp;&nbsp;
-    <%= submit_tag "Reset", :name => "reset", 
-      :type => "button", :id => "quorum_blast_reset" %>
-	</div>
-  <div id="options">
-
-  </div>
-<% end %>
+  <% yes_no = [['No', false], ['Yes', true]] %>
+  <%= form_for @blast, :html => {:id => "quorum_blast"} do |f| %>
+    <%= render "shared/error_messages", :target => @blast %>
+    <div>
+      <span class="radio-form">
+        Query sequences are 
+        <%= f.radio_button :sequence_type, 'nucleic_acid', 
+          :checked => true %> Nucleic Acid 
+        <%= f.radio_button :sequence_type, 'amino_acid' %> Peptide 
+      </span>
+    </div>
+    <div>
+      <%= f.text_area :sequence, :title => "Paste sequence(s) here or upload a file below.",
+        :class => "auto-hint" %>
+    </div>
+    <div>
+      <%= f.file_field :sequence_file %>
+      <%= link_to raw("Options &raquo;"), "#", :id => "options", 
+        :class => "right" %>
+    </div>
+    <div id="blast-options">
+	    <table>
+	      <tr>
+	        <td>
+	          <%= f.label :expectation %>:
+	        </td>
+	        <td>
+	          <%= f.text_field :expectation, :size => 15, :title => "5e-20 (default)",
+	          :class => "auto-hint" %>
+	        </td>
+	        <td>
+	          <%= f.label :max_score %>:
+	        </td>
+	        <td>
+	          <%= f.text_field :max_score, :size => 15, :title => "25 (default)", 
+	          :class => "auto-hint" %>
+	        </td>
+	      </tr>
+	      <tr>
+	        <td>
+	          <%= f.label :min_bit_score %>:
+	        </td>
+	        <td>
+	          <%= f.text_field :min_bit_score, :size => 15, :title => "Display all (default)", 
+	          :class => "auto-hint" %>
+	        </td>
+	        <td>
+	          <%= f.label :gapped_alignments %>
+	        </td>
+	        <td>
+	          <%= f.select :gapped_alignments, yes_no %>
+	        </td>
+	      </tr>
+	      <tr id="gap-extras">
+	        <td>
+		        <%= f.label :gap_opening_penalty %>:
+	        </td>
+	        <td>
+		        <%= f.text_field :gap_opening_penalty, :size => 15, 
+		          :title => "0 (default)", :class => "auto-hint" %>
+		      </td>
+	        <td>
+		        <%= f.label :gap_extension_penalty %>:
+	        </td>
+	        <td>
+		        <%= f.text_field :gap_extension_penalty, :size => 15, 
+		          :title => "0 (default)", :class => "auto-hint" %>
+	        </td>
+	      </tr>
+	    </table>
+    </div>
+    <div>
+      <%= f.submit "Submit" %>&nbsp;&nbsp;
+      <%= submit_tag "Reset", :name => "reset", 
+        :type => "button", :id => "quorum_blast_reset" %>
+      <div id="loading">
+        <%= image_tag "quorum/knight_rider.gif" %> 
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -8,12 +8,12 @@ module Quorum
       logger.debug "\n-- quorum command --\n" + cmd + "\n\n"
 
       if remote
-        # Execute the script on the remote machine.
+        # Execute command on remote machine.
         Net::SSH.start(ssh_host, ssh_user, ssh_options) do |ssh|
           ssh.open_channel do |ch|
             ch.exec(cmd) do |ch, success|
               unless success 
-                puts "Channel exec() failed. :("
+                puts "Channel Net::SSH exec() failed. :("
               else
                 # Read the exit status of the remote process.
                 ch.on_request("exit-status") do |ch, data|

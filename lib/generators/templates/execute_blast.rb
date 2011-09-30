@@ -36,6 +36,14 @@ module Quorum
         @blastx.map! { |d| File.join(@blast_database, d) }
         @blastx = @blastx.join(' ')
       end
+
+      # Optional params.
+      @blast_expectation           = args[:expectation] || "5e-20"
+      @blast_max_score             = args[:max_score] || 25
+      @blast_min_bit_score         = args[:min_bit_score] || 0
+      @blast_gapped_alignments     = args[:gapped_alignments] || nil
+      @blast_gap_opening_penalty   = args[:gap_opening_penalty] || nil
+      @blast_gap_extension_penalty = args[:gap_extension_penalty] || nil
     end
 
     #

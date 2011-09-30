@@ -16,7 +16,10 @@ module Quorum
 
       @blast = Blast.new(params[:blast])
 
-      @blast.sequence << file if file
+      if file
+        @blast.sequence = ""
+        @blast.sequence << file
+      end
 
       begin
         ActiveSupport::Multibyte::Unicode.u_unpack(@blast.sequence)
@@ -55,7 +58,7 @@ module Quorum
       tblastn = blastp = blastn = blastx = nil
 
       # System command
-      cmd = "#{Quorum.blast_script} -s blast -i #{@blast.id} " <<
+      cmd = "#{Quorum.blast_script} -s blast --id #{@blast.id} " <<
         "-e #{::Rails.env.to_s} -l #{Quorum.blast_log_dir} " <<
         "-m #{Quorum.blast_tmp_dir} " <<
         "-d #{ActiveRecord::Base.configurations[::Rails.env.to_s]['database']} " <<
@@ -65,7 +68,7 @@ module Quorum
         "-p #{ActiveRecord::Base.configurations[::Rails.env.to_s]['password']} " <<
         "-b #{Quorum.blast_db} -t #{Quorum.blast_threads} "
 
-      ## Optional Quorum. collections ##
+      ## Optional Quorum collections ##
       unless Quorum.tblastn.nil?
         tblastn = Quorum.tblastn.join(';')
         cmd << "-q " << tblastn << " "
@@ -81,6 +84,21 @@ module Quorum
       unless Quorum.blastx.nil?
         blastx = Quorum.blastx.join(';')
         cmd << "-x " << blastx << " "
+      end
+
+      logger.info @blast.inspect
+      ## Optional Quorum params ##
+      cmd << "-v #{@blast.expectation} " unless @blast.expectation.blank?
+      cmd << "-c #{@blast.max_score} " if @blast.max_score
+      cmd << "-j #{@blast.min_bit_score} " if @blast.min_bit_score
+      cmd << "-g " if @blast.gapped_alignments
+
+      if @blast.gap_opening_penalty
+        cmd << "-o #{@blast.gap_opening_pentaly} "
+      end
+
+      if @blast.gap_extension_penalty
+        cmd << "-y #{@blast.gap_extension_pentaly} "
       end
 
       @exit_status = execute_cmd(

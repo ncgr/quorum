@@ -2,3 +2,15 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
+
+#blasts-new {
+    width: 50%;
+}
+
+#extra-options {
+    margin: 5px 5px 5px 10px;
+}
+
+#blasts-show {
+    width: 100%;
+}

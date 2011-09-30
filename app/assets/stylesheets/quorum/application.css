@@ -5,3 +5,215 @@
  *= require_self
  *= require_tree . 
 */
+
+/*** Content Styles ***/
+
+html, body {
+    color: #000000;
+    font-family: Lucida Grande, Helvetica, Arial, sans-serif;	
+    background: #b8b8b8 url("bg.png") repeat-x top;
+}
+
+a {
+    color: #783C3C;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #783C3C;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+img {
+    border: none;
+}
+
+hr.big {
+    height: 3px; 
+    border: 0; 
+    background-color: #8C8C8C; 
+    margin: 5px 0 5px 0; 
+	width: 100%;
+	overflow: hidden;
+}
+
+hr {
+    height: 1px; 
+    border: 0; 
+    background-color: #8C8C8C; 
+    margin: 5px 0 5px 0;
+    width: 100%;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
+.title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.text {
+    font-size: 14px;
+}
+
+.medium {
+	font-size: 14px;
+}
+
+.small {
+    font-size: 11px;
+}
+
+.italic {
+	font-style: italic;
+}
+
+.small-italic {
+    font-size: 11px;
+	font-style: italic;
+}
+
+.right {
+    float: right;	
+    font-style: italic;
+}
+
+.left {
+    text-align: left;	
+}
+
+.center {
+    margin-left: auto;   
+    margin-right: auto;   
+    text-align: center;	
+}
+
+.indent {
+    margin: 0 0 0 5px;   
+    padding: 0;
+}
+
+.block {
+	margin: 0;
+	padding: 5px;
+	font-size: 11px;
+	text-align: justify;
+}
+
+div.center {
+    margin-left: auto;   
+    margin-right: auto;   
+    text-align: center;	
+}
+
+img.right {
+	float: right;
+}
+
+img.center {   
+    text-align: center;	
+}
+
+img.left {
+	float: left;
+}
+
+/*** Error Styles ***/
+
+#error_explanation {
+	width: 80%;
+	border: 2px solid #0065de;
+	padding: 7px;
+	padding-bottom: 0;
+	margin-bottom: 20px;
+	background-color: #ffffff;
+}
+
+#error_explanation h2 {
+	text-align: left;
+	font-weight: bold;
+	padding: 5px 5px 5px 15px;
+	font-size: 18px;
+	margin: -7px;
+	margin-bottom: 0px;
+	background-color: #0065de;
+	color: #fff;
+}
+
+#error_explanation ul {
+	margin: 15px 20px 15px 40px;
+    padding: 0;
+}
+
+#error_explanation ul li {
+	margin: 0;
+    padding: 0 0 0 5px;
+    font-size: 14px;	
+    line-height: 18px;
+}
+
+#notice, #alert, #error {
+	margin: 10px 0 15px 0;
+	padding: 0;
+	
+	color: #0065de;
+	font-size: 18px;
+	font-weight: bold;
+	clear: both;
+}
+
+.field_with_errors {
+	padding: 2px;
+	background-color: #0065de;
+	display: table;
+	color: #fff;
+}
+
+/*** End Error ***/
+
+/*** Form Styles ***/
+
+form {
+	margin: 5px;
+	padding: 0;
+}
+
+form textarea {
+	width: 100%;
+	height: 120px;
+}
+
+form label {
+    font-size: 14px;
+}
+
+.radio-form {
+	font-size: 12px;
+}
+
+.auto-hint {
+    color: #aaa;
+}
+
+#loading {
+    padding: 5px;
+}
+
+/*** End Form Styles ***/
+
+#footer {
+    margin: 10px 0 0 20px;
+    padding: 0;
+    font-size: 12px;
+	color: #ffffff;
+	width: 1024px;
+}
+
+#footer p {
+	text-align: center;
+}
+
+/*** End ***/

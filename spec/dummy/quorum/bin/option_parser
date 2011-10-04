@@ -43,7 +43,8 @@ Options:
           :required => true, :short => "-m"
 
         # ActiveRecord database settings
-        opt :id, "Database record ID", :type => :int, :required => true
+        opt :id, "Database record ID", :type => :int, :required => true,
+          :short => "-i"
         opt :database, "Database name", :type => :string, :required => true,
           :short => "-d"
         opt :database_adapter, "ActiveRecord database adapter", 
@@ -68,14 +69,14 @@ Options:
         opt :expectation, "Blast expectation value", :type => :string,
           :short => "-v"
         opt :max_score, "Blast max score", :type => :int, :short => "-c"
-        opt :min_bit_score, "Blast min bit score", :type => :float,
+        opt :min_bit_score, "Blast min bit score", :type => :int,
           :short => "-j"
         opt :gapped_alignments, "Blast gapped alignments", :type => :boolean,
           :short => "-g"
         opt :gap_opening_penalty, "Blast gap opening penalty", 
-          :type => :float, :short => "-o"
+          :type => :int, :short => "-o"
         opt :gap_extension_penalty, "Blast gap extension penalty",
-          :type => :float, :short => "-y"
+          :type => :int, :short => "-y"
       end
 
       @args = {} # Contains valid opts.

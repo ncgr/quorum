@@ -58,7 +58,7 @@ module Quorum
       tblastn = blastp = blastn = blastx = nil
 
       # System command
-      cmd = "#{Quorum.blast_script} -s blast --id #{@blast.id} " <<
+      cmd = "#{Quorum.blast_script} -s blast -i #{@blast.id} " <<
         "-e #{::Rails.env.to_s} -l #{Quorum.blast_log_dir} " <<
         "-m #{Quorum.blast_tmp_dir} " <<
         "-d #{ActiveRecord::Base.configurations[::Rails.env.to_s]['database']} " <<
@@ -89,16 +89,16 @@ module Quorum
       logger.info @blast.inspect
       ## Optional Quorum params ##
       cmd << "-v #{@blast.expectation} " unless @blast.expectation.blank?
-      cmd << "-c #{@blast.max_score} " if @blast.max_score
-      cmd << "-j #{@blast.min_bit_score} " if @blast.min_bit_score
-      cmd << "-g " if @blast.gapped_alignments
+      cmd << "-c #{@blast.max_score} " unless @blast.max_score.blank?
+      cmd << "-j #{@blast.min_bit_score} " unless @blast.min_bit_score.blank?
+      cmd << "-g " unless @blast.gapped_alignments.blank?
 
       if @blast.gap_opening_penalty
-        cmd << "-o #{@blast.gap_opening_pentaly} "
+        cmd << "-o #{@blast.gap_opening_penalty} "
       end
 
       if @blast.gap_extension_penalty
-        cmd << "-y #{@blast.gap_extension_pentaly} "
+        cmd << "-y #{@blast.gap_extension_penalty} "
       end
 
       @exit_status = execute_cmd(

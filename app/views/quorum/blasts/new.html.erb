@@ -1,7 +1,6 @@
 <div id="blasts-new">
   <h1>NCBI Blast</h1>
 
-  <% yes_no = [['No', false], ['Yes', true]] %>
   <%= form_for @blast, :html => {:id => "quorum_blast"} do |f| %>
     <%= render "shared/error_messages", :target => @blast %>
     <div>
@@ -25,14 +24,14 @@
 	    <table>
 	      <tr>
 	        <td>
-	          <%= f.label :expectation %>:
+	          <%= f.label :expectation %>
 	        </td>
 	        <td>
 	          <%= f.text_field :expectation, :size => 15, :title => "5e-20 (default)",
 	          :class => "auto-hint" %>
 	        </td>
 	        <td>
-	          <%= f.label :max_score %>:
+	          <%= f.label :max_score %>
 	        </td>
 	        <td>
 	          <%= f.text_field :max_score, :size => 15, :title => "25 (default)", 
@@ -41,34 +40,32 @@
 	      </tr>
 	      <tr>
 	        <td>
-	          <%= f.label :min_bit_score %>:
+	          <%= f.label :min_bit_score %>
 	        </td>
 	        <td>
-	          <%= f.text_field :min_bit_score, :size => 15, :title => "Display all (default)", 
+	          <%= f.text_field :min_bit_score, :size => 15, :title => "0 (display all default)", 
 	          :class => "auto-hint" %>
 	        </td>
 	        <td>
 	          <%= f.label :gapped_alignments %>
 	        </td>
 	        <td>
-	          <%= f.select :gapped_alignments, yes_no %>
+	          <%= f.select :gapped_alignments, [['No', false], ['Yes', true]] %>
 	        </td>
 	      </tr>
 	      <tr id="gap-extras">
-	        <td>
-		        <%= f.label :gap_opening_penalty %>:
+	        <td colspan="2">
+            <%= f.label :gap_opening_extension, 
+              "Gap opening extension values" %>
 	        </td>
-	        <td>
-		        <%= f.text_field :gap_opening_penalty, :size => 15, 
-		          :title => "0 (default)", :class => "auto-hint" %>
+	        <td colspan="2">
+            <%= f.select :gap_opening_extension, 
+              options_for_select(
+                @blast.gap_opening_extension_values,
+                @blast.gap_opening_extension
+              )
+            %>
 		      </td>
-	        <td>
-		        <%= f.label :gap_extension_penalty %>:
-	        </td>
-	        <td>
-		        <%= f.text_field :gap_extension_penalty, :size => 15, 
-		          :title => "0 (default)", :class => "auto-hint" %>
-	        </td>
 	      </tr>
 	    </table>
     </div>

@@ -6,6 +6,21 @@ module Quorum
     
     set_table_name "quorum_blasts"
 
+    BLASTN_OUTFMT  = %w[
+      qseqid qlen sseqid slen qstart qend sstart send
+      qseq sseq evalue bitscore score length pident nident
+      mismatch positive gapopen gaps ppos frames qframe sframe
+    ]
+    BLASTX_OUTFMT  = %w[
+    
+    ]
+    TBLASTN_OUTFMT = %w[
+    
+    ]
+    BLASTP_OUTFMT  = %w[
+    
+    ]
+
     def initialize(args)
       @id             = args[:id]
       @log_directory  = args[:log_directory]
@@ -36,6 +51,14 @@ module Quorum
         @blastx.map! { |d| File.join(@blast_database, d) }
         @blastx = @blastx.join(' ')
       end
+
+      # Optional params.
+      @blast_expectation           = args[:expectation] || "5e-20"
+      @blast_max_score             = args[:max_score] || 25
+      @blast_min_bit_score         = args[:min_bit_score] || 0
+      @blast_gapped_alignments     = args[:gapped_alignments] || false
+      @blast_gap_opening_penalty   = args[:gap_opening_penalty] || 0
+      @blast_gap_extension_penalty = args[:gap_extension_penalty] || 0
     end
 
     #
@@ -125,10 +148,17 @@ module Quorum
           blastn = "blastn " <<
             "-db #{@blastn} " <<
             "-query #{@fasta} " <<
-            "-outfmt 6 " <<
+            "-outfmt \"6 #{BLASTN_OUTFMT.join(' ')}\" " <<
             "-num_threads #{@blast_threads} " <<
-            "-evalue 0.5e-20 " <<
+            "-evalue #{@blast_expectation} " <<
+            "-max_target_seqs #{@blast_max_score} " <<
             "-out #{@rep} "
+          if @blast_gapped_alignments
+            blastn << "-gapopen #{@blast_gap_opening_penalty} "
+            blastn << "-gapextend #{@blast_gap_extension_penalty} "
+          else
+            blastn << "-ungapped "
+          end
           blastn << "& " if @blastx
           @cmd << blastn
         end
@@ -136,10 +166,17 @@ module Quorum
           blastx = "blastx " <<
             "-db #{@blastx} " <<
             "-query #{@fasta} " <<
-            "-outfmt 6 " <<
+            "-outfmt \"6 #{BLASTX_OUTFMT.join(' ')}\" " <<
             "-num_threads #{@blast_threads} " <<
-            "-evalue 0.5e-20 " <<
-            "-out #{@prot}"
+            "-evalue #{@blast_expectation} " <<
+            "-max_target_seqs #{@blast_max_score} " <<
+            "-out #{@prot} "
+          if @blast_gapped_alignments
+            blastx << "-gapopen #{@blast_gap_opening_penalty} "
+            blastx << "-gapextend #{@blast_gap_extension_penalty} "
+          else
+            blastx << "-ungapped "
+          end
           @cmd << blastx
         end
       end
@@ -149,10 +186,19 @@ module Quorum
           tblastn = "tblastn " <<
             "-db #{@tblastn} " <<
             "-query #{@fasta} " <<
-            "-outfmt 6 " <<
+            "-outfmt \"6 #{TBLASTN_OUTFMT.join(' ')}\" " <<
             "-num_threads #{@blast_threads} " <<
-            "-evalue 0.5e-10 " <<
+            "-evalue #{@blast_expectation} " <<
+            "-max_target_seqs #{@blast_max_score} " <<
             "-out #{@rep} "
+          if @blast_gapped_alignments
+            tblastn << "-gapopen #{@blast_gap_opening_penalty} "
+            tblastn << "-gapextend #{@blast_gap_extension_penalty} "
+            tblastn << "-comp_based_stats D "
+          else
+            tblastn << "-ungapped "
+            tblastn << "-comp_based_stats F "
+          end
           tblastn << "& " if @blastp
           @cmd << tblastn
         end
@@ -160,10 +206,19 @@ module Quorum
           blastp = "blastp " <<
             "-db #{@blastp} " <<
             "-query #{@fasta} " <<
-            "-outfmt 6 " <<
+            "-outfmt \"6 #{BLASTP_OUTFMT.join(' ')}\" " <<
             "-num_threads #{@blast_threads} " <<
-            "-evalue 0.5e-10 " <<
-            "-out #{@prot}"
+            "-evalue #{@blast_expectation} " <<
+            "-max_target_seqs #{@blast_max_score} " <<
+            "-out #{@prot} "
+          if @blast_gapped_alignments
+            blastp << "-gapopen #{@blast_gap_opening_penalty} "
+            blastp << "-gapextend #{@blast_gap_extension_penalty} "
+            blastp << "-comp_based_stats D "
+          else
+            blastp << "-ungapped "
+            blastp << "-comp_based_stats F "
+          end
           @cmd << blastp
         end
       end

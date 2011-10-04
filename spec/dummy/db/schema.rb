@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110929195103) do
+ActiveRecord::Schema.define(:version => 20111003165058) do
 
   create_table "quorum_blasts", :force => true do |t|
     t.string   "sequence_type",         :null => false
@@ -21,10 +21,10 @@ ActiveRecord::Schema.define(:version => 20110929195103) do
     t.datetime "updated_at"
     t.string   "expectation"
     t.integer  "max_score"
-    t.float    "min_bit_score"
+    t.integer  "min_bit_score"
     t.boolean  "gapped_alignments"
-    t.float    "gap_opening_penalty"
-    t.float    "gap_extension_penalty"
+    t.integer  "gap_opening_penalty"
+    t.integer  "gap_extension_penalty"
   end
 
 end

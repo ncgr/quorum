@@ -1,6 +1,7 @@
 require "quorum/engine"
 require "quorum/system"
 require "quorum/helpers"
+require "kaminari"
 
 module Quorum
 

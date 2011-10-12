@@ -22,7 +22,7 @@
 #       password: "secret password"
 #       port: 8888
 #
-#   script: Absolute path to option_parser script.
+#   script: Absolute path to search script.
 #
 #   log_dir: Absolute path to log file directory.
 #
@@ -73,7 +73,7 @@ development:
       # Example:
       # password: "secret password"
       # port: 8888
-    script: "%{RAILS_ROOT}/quorum/bin/option_parser"
+    script: "%{RAILS_ROOT}/quorum/bin/search"
     log_dir: "%{RAILS_ROOT}/quorum/log"
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
@@ -104,7 +104,7 @@ test:
       # Example:
       # password: "secret password"
       # port: 8888
-    script: "%{RAILS_ROOT}/quorum/bin/option_parser"
+    script: "%{RAILS_ROOT}/quorum/bin/search"
     log_dir: "%{RAILS_ROOT}/quorum/log"
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"

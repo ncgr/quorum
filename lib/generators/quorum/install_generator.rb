@@ -10,9 +10,9 @@ module Quorum
         template "quorum_initializer.rb", 
           "config/initializers/quorum_initializer.rb"
         template "quorum_settings.yml", "config/quorum_settings.yml"
-        template "option_parser", "quorum/bin/option_parser"
+        template "search", "quorum/bin/search"
         template "trollop.rb", "quorum/lib/trollop.rb"
-        template "execute_blast.rb", "quorum/lib/execute_blast.rb"
+        template "blast.rb", "quorum/lib/tools/blast.rb"
       end
 
       def copy_locale
@@ -20,7 +20,7 @@ module Quorum
       end
 
       def change_file_permissions
-        f = File.new("quorum/bin/option_parser", "r")
+        f = File.new("quorum/bin/search", "r")
         f.chmod(0755)
       end
 

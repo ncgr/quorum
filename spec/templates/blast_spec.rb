@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'generators/templates/execute_blast'
+require 'generators/templates/blast'
 
-describe "ExecuteBlast" do
-  describe "simulate executing Blast" do
+describe "Quorum::Tools::Blast" do
+  describe "simulate Blast" do
     before(:each) do
       # Set args as though we executed option_parser.
       @args = {

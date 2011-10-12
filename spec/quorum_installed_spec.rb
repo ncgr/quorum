@@ -29,7 +29,7 @@ describe "Quorum" do
 
   it "checks for quorum/lib files" do
     File.exists?(
-      File.join(@dummy_path, "quorum", "lib", "execute_blast.rb")
+      File.join(@dummy_path, "quorum", "lib", "tools", "blast.rb")
     ).should be_true
 
     File.exists?(
@@ -39,11 +39,11 @@ describe "Quorum" do
 
   it "checks for quorum/bin files and ensures they are executable" do
     File.exists?(
-      File.join(@dummy_path, "quorum", "bin", "option_parser")
+      File.join(@dummy_path, "quorum", "bin", "search")
     ).should be_true
 
     File.executable?(
-      File.join(@dummy_path, "quorum", "bin", "option_parser")
+      File.join(@dummy_path, "quorum", "bin", "search")
     ).should be_true
   end
 

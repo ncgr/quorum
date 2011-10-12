@@ -12,5 +12,51 @@
 }
 
 #blasts-show {
-    width: 100%;
+    width: 70%;
 }
+
+/*** Table Styles ***/
+table {
+  margin: 0;
+  border: 0;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table#blast_report_details {
+  margin: 0;
+  border: 0;
+  width: 50%;
+  border-collapse: collapse;
+}
+
+th {
+  white-space: normal;
+}
+
+th, td {
+  padding: 3px;
+  text-align: left;
+  font-size: 12px;
+}
+
+th a, a:hover {
+  text-decoration: underline;
+  border: none;
+}
+
+td {
+  white-space: normal;
+}
+
+tr.odd {
+  background-color: #ffffff;
+}
+
+tr.even {
+  background-color: #f8f8ff;
+}
+
+/*** End ***/
+
+

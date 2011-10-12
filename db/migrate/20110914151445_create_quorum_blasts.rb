@@ -3,7 +3,12 @@ class CreateQuorumBlasts < ActiveRecord::Migration
     create_table :quorum_blasts do |t|
       t.string :sequence_type, :null => false
       t.text :sequence, :null => false
-      t.text :results
+      t.string :expectation
+      t.integer :max_score
+      t.integer :min_bit_score
+      t.boolean :gapped_alignments
+      t.integer :gap_opening_penalty
+      t.integer :gap_extension_penalty
 
       t.timestamps
     end

@@ -1,0 +1,58 @@
+<div id="blasts-show">
+  <h1><%= @blast_report.query %></h1>
+  <p class="small"><%= link_to raw("&laquo; Back"), :back %> </p>
+  <h3>Details</h3>
+  <table id="blast_report_details">
+    <tr class="odd">
+      <td>Hit Length:</td>
+      <td><%= @blast_report.hit_len %></td>
+      <td>Bit Score:</td>
+      <td><%= @blast_report.bit_score %></td>
+    </tr>
+    <tr class="even">
+      <td>Score:</td>
+      <td><%= @blast_report.score %></td>
+      <td>Evalue:</td>
+      <td><%= @blast_report.evalue %></td>
+    </tr>
+    <tr class="odd">
+      <td>Query From:</td>
+      <td><%= @blast_report.query_from %></td>
+      <td>Query To:</td>
+      <td><%= @blast_report.query_to %></td>
+    </tr>
+    <tr class="even">
+      <td>Hit From:</td>
+      <td><%= @blast_report.hit_from %></td>
+      <td>Hit To:</td>
+      <td><%= @blast_report.hit_to %></td>
+    </tr>
+    <tr class="odd">
+      <td>Query Frame:</td>
+      <td><%= @blast_report.query_frame %></td>
+      <td>Hit Frame:</td>
+      <td><%= @blast_report.hit_frame %></td>
+    </tr>
+    <tr class="even">
+      <td>Identity:</td>
+      <td><%= @blast_report.identity %></td>
+      <td>Positive:</td>
+      <td><%= @blast_report.positive %></td>
+    </tr>
+    <tr class="odd">
+      <td>Gaps:</td>
+      <td><%= @blast_report.gaps %></td>
+      <td>Align Length:</td>
+      <td><%= @blast_report.align_len %></td>
+    </tr>
+  </table>
+  <h3>Alignment</h3>
+  <div id="sequence">
+    <%= format_sequence_report(
+      @blast_report.qseq, 
+      @blast_report.midline, 
+      @blast_report.hseq
+    ) %>
+  </div>
+  <p class="small"><%= link_to raw("&laquo; Back"), :back %> </p>
+</div>

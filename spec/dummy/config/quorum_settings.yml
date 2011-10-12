@@ -1,8 +1,7 @@
 # Quorum Settings
 #
 # ==> General
-# Quorum initializer safely substitutes %{RAILS_ROOT} with
-# ::Rails.root.to_s.
+# Quorum initializer safely substitutes %{RAILS_ROOT} with ::Rails.root.to_s.
 # 
 # ==> NCBI BLAST Plus Settings
 # blast:
@@ -23,7 +22,7 @@
 #       password: "secret password"
 #       port: 8888
 #
-#   script: Absolute path to option_parser script.
+#   script: Absolute path to search script.
 #
 #   log_dir: Absolute path to log file directory.
 #
@@ -74,29 +73,17 @@ development:
       # Example:
       # password: "secret password"
       # port: 8888
-    script: "%{RAILS_ROOT}/quorum/bin/option_parser"
+    script: "%{RAILS_ROOT}/quorum/bin/search"
     log_dir: "%{RAILS_ROOT}/quorum/log"
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
     tblastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
       - tmp
     blastp:
-      # Example:
-      # - prot_1
-      # - prot_2 
       - tmp
     blastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
       - tmp
     blastx:
-      # Example:
-      # - prot_1
-      # - prot_2 
       - tmp
     blast_threads: 4
 
@@ -109,29 +96,17 @@ test:
       # Example:
       # password: "secret password"
       # port: 8888
-    script: "%{RAILS_ROOT}/quorum/bin/option_parser"
+    script: "%{RAILS_ROOT}/quorum/bin/search"
     log_dir: "%{RAILS_ROOT}/quorum/log"
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
     tblastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
       - tmp
     blastp:
-      # Example:
-      # - prot_1
-      # - prot_2 
       - tmp
     blastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
       - tmp
     blastx:
-      # Example:
-      # - prot_1
-      # - prot_2 
       - tmp
     blast_threads: 4
 

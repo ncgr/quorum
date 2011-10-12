@@ -42,11 +42,14 @@ module Quorum
         render :action => "new"
         return 
       end
-      redirect_to blast_path(@blast)
+      redirect_to blast_path(@blast.id)
     end
 
     def show
-      @blast = Blast.find(params[:id])
+      order_by = check_kaminari_sort(BlastReport, params[:sort], params[:dir])
+      @blast_reports = BlastReport.where(
+        {:blast_id => params[:id]}
+      ).order(order_by).page(params[:page])
     end
 
     private

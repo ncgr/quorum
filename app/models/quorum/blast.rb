@@ -1,6 +1,8 @@
 module Quorum
   class Blast < ActiveRecord::Base
 
+    has_many :blast_reports
+
     attr_accessible :sequence_type, :sequence, :expectation, :max_score,
       :min_bit_score, :gapped_alignments, :gap_opening_penalty,
       :gap_extension_penalty, :gap_opening_extension

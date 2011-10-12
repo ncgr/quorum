@@ -1,4 +1,26 @@
 <div id="blasts-show">
   <h1>NCBI Blast Results</h1>
-  <%= @blast.results %>
+  <p class="small right"><%= link_to raw("Search Again &raquo;"), :blasts %></p>
+  <%= paginate @blast_reports %>
+  <table>
+    <tr>
+      <th><%= kaminari_sort_by(:blast_path, "Query") %></th>
+      <th><%= kaminari_sort_by(:blast_path, "Bit Score") %></th>
+      <th><%= kaminari_sort_by(:blast_path, "Hit Length", :hit_len) %></th>
+      <th><%= kaminari_sort_by(:blast_path, "Evalue") %></th>
+    </tr>
+    <% i = 1 %>
+    <% @blast_reports.each do |r| %>
+      <% i.modulo(2) == 0 ? style = "even" : style = "odd" %>
+      <tr class="<%= style %>">
+        <td><%= link_to r.query, :blast_report %></td>
+        <td><%= r.bit_score %></td>
+        <td><%= r.hit_len %></td>
+        <td><%= r.evalue %></td>
+      </tr>
+      <% i += 1 %>
+    <% end %>
+  </table>
+  <%= paginate @blast_reports %>
+  <p class="small right"><%= link_to raw("Search Again &raquo;"), :blasts %></p>
 </div>

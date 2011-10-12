@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(File.expand_path("../../lib", __FILE__))
 
 require 'trollop'
 require 'active_record'
-require 'execute_blast'
+require 'tools/blast'
 
 # Quorum search tools and dependencies.
 SEARCH_TOOLS = {
@@ -15,7 +15,7 @@ module Quorum
   #
   # Parse Options for Quorum Search Tools
   #
-  class OptionParser
+  class Search
 
     def initialize
       opts = Trollop::options do
@@ -184,8 +184,8 @@ Options:
 
       case @args[:search_tool]
       when "blast"
-        blast = Quorum::ExecuteBlast.new(@args)
-        blast.blast
+        blast = Quorum::Tools::Blast.new(@args)
+        blast.execute_blast
       end
     end
 
@@ -206,6 +206,6 @@ Options:
 end
 
 if __FILE__ == $0
-  Quorum::OptionParser.new  
+  Quorum::Search.new  
 end
 

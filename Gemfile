@@ -13,5 +13,6 @@ gemspec
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
-gem 'bio-blastxmlparser', :path => '/home/kas/projects/web/github/blastxmlparser'
+gem 'bio-blastxmlparser', :git => 'git://github.com/ncgr/blastxmlparser.git',
+    :branch => 'master', :tag => 'v1.0.2'
 

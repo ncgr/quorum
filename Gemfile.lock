@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/ncgr/blastxmlparser.git
+  revision: 357e203da4431712171dd2359e98db782a607eb8
+  branch: master
+  tag: v1.0.2
+  specs:
+    bio-blastxmlparser (1.0.1)
+      bio-logger (>= 1.0.0)
+      nokogiri (>= 1.5.0)
+
 PATH
   remote: .
   specs:
@@ -5,13 +15,6 @@ PATH
       jquery-rails
       kaminari (~> 0.12.4)
       rails (~> 3.1.0)
-
-PATH
-  remote: /home/kas/projects/web/github/blastxmlparser
-  specs:
-    bio-blastxmlparser (1.0.1)
-      bio-logger (>= 1.0.0)
-      nokogiri (>= 1.5.0)
 
 GEM
   remote: http://rubygems.org/

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111011220752) do
+ActiveRecord::Schema.define(:version => 20111013182760) do
 
   create_table "quorum_blast_reports", :force => true do |t|
     t.string   "query"
@@ -31,7 +31,6 @@ ActiveRecord::Schema.define(:version => 20111011220752) do
     t.string   "hit_frame"
     t.integer  "identity"
     t.integer  "positive"
-    t.integer  "gaps"
     t.integer  "align_len"
     t.text     "qseq"
     t.text     "hseq"

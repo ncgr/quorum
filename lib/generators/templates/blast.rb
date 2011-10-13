@@ -207,6 +207,7 @@ module Quorum
             else
               blastp << "-ungapped "
               blastp << "-comp_based_stats F "
+              blastp << "-seg yes "
             end
             @cmd << blastp
           end
@@ -223,7 +224,6 @@ module Quorum
         saved = false
 
         [@nucl, @prot].each do |f|
-          logger("File", f)
           report = Bio::Blast::XmlIterator.new(f).to_enum
           report.each do |iteration|
             @blast_report = QuorumBlastReport.new
@@ -249,7 +249,6 @@ module Quorum
                 @blast_report.hit_frame   = hsp.hit_frame
                 @blast_report.identity    = hsp.identity
                 @blast_report.positive    = hsp.positive
-                @blast_report.gaps        = hsp.gaps
                 @blast_report.align_len   = hsp.align_len
                 @blast_report.qseq        = hsp.qseq
                 @blast_report.hseq        = hsp.hseq

@@ -3,7 +3,7 @@ module Quorum
     belongs_to :blast
 
     paginates_per 20
-    SORTABLE_COLUMNS = ["query", "bit_score", "hit_len", "evalue"]
+    SORTABLE_COLUMNS = ["query", "bit_score", "hit_len"]
     DEFAULT_ORDER    = "bit_score DESC"
   end
 end

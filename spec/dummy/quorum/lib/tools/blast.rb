@@ -207,6 +207,7 @@ module Quorum
             else
               blastp << "-ungapped "
               blastp << "-comp_based_stats F "
+              blastp << "-seg yes "
             end
             @cmd << blastp
           end
@@ -218,9 +219,11 @@ module Quorum
       # Only save Blast results if results.bit_score > @min_bit_score. 
       #
       def parse_and_save_results
+        
+        # Helper to avoid having to perform a query.
         saved = false
+
         [@nucl, @prot].each do |f|
-          logger("File", f)
           report = Bio::Blast::XmlIterator.new(f).to_enum
           report.each do |iteration|
             @blast_report = QuorumBlastReport.new
@@ -246,7 +249,6 @@ module Quorum
                 @blast_report.hit_frame   = hsp.hit_frame
                 @blast_report.identity    = hsp.identity
                 @blast_report.positive    = hsp.positive
-                @blast_report.gaps        = hsp.gaps
                 @blast_report.align_len   = hsp.align_len
                 @blast_report.qseq        = hsp.qseq
                 @blast_report.hseq        = hsp.hseq
@@ -254,6 +256,9 @@ module Quorum
               end
             end
             @blast_report.blast_id = @blast.id
+
+            # Hsps are only reported if a query hit against the Blast db.
+            # Only save the @blast_report if bit_score exists.
             if @blast_report.bit_score && 
               (@blast_report.bit_score.to_i > @min_bit_score.to_i)
               saved = true
@@ -267,6 +272,7 @@ module Quorum
             end
           end 
         end
+
         unless saved
           logger(
             "Blast",

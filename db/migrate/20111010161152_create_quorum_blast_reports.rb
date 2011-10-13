@@ -18,7 +18,6 @@ class CreateQuorumBlastReports < ActiveRecord::Migration
       t.string :hit_frame
       t.integer :identity
       t.integer :positive
-      t.integer :gaps
       t.integer :align_len
       t.text :qseq
       t.text :hseq

@@ -26,7 +26,7 @@ module Quorum
             "for model #{klass.to_s}. See #{klass.to_s}::SORTABLE_COLUMNS"
         end
       rescue ArgumentError => e
-        puts e.message
+        Rails.logger.warn e.message
         return klass::DEFAULT_ORDER
       end
       safe_col = column

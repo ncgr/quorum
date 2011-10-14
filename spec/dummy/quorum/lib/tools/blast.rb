@@ -295,7 +295,13 @@ module Quorum
 
         logger("NCBI Blast", @cmd)
 
-        @cmd.each { |c| system(c) }
+        # Execute each system command in a Thread.
+        threads = []
+        @cmd.each do |c|
+          threads << Thread.new { system(c) }
+        end
+        # Wait for every Thread to finish working.
+        threads.each { |t| t.join }
 
         parse_and_save_results
       end

@@ -8,7 +8,7 @@
 
 /*** Content Styles ***/
 
-html, body {
+html {
     color: #000000;
     font-family: Lucida Grande, Helvetica, Arial, sans-serif;	
     background: #b8b8b8 url("bg.png") repeat-x top;

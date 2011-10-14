@@ -124,7 +124,7 @@ module Quorum
       # Generate Blast Command
       #
       def generate_blast_cmd
-        @cmd = ""
+        @cmd = []
 
         @nucl = File.join(@tmp, @hash + ".nucl.xml") 
         @prot = File.join(@tmp, @hash + ".prot.xml")
@@ -148,7 +148,6 @@ module Quorum
             else
               blastn << "-ungapped "
             end
-            blastn << "& " if @blastx
             @cmd << blastn
           end
           if @blastx
@@ -188,7 +187,6 @@ module Quorum
               tblastn << "-ungapped "
               tblastn << "-comp_based_stats F "
             end
-            tblastn << "& " if @blastp
             @cmd << tblastn
           end
           if @blastp
@@ -222,10 +220,10 @@ module Quorum
         
         # Helper to avoid having to perform a query.
         saved = false
-
-        [@nucl, @prot].each do |f|
-          report = Bio::Blast::XmlIterator.new(f).to_enum
-          report.each do |iteration|
+        
+        [@prot, @nucl].each do |f|
+          report = Bio::Blast::XmlIterator.new(f)
+          report.to_enum.each do |iteration|
             @blast_report = QuorumBlastReport.new
 
             @blast_report.query     = iteration.query_def
@@ -297,7 +295,7 @@ module Quorum
 
         logger("NCBI Blast", @cmd)
 
-        system(@cmd)
+        @cmd.each { |c| system(c) }
 
         parse_and_save_results
       end

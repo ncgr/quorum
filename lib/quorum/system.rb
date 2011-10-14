@@ -13,7 +13,7 @@ module Quorum
           ssh.open_channel do |ch|
             ch.exec(cmd) do |ch, success|
               unless success 
-                puts "Channel Net::SSH exec() failed. :("
+                puts "Channel Net::SSH exec() failed. :'("
               else
                 # Read the exit status of the remote process.
                 ch.on_request("exit-status") do |ch, data|

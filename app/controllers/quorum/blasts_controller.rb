@@ -72,19 +72,19 @@ module Quorum
         "-b #{Quorum.blast_db} -t #{Quorum.blast_threads} "
 
       ## Optional Quorum collections ##
-      unless Quorum.tblastn.nil?
+      unless Quorum.tblastn.empty?
         tblastn = Quorum.tblastn.join(';')
         cmd << "-q " << tblastn << " "
       end
-      unless Quorum.blastp.nil?
+      unless Quorum.blastp.empty?
         blastp = Quorum.blastp.join(';')
         cmd << "-r " << blastp << " "
       end
-      unless Quorum.blastn.nil?
+      unless Quorum.blastn.empty?
         blastn = Quorum.blastn.join(';')
         cmd << "-n " << blastn << " "
       end
-      unless Quorum.blastx.nil?
+      unless Quorum.blastx.empty?
         blastx = Quorum.blastx.join(';')
         cmd << "-x " << blastx << " "
       end

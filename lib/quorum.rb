@@ -2,6 +2,7 @@ require "quorum/engine"
 require "quorum/system"
 require "quorum/helpers"
 require "kaminari"
+require "net/ssh"
 
 module Quorum
 

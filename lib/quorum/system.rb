@@ -5,7 +5,7 @@ module Quorum
     # Execute system command.
     #
     def execute_cmd(cmd, remote, ssh_host, ssh_user, ssh_options = {})
-      logger.debug "\n-- quorum command --\n" + cmd + "\n\n"
+      Rails.logger.debug "\n-- quorum command --\n" + cmd + "\n\n"
 
       if remote
         # Execute command on remote machine.

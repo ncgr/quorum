@@ -177,4 +177,31 @@ describe "Blasts" do
     end
   end
 
+  describe "nucleic acid sequences in attached file" do
+    it "set optional params to defaults and view query results" do
+      visit new_blast_path
+      current_path.should eq(new_blast_path)
+
+      nucl_seqs = File.expand_path("../../data/nucl_seqs.txt", __FILE__)
+      attach_file "blast_sequence_file", nucl_seqs
+      fill_in "blast_expectation", :with => "5e-20"
+      fill_in "blast_max_score", :with => 25
+      fill_in "blast_min_bit_score", :with => 0
+      click_button "Submit"
+
+      page.should have_content("Blast Results") 
+
+      click_link "TOG900080"
+
+      page.should have_content("TOG900080")
+      page.should have_content("Details")
+      page.should have_content("Alignment")
+
+      click_link "Back"
+
+      page.should have_content("Blast Results")
+
+    end
+
+  end
 end

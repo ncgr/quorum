@@ -1,5 +1,60 @@
 $(function() {
 
+  // jQuery Functions //
+
+  $.fn.extend({
+    // Add hints to the form elements.
+    addHints: function() {
+      $(this).each(function() {
+        if ($(this).attr('title') === '') { 
+          return; 
+        }
+        if ($(this).val() === '') { 
+          $(this).val($(this).attr('title')); 
+          if (!$(this).hasClass('auto-hint')) {
+            $(this).addClass('auto-hint');
+          }
+        } else { 
+          $(this).removeClass('auto-hint'); 
+        }
+      });          
+    },
+
+    // Remove hints on submit.
+    removeHintsOnSubmit: function() {
+      $(this).each(function() {
+        if ($(this).val() === $(this).attr('title')) { 
+          $(this).val(''); 
+        }     
+      });                      
+    },
+
+    // Remove hint and class on focus.
+    focusHint: function() {
+      $(this).focus(function() {
+        if ($(this).val() === $(this).attr('title')) {
+          $(this).val('');
+          $(this).removeClass('auto-hint');
+        }
+      });               
+    },
+
+    // Retain value or add hint.
+    blurHint: function() {
+      $(this).blur(function() {
+        if ($(this).val() === '' && $(this).attr('title') !== '') {
+          $(this).val($(this).attr('title'));
+          $(this).addClass('auto-hint');
+        }
+      });     
+    }
+  });
+
+  // End jQuery Functions //
+
+
+  // Hide Elements //
+
   $('#loading').hide();
 
   var blast_options_empty = true;
@@ -19,32 +74,6 @@ $(function() {
     $('#gap-extras').hide();
   }
 
-  // Disable submit button and display gif.
-  // Remove input values equal to attr title.
-  $('form').submit(function() {
-    $('input[type=submit]', this).val(
-      'Michael Knight, a lone crusader in a dangerous world. ' + 
-      'The world... of the Knight Rider.'
-      ).attr('disabled', 'disabled'
-    );
-    $('#loading').show();
-    $('form :input.auto-hint').each(function() {
-      if ($(this).val() === $(this).attr('title')) { 
-        $(this).val(''); 
-      }     
-    });  
-  });
-
-  // Reset form.
-  $('#quorum_blast_reset').click(function() {
-    $('#quorum_blast :input[type=text]').each(function(index, elem) {
-      $(elem).val('');
-    });
-    $('#blast_sequence_file').val('');
-    $('#blast_sequence').val('');
-    $('#blast_gapped_alignments').val('false');
-  });
-
   // Toggle hidden elements.
   $('#options').click(function() {
     $('#blast-options').slideToggle();
@@ -58,30 +87,38 @@ $(function() {
     }
   });
 
-  // Add form hints
-  $('form :input.auto-hint').focus(function() {
-    if ($(this).val() === $(this).attr('title')) {
-      $(this).val('');
-      $(this).removeClass('auto-hint');
-    }
+  // End Elements //
+
+
+  // Form //
+
+  var form = $('form :input.auto-hint');
+  form.focusHint();
+  form.blurHint();
+  form.addHints();
+
+  // Disable submit button and display gif.
+  // Remove input values equal to attr title.
+  $('form').submit(function() {
+    $('input[type=submit]', this).val('Processing...').attr(
+      'disabled', 'disabled'
+    );
+    $('#loading').show();
+    form.removeHintsOnSubmit();
   });
 
-  $('form :input.auto-hint').blur(function() {
-    if ($(this).val() === '' && $(this).attr('title') !== '') {
-       $(this).val($(this).attr('title'));
-       $(this).addClass('auto-hint');
-    }
+  // Reset form.
+  $('#quorum_blast_reset').click(function() {
+    $('#quorum_blast :input[type=text]').each(function(index, elem) {
+      $(elem).val('');
+    });
+    $('#blast_sequence_file').val('');
+    $('#blast_sequence').val('');
+    $('#blast_gapped_alignments').val('false');
+    $('#blast_gap_opening_extension').val('');
+    form.addHints();
   });
 
-  $('form :input.auto-hint').each(function() {
-    if ($(this).attr('title') === '') { 
-      return; 
-    }
-    if ($(this).val() === '') { 
-      $(this).val($(this).attr('title')); 
-    } else { 
-      $(this).removeClass('auto-hint'); 
-    }
-  });  
+  // End Form //
 
 });

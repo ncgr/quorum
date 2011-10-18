@@ -118,12 +118,11 @@ Net::SSH.start() optional params.
 * Ensure quorum script dependencies are added to the remote machine's PATH. 
 If the remote machine doens't have a .bashrc file, create one
 
-  touch ~/.bashrc
+  touch /path/to/.bashrc
 
 and add script dependencies to the PATH.
 
-  vim ~/.bashrc
-  export PATH=/path/to/dependencies:$PATH
+  echo "export PATH=/path/to/dependencies:$PATH" >> /path/to/.bashrc
 
 === I18n
 

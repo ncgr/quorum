@@ -91,7 +91,6 @@ module Quorum
           logger("ActiveRecord", e.message, 80)
         end
 
-        @type           = @blast.sequence_type
         @sequence       = @blast.sequence
         @min_bit_score  = @blast.min_bit_score
       end
@@ -117,6 +116,26 @@ module Quorum
             "Input sequence not in FASTA format.",
             70
           )
+        end
+      end
+
+      #
+      # Discover input sequence type (NA or AA) by reading the 
+      # second line of the first input sequence.
+      #
+      # Ex:
+      # 1 >Sequence
+      # 2 ACAGTCGTTTGTCCGAGATTGTGCCGTTGTCG....
+      #
+      def discover_input_sequence_type
+        file  = File.open(@fasta)
+        lines = file.read.split('>')
+        lines.delete_if { |l| l.empty? }
+        seq = lines[0].split(/\n/)
+        if (seq[1] =~ /[RDEQHILKMFPSWYV]+/).nil?
+          @type = "nucleic_acid"
+        else
+          @type = "amino_acid"
         end
       end
 
@@ -290,6 +309,8 @@ module Quorum
         create_unique_hash
 
         write_input_sequence_to_file
+
+        discover_input_sequence_type
 
         generate_blast_cmd 
 

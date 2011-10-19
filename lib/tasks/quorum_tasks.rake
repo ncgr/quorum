@@ -20,7 +20,7 @@ namespace :quorum do
 
       args = {}
 
-      args[:dir]        = ENV['DIR'].split(':') unless ENV['DIR'].nil?
+      args[:dir]        = ENV['DIR']
       args[:type]       = ENV['TYPE'] || 'both'
       args[:prot_file]  = ENV['PROT_FILE_NAME'] || 'peptides.fa'
       args[:nucl_file]  = ENV['NUCL_FILE_NAME'] || 'contigs.fa'

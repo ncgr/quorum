@@ -33,43 +33,11 @@ describe "Blasts" do
     end
   end
 
-  describe "submit protein sequence and choose nucleic_acid" do
-    it "returns zero hits" do
-      visit new_blast_path
-      current_path.should eq(new_blast_path)
-
-      choose "blast_sequence_type_nucleic_acid"
-      prot_seqs = File.expand_path("../../data/prot_seqs.txt", __FILE__)
-      attach_file "blast_sequence_file", prot_seqs
-      click_button "Submit"
-
-      current_path.should eq(new_blast_path)
-
-      page.should have_content("Your search returned 0 hits.")
-    end
-  end
-
-  describe "submit nucleotide sequences in text area" do
-    it "returns results" do
-      visit new_blast_path
-      current_path.should eq(new_blast_path)
-
-      fill_in "blast_sequence", 
-        :with => File.open(
-          File.expand_path("../../data/nucl_seqs.txt", __FILE__)
-        ).read
-      click_button "Submit"
-
-      page.should have_content("Blast Results") 
-    end
-  end
-
   describe "submit protein sequences in text area" do
     it "returns results" do
       visit new_blast_path
       current_path.should eq(new_blast_path)
 
-      choose "blast_sequence_type_amino_acid"
       fill_in "blast_sequence", 
         :with => File.open(
           File.expand_path("../../data/prot_seqs.txt", __FILE__)
@@ -80,89 +48,11 @@ describe "Blasts" do
     end
   end
 
-  describe "submit protein sequences in attached file" do
-    it "returns results" do
-      visit new_blast_path
-      current_path.should eq(new_blast_path)
-
-      choose "blast_sequence_type_amino_acid"
-      prot_seqs = File.expand_path("../../data/prot_seqs.txt", __FILE__)
-      attach_file "blast_sequence_file", prot_seqs
-      click_button "Submit"
-
-      page.should have_content("Blast Results") 
-    end
-  end
-
-  describe "submit nucleotide sequences in attached file" do
-    it "returns results" do
-      visit new_blast_path
-      current_path.should eq(new_blast_path)
-
-      nucl_seqs = File.expand_path("../../data/nucl_seqs.txt", __FILE__)
-      attach_file "blast_sequence_file", nucl_seqs
-      click_button "Submit"
-
-      page.should have_content("Blast Results") 
-    end
-  end
-
-  describe "submit nucleotide sequences in attached file and in text area" do
-    it "uses attached file sequences and returns results" do
-      visit new_blast_path
-      current_path.should eq(new_blast_path)
-
-      nucl_seqs = File.expand_path("../../data/nucl_seqs.txt", __FILE__)
-      fill_in "blast_sequence", :with => File.open(nucl_seqs).read
-      attach_file "blast_sequence_file", nucl_seqs
-      click_button "Submit"
-
-      page.should have_content("Blast Results") 
-    end
-  end
-
-  describe "submit nucleotide sequences in attached file" do
-    it "set optional params to defaults" do
-      visit new_blast_path
-      current_path.should eq(new_blast_path)
-
-      nucl_seqs = File.expand_path("../../data/nucl_seqs.txt", __FILE__)
-      attach_file "blast_sequence_file", nucl_seqs
-      fill_in "blast_expectation", :with => "5e-20"
-      fill_in "blast_max_score", :with => 25
-      fill_in "blast_min_bit_score", :with => 0
-      click_button "Submit"
-
-      page.should have_content("Blast Results") 
-
-    end
-  end
-
-  describe "submit nucleotide sequences in attached file" do
-    it "set gapped alignment to 'yes' and optional params to defaults" do
-      visit new_blast_path
-      current_path.should eq(new_blast_path)
-
-      nucl_seqs = File.expand_path("../../data/nucl_seqs.txt", __FILE__)
-      attach_file "blast_sequence_file", nucl_seqs
-      fill_in "blast_expectation", :with => "5e-20"
-      fill_in "blast_max_score", :with => 25
-      fill_in "blast_min_bit_score", :with => 0
-      select "Yes", :from => "blast_gapped_alignments"
-      select "10, 2", :from => "blast_gap_opening_extension"
-      click_button "Submit"
-
-      page.should have_content("Blast Results") 
-
-    end
-  end
-
   describe "submit peptide sequences in attached file" do
     it "set gapped alignment to 'yes' and optional params to defaults" do
       visit new_blast_path
       current_path.should eq(new_blast_path)
 
-      choose "blast_sequence_type_amino_acid"
       prot_seqs = File.expand_path("../../data/prot_seqs.txt", __FILE__)
       attach_file "blast_sequence_file", prot_seqs
       fill_in "blast_expectation", :with => "5e-20"
@@ -173,6 +63,16 @@ describe "Blasts" do
       click_button "Submit"
 
       page.should have_content("Blast Results") 
+
+      click_link "ADA84676.1 protein L-isoaspartyl methyltransferase 1 [Cicer arietinum]"
+
+      page.should have_content("ADA84676.1 protein L-isoaspartyl methyltransferase 1 [Cicer arietinum]")
+      page.should have_content("Details")
+      page.should have_content("Alignment")
+
+      click_link "Back"
+
+      page.should have_content("Blast Results")
 
     end
   end
@@ -187,6 +87,8 @@ describe "Blasts" do
       fill_in "blast_expectation", :with => "5e-20"
       fill_in "blast_max_score", :with => 25
       fill_in "blast_min_bit_score", :with => 0
+      select "Yes", :from => "blast_gapped_alignments"
+      select "10, 2", :from => "blast_gap_opening_extension"
       click_button "Submit"
 
       page.should have_content("Blast Results") 

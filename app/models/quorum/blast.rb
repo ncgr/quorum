@@ -7,10 +7,6 @@ module Quorum
       :min_bit_score, :gapped_alignments, :gap_opening_penalty,
       :gap_extension_penalty, :gap_opening_extension
 
-    validates_format_of :sequence_type, 
-      :with        => /[a-z_]+/,
-      :message     => " - Please select a valid sequence type.",
-      :allow_blank => false
     validates_length_of :sequence, 
       :minimum     => 20,
       :message     => " - Please upload sequences in FASTA format.",

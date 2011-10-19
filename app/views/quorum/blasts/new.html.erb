@@ -4,14 +4,6 @@
   <%= form_for @blast, :html => {:id => "quorum_blast"} do |f| %>
     <%= render "shared/error_messages", :target => @blast %>
     <div>
-      <span class="radio-form">
-        Query sequences are 
-        <%= f.radio_button :sequence_type, 'nucleic_acid', 
-          :checked => true %> Nucleic Acid 
-        <%= f.radio_button :sequence_type, 'amino_acid' %> Peptide 
-      </span>
-    </div>
-    <div>
       <%= f.text_area :sequence, :title => "Paste sequence(s) here or upload a file below.",
         :class => "auto-hint" %>
     </div>

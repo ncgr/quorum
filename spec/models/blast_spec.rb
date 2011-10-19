@@ -7,7 +7,6 @@ describe Quorum::Blast do
   end
 
   it "fails validation without params (using error_on)" do
-    @blast.should have(1).error_on(:sequence_type)
     @blast.should have(1).error_on(:sequence)
   end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111013182760) do
+ActiveRecord::Schema.define(:version => 20111019201240) do
 
   create_table "quorum_blast_reports", :force => true do |t|
     t.string   "query"
@@ -41,7 +41,6 @@ ActiveRecord::Schema.define(:version => 20111013182760) do
   end
 
   create_table "quorum_blasts", :force => true do |t|
-    t.string   "sequence_type",         :null => false
     t.text     "sequence",              :null => false
     t.string   "expectation"
     t.integer  "max_score"

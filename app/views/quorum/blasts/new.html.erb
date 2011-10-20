@@ -4,7 +4,7 @@
   <%= form_for @blast, :html => {:id => "quorum_blast"} do |f| %>
     <%= render "shared/error_messages", :target => @blast %>
     <div>
-      <%= f.text_area :sequence, :title => "Paste sequence(s) here or upload a file below.",
+      <%= f.text_area :sequence, :title => "Paste FASTA sequence(s) here or upload a file below.",
         :class => "auto-hint" %>
     </div>
     <div>

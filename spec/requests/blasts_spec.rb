@@ -33,6 +33,19 @@ describe "Blasts" do
     end
   end
 
+  describe "submit sequences not in FASTA format" do
+    it "displays error and renders form" do
+      visit new_blast_path
+      current_path.should eq(new_blast_path)
+
+      file = File.expand_path("../../data/nucl_seqs_not_fa.txt", __FILE__)
+      attach_file "blast_sequence_file", file
+      click_button "Submit"
+      page.should have_content("Please enter your sequence(s) in Plain Text " << 
+        "as FASTA.")
+    end
+  end
+
   describe "submit protein sequences in text area" do
     it "returns results" do
       visit new_blast_path

@@ -108,7 +108,7 @@ module Quorum
 
         # Force FASTA format.
         cmd = "seqret -filter -sformat pearson -osformat fasta < #{seq} " <<
-        "> #{@fasta}"
+        "> #{@fasta} 2> /dev/null"
         system(cmd)
         if $?.exitstatus > 0
           logger(
@@ -236,7 +236,6 @@ module Quorum
       # Only save Blast results if results.bit_score > @min_bit_score. 
       #
       def parse_and_save_results
-        
         # Helper to avoid having to perform a query.
         saved = false
         

@@ -2,7 +2,7 @@
 # Quourm Rake Tasks
 #
 
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib'))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'blastdb'))
 
 require 'build_blast_db'
 

@@ -122,7 +122,7 @@ module Quorum
     # Display BLAST_README
     #
     def readme
-      file = File.readlines(File.join(File.dirname(__FILE__), "BLAST_README"))
+      file = File.readlines(File.join(File.dirname(__FILE__), "README"))
       file.each { |f| print f }
     end
 
@@ -147,48 +147,48 @@ module Quorum
       dirs = []
 
       begin
-	      @dir.split(':').each do |d|
-	        unless File.directory?(d)    
-	          raise "Directory not found: #{d}"
-	        end
-	
-	        @data = Dir.glob("#{d}/*.{tgz,tar.gz,tbz,tar.bz2}")
-	
-	        if @data.blank?
-	          raise "Data not found. Please check your directory and try " <<
-	            "again.\nDirectory Entered: #{d}"
-	        end
-	
-	        dataset = d.split('/').last
-	        blastdb = File.join(@blastdb_dir, dataset)
-	        gff     = File.join(@gff_dir, dataset)
-	        
-	        Dir.mkdir(blastdb)
-	        Dir.mkdir(gff)
-	
+        @dir.split(':').each do |d|
+          unless File.directory?(d)    
+            raise "Directory not found: #{d}"
+          end
+
+          @data = Dir.glob("#{d}/*.{tgz,tar.gz,tbz,tar.bz2}")
+
+          if @data.blank?
+            raise "Data not found. Please check your directory and try " <<
+            "again.\nDirectory Entered: #{d}"
+          end
+
+          dataset = d.split('/').last
+          blastdb = File.join(@blastdb_dir, dataset)
+          gff     = File.join(@gff_dir, dataset)
+
+          Dir.mkdir(blastdb)
+          Dir.mkdir(gff)
+
           dirs << blastdb << gff
 
-	        @data.each do |s|
-	          if s =~ GZIP
-	            files = `tar -tzf #{s}` 
-	            flag  = "z"
-	          elsif s =~ BZIP
-	            files = `tar -tjf #{s}`
-	            flag  = "j"       
-	          end
-	          files = files.split(/\n/)
-	          files.each do |f|
-	            if f.include?(@prot_file)
-	              extract_files(s, f, flag, File.join(blastdb, "peptides.fa"))
-	            elsif f.include?(@nucl_file)
-	              extract_files(s, f, flag, File.join(blastdb, "contigs.fa"))
-	            elsif f.include?("gff")
-	              extract_files(s, f, flag, File.join(gff, "annots.gff"))
-	            end
-	          end
-	        end
-	        build_blast_db(blastdb, dataset)
-	      end
+          @data.each do |s|
+            if s =~ GZIP
+              files = `tar -tzf #{s}` 
+              flag  = "z"
+            elsif s =~ BZIP
+              files = `tar -tjf #{s}`
+              flag  = "j"       
+            end
+            files = files.split(/\n/)
+            files.each do |f|
+              if f.include?(@prot_file)
+                extract_files(s, f, flag, File.join(blastdb, "peptides.fa"))
+              elsif f.include?(@nucl_file)
+                extract_files(s, f, flag, File.join(blastdb, "contigs.fa"))
+              elsif f.include?("gff")
+                extract_files(s, f, flag, File.join(gff, "annots.gff"))
+              end
+            end
+          end
+          build_blast_db(blastdb, dataset)
+        end
       rescue Exception => e
         # Remove empty directories.
         dirs.each do |d|

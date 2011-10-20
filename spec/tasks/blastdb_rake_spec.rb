@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'tasks/lib/build_blast_db'
+require 'tasks/blastdb/build_blast_db'
 
 describe "blastdb rake tasks" do
   describe "simulate rake quorum:blastdb:build" do

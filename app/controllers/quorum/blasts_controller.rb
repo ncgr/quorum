@@ -50,6 +50,11 @@ module Quorum
       @blast_reports = BlastReport.where(
         {:blast_id => params[:id]}
       ).order(order_by).page(params[:page])
+
+      if @blast_reports.empty?
+        set_flash_message(:notice, :data_not_found)
+        redirect_to :action => "new"
+      end
     end
 
     private

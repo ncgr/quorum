@@ -12,5 +12,6 @@ en:
         error_127: "Quorum or system executable not found."
         error_255: "Quorum option_parser error. Please ensure your config/quorum_settings.yml file is properly set."
       notices:
+        data_not_found: "The data you requested is unavailable. Please check your URL and try again."
       alerts:
 

@@ -117,6 +117,14 @@ describe "Blasts" do
       page.should have_content("Blast Results")
 
     end
-
   end
+
+  describe "GET /quorum/blasts/unknown_id" do
+    it "displays notice and renders form" do
+      visit blast_path('12893479812347912')
+      page.should have_content("The data you requested is unavailable. Please check your URL and try again.")
+      current_path.should eq(new_blast_path)
+    end
+  end
+
 end

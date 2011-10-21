@@ -120,22 +120,87 @@ module Quorum
       end
 
       #
-      # Discover input sequence type (NA or AA) by reading the 
-      # second line of the first input sequence.
+      # Discover input sequence type (NA or AA).
       #
-      # Ex:
-      # 1 >Sequence
-      # 2 ACAGTCGTTTGTCCGAGATTGTGCCGTTGTCG....
+      # Subtracting all AA single letter chars from NA single letter chars
+      # (including ALL ambiguity codes for each!) leaves us with
+      # EQILFP. If a sequence contains EQILFP, it's safe to call it an AA. 
+      #
+      # See single letter char tables for more information:
+      # http://en.wikipedia.org/wiki/Proteinogenic_amino_acid
+      # http://www.chick.manchester.ac.uk/SiteSeer/IUPAC_codes.html
+      #
+      # If a sequence doesn't contain EQILFP, it could be either an AA 
+      # or NA. To distinguish the two, count the number of As Ts Gs Cs
+      # and Ns, divide by the the length of the sequence and * 100.
+      #
+      # If the percentage of A, T, G, C or N is >= 15.0, call it a NA.
+      # 15% was choosen based on the data in the table 
+      # "Relative proportions (%) of bases in DNA" 
+      # (http://en.wikipedia.org/wiki/Chargaff's_rules) and the
+      # precentage of AAs found in peptides
+      # (http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2590925/).
       #
       def discover_input_sequence_type
         file  = File.open(@fasta)
-        lines = file.read.split('>')
-        lines.delete_if { |l| l.empty? }
-        seq = lines[0].split(/\n/)
-        if (seq[1] =~ /[RDEQHILKMFPSWYV]+/).nil?
-          @type = "nucleic_acid"
-        else
-          @type = "amino_acid"
+
+        # If we make this far, we know the sequences are in FASTA.
+        seqs  = file.read.split('>')
+        seqs.delete_if { |l| l.empty? }
+
+        stats    = [] # Holds the sequence call. 1 = AA, 0 = NA.
+        num_seqs = seqs.length.to_f
+
+        seqs.each do |s|
+          # Index of the first newline char.
+          start = s.index(/\n/)
+          # Remove the sequence FASTA header.
+          seq   = s.slice(start..-1).gsub!(/\n/, '')
+
+          if seq =~ /[EQILFP]+/
+            stats << 1
+          else
+            # Length of the sequence minus the FASTA header.
+            len = seq.length.to_f
+
+            na_percent = 15.0
+
+            a = (seq.count("A").to_f / len) * 100
+            t = (seq.count("T").to_f / len) * 100
+
+            g = (seq.count("G").to_f / len) * 100
+            c = (seq.count("C").to_f / len) * 100
+
+            n = (seq.count("N").to_f / len) * 100
+            
+            if (a >= na_percent) || (c >= na_percent) || (t >= na_percent) || 
+              (g >= na_percent) || (n >= na_percent)
+              stats << 0
+            else
+              stats << 1
+            end
+          end
+        end
+
+        sum = stats.inject(0) { |s, v| s + v }
+        logger(
+          "Stats used to call AA or NA sequence(s).",
+          "(#{sum.to_f.to_s} / #{num_seqs.to_s}) = " << 
+          "#{(sum.to_f / num_seqs).to_s}\n" <<
+          "0.0...0.5 ==> NA\n0.5...1.0 ==> AA"
+        )
+        begin
+          if ((sum.to_f / num_seqs)  > 0.5)
+            @type = "amino_acid"
+          else
+            @type = "nucleic_acid"
+          end
+        rescue ZeroDivisionError => e
+          logger(
+            "discover_input_sequence_type",
+            "Can not divide by zero",
+            1
+          )
         end
       end
 

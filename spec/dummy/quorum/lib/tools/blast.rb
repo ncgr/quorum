@@ -82,20 +82,6 @@ module Quorum
       end
 
       #
-      # Retrive data from db.
-      #
-      def find_blast_data
-        begin
-          @blast = QuorumBlast.find(@id)
-        rescue Exception => e
-          logger("ActiveRecord", e.message, 80)
-        end
-
-        @sequence       = @blast.sequence
-        @min_bit_score  = @blast.min_bit_score
-      end
-
-      #
       # Write input sequence to file.
       #
       def write_input_sequence_to_file
@@ -120,7 +106,7 @@ module Quorum
       end
 
       #
-      # Discover input sequence type (NA or AA).
+      # Discover input sequence type (nucleic acid NA or amino acid AA).
       #
       # Subtracting all AA single letter chars from NA single letter chars
       # (including ALL ambiguity codes for each!) leaves us with
@@ -144,7 +130,7 @@ module Quorum
       def discover_input_sequence_type
         file  = File.open(@fasta)
 
-        # If we make this far, we know the sequences are in FASTA.
+        # If we make this far, we know the sequences are in FASTA format.
         seqs  = file.read.split('>')
         seqs.delete_if { |l| l.empty? }
 
@@ -182,6 +168,7 @@ module Quorum
           end
         end
 
+        # Sum the values in the array.
         sum = stats.inject(0) { |s, v| s + v }
         logger(
           "Stats used to call AA or NA sequence(s).",
@@ -189,6 +176,9 @@ module Quorum
           "#{(sum.to_f / num_seqs).to_s}\n" <<
           "0.0...0.5 ==> NA\n0.5...1.0 ==> AA"
         )
+
+        # Divide the sum by the number of input sequences. If the value
+        # is > 0.5, call it an AA. If the value is < 0.5, call it a NA.
         begin
           if ((sum.to_f / num_seqs)  > 0.5)
             @type = "amino_acid"
@@ -368,7 +358,13 @@ module Quorum
       # Execute Blast on a given dataset.
       #
       def execute_blast
-        find_blast_data
+        begin
+          @blast = QuorumBlast.find(@id)
+        rescue Exception => e
+          logger("ActiveRecord", e.message, 80)
+        end
+        @sequence       = @blast.sequence
+        @min_bit_score  = @blast.min_bit_score
 
         create_unique_hash
 

@@ -120,7 +120,7 @@ module Quorum
       # or NA. To distinguish the two, count the number of As Ts Gs Cs
       # and Ns, divide by the the length of the sequence and * 100.
       #
-      # If the percentage of A, T, G, C or N is >= 15.0, call it a NA.
+      # If the percentage of A, T, U, G, C or N is >= 15.0, call it a NA.
       # 15% was choosen based on the data in the table 
       # "Relative proportions (%) of bases in DNA" 
       # (http://en.wikipedia.org/wiki/Chargaff's_rules) and the
@@ -153,14 +153,15 @@ module Quorum
 
             a = (seq.count("A").to_f / len) * 100
             t = (seq.count("T").to_f / len) * 100
+            u = (seq.count("U").to_f / len) * 100
 
             g = (seq.count("G").to_f / len) * 100
             c = (seq.count("C").to_f / len) * 100
 
             n = (seq.count("N").to_f / len) * 100
             
-            if (a >= na_percent) || (c >= na_percent) || (t >= na_percent) || 
-              (g >= na_percent) || (n >= na_percent)
+            if (a >= na_percent) || (t >= na_percent) || (u >= na_percent) || 
+              (g >= na_percent) || (c >= na_percent) || (n >= na_percent)
               stats << 0
             else
               stats << 1

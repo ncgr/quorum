@@ -7,6 +7,14 @@ module Quorum
     def execute_cmd(cmd, remote, ssh_host, ssh_user, ssh_options = {})
       Rails.logger.debug "\n-- quorum command --\n" + cmd + "\n\n"
 
+      unless ssh_options.empty?
+        # Convert each key in ssh_options to a symbol.
+        ssh_options = ssh_options.inject({}) do |memo, (k, v)|
+          memo[k.to_sym] = v
+          memo
+        end
+      end
+
       if remote
         # Execute command on remote machine.
         Net::SSH.start(ssh_host, ssh_user, ssh_options) do |ssh|

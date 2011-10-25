@@ -9,6 +9,8 @@ module Quorum
       class QuorumBlast < ActiveRecord::Base; end
       class QuorumBlastReport < ActiveRecord::Base; end
 
+      private
+
       def initialize(args)
         @id             = args[:id]
         @log_directory  = args[:log_directory]
@@ -354,6 +356,8 @@ module Quorum
         end
         remove_files
       end
+
+      public
 
       #
       # Execute Blast on a given dataset.

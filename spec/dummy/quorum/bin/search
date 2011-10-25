@@ -107,7 +107,9 @@ Options:
         @args[:blast_database] = opts[:blast_database]
 
         if opts[:tblastn]
-          unless Dir.exists?(File.join(@args[:blast_database], opts[:tblastn]))
+          if Dir.glob(
+            File.join(@args[:blast_database], opts[:tblastn]) + ".*"
+          ).empty?
             Trollop::die :tblastn, "tblastn database not found\n" <<
             "Supplied directory: " + opts[:tblastn]
           end
@@ -116,7 +118,9 @@ Options:
         end
 
         if opts[:blastp]
-          unless Dir.exists?(File.join(@args[:blast_database], opts[:blastp]))
+          if Dir.glob(
+            File.join(@args[:blast_database], opts[:blastp]) + ".*"
+          ).empty?
             Trollop::die :blastp, "blastp database not found\n" <<
             "Supplied directory: " + opts[:blastp]
           end
@@ -125,7 +129,9 @@ Options:
         end
 
         if opts[:blastn]
-          unless Dir.exists?(File.join(@args[:blast_database], opts[:blastn]))
+          if Dir.glob(
+            File.join(@args[:blast_database], opts[:blastn]) + ".*"
+          ).empty?
             Trollop::die :blastn, "blastn database not found\n" <<
             "Supplied directory: " + opts[:blastn]
           end
@@ -134,7 +140,9 @@ Options:
         end
 
         if opts[:blastx]
-          unless Dir.exists?(File.join(@args[:blast_database], opts[:blastx]))
+          if Dir.glob(
+            File.join(@args[:blast_database], opts[:blastx]) + ".*"
+          ).empty?
             Trollop::die :blastx, "blastx database not found\n" <<
             "Supplied directory: " + opts[:blastx]
           end

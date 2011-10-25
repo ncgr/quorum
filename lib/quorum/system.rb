@@ -15,6 +15,8 @@ module Quorum
         end
       end
 
+      exit_status = 1
+
       if remote
         # Execute command on remote machine.
         Net::SSH.start(ssh_host, ssh_user, ssh_options) do |ssh|
@@ -36,8 +38,8 @@ module Quorum
         system(cmd)
         exit_status = $?.exitstatus
       end
-      exit_status = "error_" + exit_status.to_s
-      exit_status.to_sym
+      status = "error_" << exit_status.to_s
+      status.to_sym
     end
 
   end

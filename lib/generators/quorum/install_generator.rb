@@ -12,7 +12,9 @@ module Quorum
         template "quorum_settings.yml", "config/quorum_settings.yml"
         template "search", "quorum/bin/search"
         template "trollop.rb", "quorum/lib/trollop.rb"
-        template "blast.rb", "quorum/lib/tools/blast.rb"
+        template "logger.rb", "quorum/lib/search_tools/logger.rb"
+        template "sequence.rb", "quorum/lib/search_tools/sequence.rb"
+        template "blast.rb", "quorum/lib/search_tools/blast.rb"
       end
 
       def copy_locale

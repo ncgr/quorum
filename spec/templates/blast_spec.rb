@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'generators/templates/blast'
 
-describe "Quorum::Tools::Blast" do
+describe "Quorum::SearchTools::Blast" do
   describe "simulate Blast" do
     before(:each) do
       # Set args as though we executed option_parser.

@@ -14,15 +14,19 @@ module Quorum
     GZIP = /\.(tgz$)|(tar.gz$)/
     BZIP = /\.(tbz$)|(tar.bz2$)/
 
-    def initialize(args)
-      @dir         = args.delete(:dir)
-      @type        = args.delete(:type)
-      @prot_file   = args.delete(:prot_file)
-      @nucl_file   = args.delete(:nucl_file)
-      @rebuild_db  = args.delete(:rebuild_db)
-      @blastdb_dir = args.delete(:blastdb_dir)
-      @gff_dir     = args.delete(:gff_dir)
-      @log_dir     = args.delete(:log_dir)
+    private
+
+    def initialize(args, output = $stdout)
+      @dir         = args[:dir]
+      @type        = args[:type]
+      @prot_file   = args[:prot_file]
+      @nucl_file   = args[:nucl_file]
+      @rebuild_db  = args[:rebuild_db]
+      @blastdb_dir = args[:blastdb_dir]
+      @gff_dir     = args[:gff_dir]
+      @log_dir     = args[:log_dir]
+
+      @output = output
     end
 
     #
@@ -50,7 +54,7 @@ module Quorum
 
         Dir.mkdir(@log_dir) unless File.directory?(@log_dir)
       rescue SystemCallError => e
-        puts e.message
+        @output.puts e.message
         raise "Unable to make directory. " << 
           "Perhaps you forgot to execute the quorum initializer. \n\n" <<
           "rails generate quorum:install"
@@ -76,7 +80,7 @@ module Quorum
     # Execute makeblastdb on an extracted dataset.
     #
     def execute_makeblastdb(type, title, input)
-      puts "Executing makeblastdb for #{title} dbtype #{type}..."
+      @output.puts "Executing makeblastdb for #{title} dbtype #{type}..."
 
       makeblast_log = File.join(@log_dir, "makeblastdb.log")
       output        = File.dirname(input)
@@ -123,8 +127,10 @@ module Quorum
     #
     def readme
       file = File.readlines(File.join(File.dirname(__FILE__), "README"))
-      file.each { |f| print f }
+      file.each { |f| @output.print f }
     end
+
+    public
 
     #
     # Parse Blast database data.

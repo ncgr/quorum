@@ -1,10 +1,10 @@
 require 'spec_helper'
 require 'quorum/system'
 
+include Quorum::System
+
 describe "Quorum::System" do
   describe "#execute_cmd" do
-    include Quorum::System
-
     before(:all) do
       @args = {
         :cmd      => "whoami >& /dev/null",
@@ -19,6 +19,5 @@ describe "Quorum::System" do
         @args[:cmd], @args[:remote], @args[:ssh_host], @args[:ssh_user]
       ).should eq(:error_0)
     end
-
   end
 end

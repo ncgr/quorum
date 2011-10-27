@@ -153,7 +153,7 @@ module Quorum
 
       #
       # Parse and save Blast results using bio-blastxmlparser.
-      # Only save Blast results if results.bit_score > @min_bit_score. 
+      # Only save Blast results if results.bit_score > @blast_min_bit_score. 
       #
       def parse_and_save_results
         # Helper to avoid having to perform a query.
@@ -196,7 +196,7 @@ module Quorum
             # Hsps are only reported if a query hit against the Blast db.
             # Only save the @blast_report if bit_score exists.
             if @blast_report.bit_score && 
-              (@blast_report.bit_score.to_i > @min_bit_score.to_i)
+              (@blast_report.bit_score.to_i > @blast_min_bit_score.to_i)
               saved = true
               unless @blast_report.save!
                 @logger.log(
@@ -235,8 +235,7 @@ module Quorum
         rescue Exception => e
           @logger.log("ActiveRecord", e.message, 80)
         end
-        @sequence       = @blast.sequence
-        @min_bit_score  = @blast.min_bit_score
+        @sequence = @blast.sequence
 
         @hash = create_unique_hash(@sequence)
 

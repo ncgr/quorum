@@ -1,10 +1,10 @@
 require 'spec_helper'
 require 'quorum/helpers'
 
+include Quorum::Helpers
+
 describe "Quorum::Helpers" do
   describe "#check_kaminari_sort" do
-    include Quorum::Helpers
-
     before(:all) do
       class Klass
         DEFAULT_ORDER    = "default_order"

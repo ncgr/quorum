@@ -1,0 +1,30 @@
+<div id="new">
+  <h1>Quorum Search</h1>
+  <%= form_for @job, :html => {:id => "quorum_job"} do |f| %>
+    <%= render "shared/error_messages", :target => @job %>
+    <div>
+      <%= f.text_area :sequence, :title => "Paste FASTA sequence(s) here or upload a file below.",
+        :class => "auto-hint" %>
+    </div>
+    <div>
+      <%= f.file_field :sequence_file %>
+    </div>
+    <%= render :partial => "blastn_form", :object => @job, 
+      :locals => { :blast_dbs => @blast_dbs } %>
+    <%= render :partial => "blastx_form", :object => @job,
+      :locals => { :blast_dbs => @blast_dbs } %>
+    <%= render :partial => "tblastn_form", :object => @job,
+      :locals => { :blast_dbs => @blast_dbs } %>
+     <%= render :partial => "blastp_form", :object => @job,
+      :locals => { :blast_dbs => @blast_dbs } %>
+     <%= render :partial => "hmmer_form", :object => @job %>
+    <div>
+      <%= f.submit "Submit" %>&nbsp;&nbsp;
+      <%= submit_tag "Reset", :name => "reset", 
+        :type => "button", :id => "quorum_job_reset" %>
+      <div id="loading">
+        <%= image_tag "quorum/knight_rider.gif" %> 
+      </div>
+    </div>
+  <% end %>
+</div>

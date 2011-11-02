@@ -1,8 +1,8 @@
 module Quorum
-  module BlastReportsHelper
+  module JobReportsHelper
 
     #
-    # Format Blast report sequence data.
+    # Format report sequence data.
     #
     def format_sequence_report(qseq, midline, hseq)
       max  = qseq.length

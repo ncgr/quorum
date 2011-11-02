@@ -3,27 +3,23 @@
   They will automatically be included in application.css.
 */
 
-#blasts-new {
+#new {
     width: 50%;
 }
 
-#extra-options {
-    margin: 5px 5px 5px 10px;
-}
-
-#blasts-show {
+#show {
     width: 70%;
 }
 
 /*** Table Styles ***/
-table {
-  margin: 0;
+table.options {
+  margin: 0 0 15px 10px;
   border: 0;
   width: 100%;
   border-collapse: collapse;
 }
 
-table#blast_report_details {
+table#report_details {
   margin: 0;
   border: 0;
   width: 50%;

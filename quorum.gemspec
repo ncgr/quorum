@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency "jquery-rails"
   s.add_dependency "kaminari", "~> 0.12.4"
   s.add_dependency "net-ssh", "~> 2.2.1"
+  s.add_dependency "resque", "~> 1.19.0"
   s.add_dependency "bio-blastxmlparser", "~> 1.0.1"
 
   s.add_development_dependency "mysql2"

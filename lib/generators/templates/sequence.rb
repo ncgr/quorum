@@ -85,7 +85,7 @@ module Quorum
             c = (seq.count("C").to_f / len) * 100
 
             n = (seq.count("N").to_f / len) * 100
-            
+
             if (a >= na_percent) || (t >= na_percent) || (u >= na_percent) || 
               (g >= na_percent) || (c >= na_percent) || (n >= na_percent)
               stats << 0

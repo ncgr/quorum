@@ -1,0 +1,70 @@
+<p>
+  <strong>blastx</strong> <%= check_box_tag "activate_blastx", 1, false %>
+</p>
+<div id="blastx">
+	<table class="options">
+	  <%= fields_for @job.blastx_job do |f| %>
+	    <tr>
+	      <td>
+	        <label>Database(s)</label>
+	      </td>
+	      <td>
+	        <%= f.select :blast_dbs, @blast_dbs, :multiple => true %> 
+	      </td>
+	      <td>
+	        <%= f.label :filter %>
+	      </td>
+	      <td>
+	        <%= f.check_box :filter %>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+	        <%= f.label :expectation %>
+	      </td>
+	      <td>
+	        <%= f.text_field :expectation, :size => 15, :title => "5e-20", 
+	          :class => "auto-hint" %>
+	      </td>
+	      <td>
+	        <%= f.label :min_bit_score %>
+	      </td>
+	      <td>
+	        <%= f.text_field :min_bit_score, :size => 15, :title => "0", 
+	          :class => "auto-hint" %>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+	        <%= f.label :max_score %>
+	      </td>
+	      <td>
+	        <%= f.text_field :max_score, :size => 15, :title => "25", 
+	          :class => "auto-hint" %>
+	      </td>
+	      <td>
+	        <%= f.label :gapped_alignments %>
+	      </td>
+	      <td>
+	        <%= f.select :gapped_alignments, [['No', false], ['Yes', true]] %>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+	        <%= f.label :gap_opening_extension %>
+	      </td>
+	      <td>
+	        <%= 
+	          f.select :gap_opening_extension, 
+	            options_for_select(
+	              @job.blastn_job.gap_opening_extension_values,
+	              @job.blastn_job.gap_opening_extension
+	            )
+	        %>
+	      </td>
+	      <td></td>
+	      <td></td>
+	    </tr>
+	  <% end %>
+	</table>
+</div>

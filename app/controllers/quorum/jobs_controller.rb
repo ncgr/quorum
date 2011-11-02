@@ -1,28 +1,36 @@
 module Quorum
-  class BlastsController < ApplicationController
+  class JobsController < ApplicationController
+
+    before_filter :set_blast_dbs, :only => :new
+
     def index
       redirect_to :action => "new"
     end
 
     def new
-      @blast = Blast.new
+      @job = Job.new
+      @job.build_blastn_job
+      @job.build_blastx_job
+      @job.build_tblastn_job
+      @job.build_blastp_job
+      @job.build_hmmer_job
     end
 
     def create
-      if params[:blast][:sequence_file]
-        file = params[:blast][:sequence_file].read
-        params[:blast].delete(:sequence_file)
+      if params[:job][:sequence_file]
+        file = params[:job][:sequence_file].read
+        params[:job].delete(:sequence_file)
       end
 
-      @blast = Blast.new(params[:blast])
+      @job = Job.new(params[:job])
 
       if file
-        @blast.sequence = ""
-        @blast.sequence << file
+        @job.sequence = ""
+        @job.sequence << file
       end
 
       begin
-        ActiveSupport::Multibyte::Unicode.u_unpack(@blast.sequence)
+        ActiveSupport::Multibyte::Unicode.u_unpack(@job.sequence)
       rescue ActiveSupport::Multibyte::EncodingError => e
         logger.error e.message
         set_flash_message(:error, :error_encoding)
@@ -30,10 +38,10 @@ module Quorum
         return
       end
 
-      if @blast.save
+      if @job.save
         execute_system_command
         if @exit_status.to_s != :error_0.to_s
-          @blast.destroy
+          @job.destroy
           set_flash_message(:error, @exit_status)
           redirect_to :action => "new"
           return
@@ -42,19 +50,11 @@ module Quorum
         render :action => "new"
         return 
       end
-      redirect_to blast_path(@blast.id)
+      redirect_to job_path(@job.id)
     end
 
     def show
-      order_by = check_kaminari_sort(BlastReport, params[:sort], params[:dir])
-      @blast_reports = BlastReport.where(
-        {:blast_id => params[:id]}
-      ).order(order_by).page(params[:page])
-
-      if @blast_reports.empty?
-        set_flash_message(:notice, :data_not_found)
-        redirect_to :action => "new"
-      end
+      @jobs = Job.find(params[:id])
     end
 
     private
@@ -66,7 +66,7 @@ module Quorum
       tblastn = blastp = blastn = blastx = nil
 
       # System command
-      cmd = "#{Quorum.blast_script} -s blast -i #{@blast.id} " <<
+      cmd = "#{Quorum.blast_script} -s blast -i #{@job.id} " <<
         "-e #{::Rails.env.to_s} -l #{Quorum.blast_log_dir} " <<
         "-m #{Quorum.blast_tmp_dir} " <<
         "-d #{ActiveRecord::Base.configurations[::Rails.env.to_s]['database']} " <<
@@ -94,19 +94,19 @@ module Quorum
         cmd << "-x " << blastx << " "
       end
 
-      logger.info @blast.inspect
+      logger.info @job.inspect
       ## Optional Quorum params ##
-      cmd << "-v #{@blast.expectation} " unless @blast.expectation.blank?
-      cmd << "-c #{@blast.max_score} " unless @blast.max_score.blank?
-      cmd << "-j #{@blast.min_bit_score} " unless @blast.min_bit_score.blank?
-      cmd << "-g " unless @blast.gapped_alignments.blank?
+      cmd << "-v #{@job.expectation} " unless @job.expectation.blank?
+      cmd << "-c #{@job.max_score} " unless @job.max_score.blank?
+      cmd << "-j #{@job.min_bit_score} " unless @job.min_bit_score.blank?
+      cmd << "-g " unless @job.gapped_alignments.blank?
 
-      if @blast.gap_opening_penalty
-        cmd << "-o #{@blast.gap_opening_penalty} "
+      if @job.gap_opening_penalty
+        cmd << "-o #{@job.gap_opening_penalty} "
       end
 
-      if @blast.gap_extension_penalty
-        cmd << "-y #{@blast.gap_extension_penalty} "
+      if @job.gap_extension_penalty
+        cmd << "-y #{@job.gap_extension_penalty} "
       end
 
       @exit_status = execute_cmd(
@@ -114,5 +114,23 @@ module Quorum
         Quorum.blast_ssh_user, Quorum.blast_ssh_options
       )
     end
+
+    #
+    # Blast Database options for select.
+    #
+    def set_blast_dbs
+      @blast_dbs = [
+        Quorum.blastn << Quorum.blastn.first, 
+        Quorum.blastx << Quorum.blastx.first, 
+        Quorum.tblastn << Quorum.tblastn.first, 
+        Quorum.blastp << Quorum.blastp.first
+      ]
+      @blast_dbs.uniq!(&:first)
+      all = []
+      @blast_dbs.each {|d| all << d.first}
+      @blast_dbs.unshift ['All Databases', all.join(',')]
+      @blast_dbs.unshift ['--Select--', '']
+    end
+
   end
 end

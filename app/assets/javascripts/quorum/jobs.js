@@ -56,36 +56,11 @@ $(function() {
   // Hide Elements //
 
   $('#loading').hide();
-
-  var blast_options_empty = true;
-  $('#blast-options :input').each(function(index, elem) {
-    if ($(elem).val() !== '' && $(elem).val() !== 'false') {
-      blast_options_empty = false;
-    }
-  });
-
-  // Hide blast options if they are empty.
-  if (blast_options_empty) {
-    $('#blast-options').hide();
-  }
-
-  // Hide if blast_gapped_alignments is false.
-  if ($('#blast_gapped_alignments').val() === 'false') {
-    $('#gap-extras').hide();
-  }
-
-  // Toggle hidden elements.
-  $('#options').click(function() {
-    $('#blast-options').slideToggle();
-  });
-
-  $('#blast_gapped_alignments').change(function() {
-    if ($('#blast_gapped_alignments').val() === 'true') {
-      $('#gap-extras').slideDown();
-    } else {
-      $('#gap-extras').slideUp();
-    }
-  });
+  $('#blastn').hide();
+  $('#blastx').hide();
+  $('#tblastn').hide();
+  $('#blastp').hide();
+  $('#hmmer').hide();
 
   // End Elements //
 
@@ -96,6 +71,30 @@ $(function() {
   form.focusHint();
   form.blurHint();
   form.addHints();
+
+  // Toggle Algorithms //
+
+  $('#activate_blastn').change(function() {
+    $('#blastn').slideToggle();
+  });
+
+  $('#activate_blastx').change(function() {
+    $('#blastx').slideToggle();
+  });
+
+  $('#activate_tblastn').change(function() {
+    $('#tblastn').slideToggle();
+  });
+
+  $('#activate_blastp').change(function() {
+    $('#blastp').slideToggle();
+  });
+
+  $('#activate_hmmer').change(function() {
+    $('#hmmer').slideToggle();
+  });
+
+  // End Algorithms //
 
   // Disable submit button and display gif.
   // Remove input values equal to attr title.
@@ -108,14 +107,12 @@ $(function() {
   });
 
   // Reset form.
-  $('#quorum_blast_reset').click(function() {
-    $('#quorum_blast :input[type=text]').each(function(index, elem) {
+  $('#quorum_job_reset').click(function() {
+    $('#quorum_job :input[type=text]').each(function(index, elem) {
       $(elem).val('');
     });
-    $('#blast_sequence_file').val('');
-    $('#blast_sequence').val('');
-    $('#blast_gapped_alignments').val('false');
-    $('#blast_gap_opening_extension').val('');
+    $('#job_sequence_file').val('');
+    $('#job_sequence').val('');
     form.addHints();
   });
 

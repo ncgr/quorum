@@ -1,6 +1,6 @@
-class CreateQuorumBlastReports < ActiveRecord::Migration
+class CreateBlastpJobReports < ActiveRecord::Migration
   def change
-    create_table :quorum_blast_reports do |t|
+    create_table :quorum_blastp_job_reports do |t|
       t.string :query
       t.integer :query_len
       t.string :hit_id
@@ -23,7 +23,7 @@ class CreateQuorumBlastReports < ActiveRecord::Migration
       t.text :hseq
       t.text :midline
 
-      t.references :blast
+      t.references :blastp_job
 
       t.timestamps
     end

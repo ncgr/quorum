@@ -1,6 +1,6 @@
 module Quorum
-  class BlastReport < ActiveRecord::Base
-    belongs_to :blast
+  class BlastxJobReport < ActiveRecord::Base
+    belongs_to :blastx_job
 
     paginates_per 20
     SORTABLE_COLUMNS = ["query", "bit_score", "hit_len"]

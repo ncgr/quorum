@@ -1,6 +1,5 @@
 Quorum::Engine.routes.draw do
-  resources :blasts, :only => [:index, :show, :new, :create]
-  resources :blast_reports, :only => [:show]
+  resources :jobs, :only => [:index, :show, :new, :create]
 
-  root :to => "blasts#index"
+  root :to => "jobs#index"
 end

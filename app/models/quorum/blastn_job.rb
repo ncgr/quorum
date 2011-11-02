@@ -1,16 +1,13 @@
 module Quorum
-  class Blast < ActiveRecord::Base
+  class BlastnJob < ActiveRecord::Base
 
-    has_many :blast_reports
+    belongs_to :job
+    has_many :blastn_job_reports, :dependent => :destroy
 
-    attr_accessible :sequence_type, :sequence, :expectation, :max_score,
-      :min_bit_score, :gapped_alignments, :gap_opening_penalty,
+    attr_accessible :expectation, :max_score, :min_bit_score,
+      :filter,  :gapped_alignments, :gap_opening_penalty,
       :gap_extension_penalty, :gap_opening_extension
 
-    validates_length_of :sequence, 
-      :minimum     => 20,
-      :message     => " - Please upload sequences in FASTA format.",
-      :allow_blank => false  
     validates_format_of :expectation,
       :with        => /^[+-]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/,
       :message     => " - Valid formats (12, 32.05, 43e-123)",

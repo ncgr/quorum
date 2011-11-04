@@ -56,11 +56,26 @@ $(function() {
   // Hide Elements //
 
   $('#loading').hide();
-  $('#blastn').hide();
-  $('#blastx').hide();
-  $('#tblastn').hide();
-  $('#blastp').hide();
-  $('#hmmer').hide();
+
+  if (!$('#job_blastn_job_attributes_queue').is(':checked')) {
+    $('#blastn').hide();
+  }
+
+  if (!$('#job_blastx_job_attributes_queue').is(':checked')) {
+    $('#blastx').hide();
+  }
+
+  if (!$('#job_tblastn_job_attributes_queue').is(':checked')) {
+    $('#tblastn').hide();
+  }
+
+  if (!$('#job_blastp_job_attributes_queue').is(':checked')) {
+    $('#blastp').hide();
+  }
+
+  if (!$('#job_hmmer_job_attributes_queue').is(':checked')) {
+    $('#hmmer').hide();
+  }
 
   // End Elements //
 
@@ -74,23 +89,23 @@ $(function() {
 
   // Toggle Algorithms //
 
-  $('#activate_blastn').change(function() {
+  $('#job_blastn_job_attributes_queue').change(function() {
     $('#blastn').slideToggle();
   });
 
-  $('#activate_blastx').change(function() {
+  $('#job_blastx_job_attributes_queue').change(function() {
     $('#blastx').slideToggle();
   });
 
-  $('#activate_tblastn').change(function() {
+  $('#job_tblastn_job_attributes_queue').change(function() {
     $('#tblastn').slideToggle();
   });
 
-  $('#activate_blastp').change(function() {
+  $('#job_blastp_job_attributes_queue').change(function() {
     $('#blastp').slideToggle();
   });
 
-  $('#activate_hmmer').change(function() {
+  $('#job_hmmer_job_attributes_queue').change(function() {
     $('#hmmer').slideToggle();
   });
 
@@ -108,11 +123,13 @@ $(function() {
 
   // Reset form.
   $('#quorum_job_reset').click(function() {
-    $('#quorum_job :input[type=text]').each(function(index, elem) {
-      $(elem).val('');
+    $('input:text').val('');
+    $('input:file').val('');
+    $('input:checkbox').attr('checked', false);
+    $('select').val('');
+    $('.toggle').each(function() {
+      $(this).hide();
     });
-    $('#job_sequence_file').val('');
-    $('#job_sequence').val('');
     form.addHints();
   });
 

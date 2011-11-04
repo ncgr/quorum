@@ -11,6 +11,7 @@ bioinformatics search tools.
 Dependencies:
 
 * Rails >= 3.1.0
+* Redis >= 0.900 for Resque (https://github.com/defunkt/resque)
 * NCBI Blast+ (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
 * HMMER (http://hmmer.janelia.org/software)
 * Emboss (http://emboss.sourceforge.net/)

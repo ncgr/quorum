@@ -1,61 +1,62 @@
-<p>
-  <strong>tblastn</strong> <%= check_box_tag "activate_tblastn", 1, false %>
-</p>
-<div id="tblastn">
-	<table class="options">
-	  <%= fields_for @job.tblastn_job do |f| %>
+<%= f.fields_for :tblastn_job do |n| %>
+  <p>
+    <strong>tblastn</strong> 
+    <%= n.check_box :queue %>
+  </p>
+  <div id="tblastn" class="toggle">
+	  <table class="options">
 	    <tr>
 	      <td>
 	        <label>Database(s)</label>
 	      </td>
 	      <td>
-	        <%= f.select :blast_dbs, @blast_dbs, :multiple => true %> 
+          <%= n.select :blast_dbs, @blast_dbs, {}, { :multiple => true } %> 
 	      </td>
 	      <td>
-	        <%= f.label :filter %>
+	        <%= n.label :filter %>
 	      </td>
 	      <td>
-	        <%= f.check_box :filter %>
-	      </td>
-	    </tr>
-	    <tr>
-	      <td>
-	        <%= f.label :expectation %>
-	      </td>
-	      <td>
-	        <%= f.text_field :expectation, :size => 15, :title => "5e-20", 
-	          :class => "auto-hint" %>
-	      </td>
-	      <td>
-	        <%= f.label :min_bit_score %>
-	      </td>
-	      <td>
-	        <%= f.text_field :min_bit_score, :size => 15, :title => "0", 
-	          :class => "auto-hint" %>
+	        <%= n.check_box :filter %>
 	      </td>
 	    </tr>
 	    <tr>
 	      <td>
-	        <%= f.label :max_score %>
+	        <%= n.label :expectation %>
 	      </td>
 	      <td>
-	        <%= f.text_field :max_score, :size => 15, :title => "25", 
+	        <%= n.text_field :expectation, :size => 15, :title => "5e-20", 
 	          :class => "auto-hint" %>
 	      </td>
 	      <td>
-	        <%= f.label :gapped_alignments %>
+	        <%= n.label :min_bit_score %>
 	      </td>
 	      <td>
-	        <%= f.select :gapped_alignments, [['No', false], ['Yes', true]] %>
+	        <%= n.text_field :min_bit_score, :size => 15, :title => "0", 
+	          :class => "auto-hint" %>
 	      </td>
 	    </tr>
 	    <tr>
 	      <td>
-	        <%= f.label :gap_opening_extension %>
+	        <%= n.label :max_score %>
+	      </td>
+	      <td>
+	        <%= n.text_field :max_score, :size => 15, :title => "25", 
+	          :class => "auto-hint" %>
+	      </td>
+	      <td>
+	        <%= n.label :gapped_alignments %>
+	      </td>
+	      <td>
+	        <%= n.select :gapped_alignments, [['No', false], ['Yes', true]] %>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+	        <%= n.label :gap_opening_extension %>
 	      </td>
 	      <td>
 	        <%= 
-	          f.select :gap_opening_extension, 
+	          n.select :gap_opening_extension, 
 	            options_for_select(
 	              @job.blastn_job.gap_opening_extension_values,
 	              @job.blastn_job.gap_opening_extension
@@ -65,6 +66,6 @@
 	      <td></td>
 	      <td></td>
 	    </tr>
-	  <% end %>
-	</table>
-</div>
+	  </table>
+  </div>
+<% end %>

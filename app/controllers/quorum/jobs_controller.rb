@@ -1,7 +1,7 @@
 module Quorum
   class JobsController < ApplicationController
 
-    before_filter :set_blast_dbs, :only => :new
+    before_filter :set_blast_dbs, :only => [:new, :create]
 
     def index
       redirect_to :action => "new"
@@ -29,23 +29,12 @@ module Quorum
         @job.sequence << file
       end
 
-      begin
-        ActiveSupport::Multibyte::Unicode.u_unpack(@job.sequence)
-      rescue ActiveSupport::Multibyte::EncodingError => e
-        logger.error e.message
-        set_flash_message(:error, :error_encoding)
-        redirect_to :action => "new"
-        return
-      end
-
       if @job.save
-        execute_system_command
-        if @exit_status.to_s != :error_0.to_s
-          @job.destroy
-          set_flash_message(:error, @exit_status)
-          redirect_to :action => "new"
-          return
-        end
+        Resque.enqueue(Blastn, @job.blastn_job.id)   if @job.blastn_job.queue
+        Resque.enqueue(Blastx, @job.blastx_job.id)   if @job.blastx_job.queue
+        Resque.enqueue(Tblastn, @job.tblastn_job.id) if @job.tblastn_job.queue
+        Resque.enqueue(Blastp, @job.blastp_job.id)   if @job.blastp_job.queue
+        Resque.enqueue(Hmmer, @job.hmmer_job.id)     if @job.hmmer_job.queue
       else
         render :action => "new"
         return 
@@ -60,10 +49,10 @@ module Quorum
     private
 
     #
-    # Execute system command based on config/quorum_settings.yml
+    # Create system commands based on config/quorum_settings.yml
     #
-    def execute_system_command
-      tblastn = blastp = blastn = blastx = nil
+    def create_system_command
+      tblastn = blastp = blastn = blastx = hmmer = nil
 
       # System command
       cmd = "#{Quorum.blast_script} -s blast -i #{@job.id} " <<
@@ -129,7 +118,6 @@ module Quorum
       all = []
       @blast_dbs.each {|d| all << d.first}
       @blast_dbs.unshift ['All Databases', all.join(',')]
-      @blast_dbs.unshift ['--Select--', '']
     end
 
   end

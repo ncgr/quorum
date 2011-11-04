@@ -9,6 +9,7 @@ class CreateBlastxJobs < ActiveRecord::Migration
       t.integer :gap_opening_penalty
       t.integer :gap_extension_penalty
       t.string :blast_dbs
+      t.boolean :queue
 
       t.references :job
 

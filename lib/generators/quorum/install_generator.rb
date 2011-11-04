@@ -6,6 +6,8 @@ module Quorum
       desc "Creates Quorum initializer, settings and " <<
            "search tool files."
 
+      DEPENDENCIES = ["makeblastdb", "seqret"]
+
       def copy_initializer
         template "quorum_initializer.rb", 
           "config/initializers/quorum_initializer.rb"
@@ -13,7 +15,6 @@ module Quorum
         template "search", "quorum/bin/search"
         template "trollop.rb", "quorum/lib/trollop.rb"
         template "logger.rb", "quorum/lib/search_tools/logger.rb"
-        template "sequence.rb", "quorum/lib/search_tools/sequence.rb"
         template "blast.rb", "quorum/lib/search_tools/blast.rb"
       end
 
@@ -41,6 +42,23 @@ module Quorum
       def show_readme
         readme "README"
       end
+
+      def check_dependencies
+        puts "Checking Quorum system dependencies..."
+        messages = []
+        DEPENDENCIES.each do |b|
+          system("which #{b} >& /dev/null")
+          if $?.exitstatus > 0
+            messages << "Quorum dependency not found. " <<
+            "Please add `#{b}` to your PATH."
+          end
+        end
+        unless messages.empty?
+          puts "*** Quorum system dependencies not found ***"
+          puts messages.join('\n')
+        end
+      end
+
     end
   end
 end

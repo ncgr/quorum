@@ -9,15 +9,15 @@
     <div>
       <%= f.file_field :sequence_file %>
     </div>
-    <%= render :partial => "blastn_form", :object => @job, 
-      :locals => { :blast_dbs => @blast_dbs } %>
-    <%= render :partial => "blastx_form", :object => @job,
-      :locals => { :blast_dbs => @blast_dbs } %>
-    <%= render :partial => "tblastn_form", :object => @job,
-      :locals => { :blast_dbs => @blast_dbs } %>
-     <%= render :partial => "blastp_form", :object => @job,
-      :locals => { :blast_dbs => @blast_dbs } %>
-     <%= render :partial => "hmmer_form", :object => @job %>
+    <%= render :partial => "blastn_form", :locals => { 
+      :f => f, :blast_dbs => @blast_dbs } %>
+    <%= render :partial => "blastp_form", :locals => { 
+      :f => f, :blast_dbs => @blast_dbs } %>
+    <%= render :partial => "blastx_form", :locals => { 
+      :f => f, :blast_dbs => @blast_dbs } %>
+    <%= render :partial => "tblastn_form", :locals => { 
+      :f => f, :blast_dbs => @blast_dbs } %>
+    <%= render :partial => "hmmer_form", :locals => { :f => f } %>
     <div>
       <%= f.submit "Submit" %>&nbsp;&nbsp;
       <%= submit_tag "Reset", :name => "reset", 

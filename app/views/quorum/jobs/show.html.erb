@@ -1,26 +1,6 @@
-<div id="blasts-show">
+<div id="show">
   <h1>Search Results</h1>
-  <p class="small right"><%= link_to raw("Search Again &raquo;"), :blasts %></p>
-  <%= paginate @blast_reports %>
-  <table>
-    <tr>
-      <th><%= kaminari_sort_by(:blast_path, "Query") %></th>
-      <th><%= kaminari_sort_by(:blast_path, "Bit Score") %></th>
-      <th><%= kaminari_sort_by(:blast_path, "Hit Length", :hit_len) %></th>
-      <th>Evalue</th>
-    </tr>
-    <% i = 1 %>
-    <% @blast_reports.each do |r| %>
-      <% i.modulo(2) == 0 ? style = "even" : style = "odd" %>
-      <tr class="<%= style %>">
-        <td><%= link_to r.query, "/quorum/blast_reports/#{r.id}" %></td>
-        <td><%= r.bit_score %></td>
-        <td><%= r.hit_len %></td>
-        <td><%= r.evalue %></td>
-      </tr>
-      <% i += 1 %>
-    <% end %>
-  </table>
-  <%= paginate @blast_reports %>
-  <p class="small right"><%= link_to raw("Search Again &raquo;"), :blasts %></p>
+  <p class="small right"><%= link_to raw("Search Again &raquo;"), :jobs %></p>
+  <%= @jobs.inspect %>
+  <p class="small right"><%= link_to raw("Search Again &raquo;"), :jobs %></p>
 </div>

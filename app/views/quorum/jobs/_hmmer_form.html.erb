@@ -1,25 +1,26 @@
-<p>
-  <strong>hmmscan</strong> <%= check_box_tag "activate_hmmer", 1, false %>
-</p>
-<div id="hmmer">
-	<table class="options">
-	  <%= fields_for @job.hmmer_job do |f| %>
+<%= f.fields_for :hmmer_job do |n| %>
+  <p>
+    <strong>hmmscan</strong> 
+    <%= n.check_box :queue %>
+  </p>
+  <div id="hmmer" class="toggle">
+	  <table class="options">
 	    <tr>
 	      <td>
-	        <%= f.label :expectation %>
+	        <%= n.label :expectation %>
 	      </td>
 	      <td>
-	        <%= f.text_field :expectation, :size => 15, :title => "5e-20", 
+	        <%= n.text_field :expectation, :size => 15, :title => "5e-20", 
 	          :class => "auto-hint" %>
 	      </td>
 	      <td>
-	        <%= f.label :min_score %>
+	        <%= n.label :min_score %>
 	      </td>
 	      <td>
-	        <%= f.text_field :min_score, :size => 15, :title => "0", 
+	        <%= n.text_field :min_score, :size => 15, :title => "0", 
 	          :class => "auto-hint" %>
 	      </td>
 	    </tr>
-	  <% end %>
-	</table>
-</div>
+	  </table>
+  </div>
+<% end %>

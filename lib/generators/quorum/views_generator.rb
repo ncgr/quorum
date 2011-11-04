@@ -5,7 +5,7 @@ module Quorum
       desc "Copy quorum views to your application."
 
       VIEW_DIRECTORIES = [
-        "blasts"
+        "jobs"
       ]
 
       def copy_views

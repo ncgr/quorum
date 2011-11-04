@@ -6,7 +6,7 @@ module Quorum
       desc "Creates Quorum initializer, settings and " <<
            "search tool files."
 
-      DEPENDENCIES = ["makeblastdb", "seqret"]
+      DEPENDENCIES = ["makeblastdb", "seqret", "redis-server"]
 
       def copy_initializer
         template "quorum_initializer.rb", 
@@ -16,6 +16,7 @@ module Quorum
         template "trollop.rb", "quorum/lib/trollop.rb"
         template "logger.rb", "quorum/lib/search_tools/logger.rb"
         template "blast.rb", "quorum/lib/search_tools/blast.rb"
+        template "hmmer.rb", "quorum/lib/search_tools/hmmer.rb"
       end
 
       def copy_locale

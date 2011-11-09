@@ -30,11 +30,37 @@ module Quorum
       end
 
       if @job.save
-        Resque.enqueue(Blastn, @job.blastn_job.id)   if @job.blastn_job.queue
-        Resque.enqueue(Blastx, @job.blastx_job.id)   if @job.blastx_job.queue
-        Resque.enqueue(Tblastn, @job.tblastn_job.id) if @job.tblastn_job.queue
-        Resque.enqueue(Blastp, @job.blastp_job.id)   if @job.blastp_job.queue
-        Resque.enqueue(Hmmer, @job.hmmer_job.id)     if @job.hmmer_job.queue
+        if @job.blastn_job && @job.blastn_job.queue
+          create_system_command("blastn")
+          Resque.enqueue(Workers::Blast, @cmd, Quorum.blast_remote, 
+                         Quorum.blast_ssh_host, Quorum.blast_ssh_user, 
+                         Quorum.blast_ssh_options)
+        end
+        if @job.blastx_job && @job.blastx_job.queue
+          create_system_command("blastx")
+          Resque.enqueue(Workers::Blast, @cmd, Quorum.blast_remote, 
+                         Quorum.blast_ssh_host, Quorum.blast_ssh_user, 
+                         Quorum.blast_ssh_options)
+
+        end
+        if @job.tblastn_job && @job.tblastn_job.queue
+          create_system_command("tblastn")
+          Resque.enqueue(Workers::Blast, @cmd, Quorum.blast_remote, 
+                         Quorum.blast_ssh_host, Quorum.blast_ssh_user, 
+                         Quorum.blast_ssh_options)
+        end
+        if @job.blastp_job && @job.blastp_job.queue
+          create_system_command("blastp")
+          Resque.enqueue(Workers::Blast, @cmd, Quorum.blast_remote, 
+                         Quorum.blast_ssh_host, Quorum.blast_ssh_user, 
+                         Quorum.blast_ssh_options)
+        end
+        if @job.hmmer_job && @job.hmmer_job.queue
+          create_system_command("hmmscan")
+          Resque.enqueue(Workers::Hmmer, @cmd, Hmmer.blast_remote, 
+                         Hmmer.blast_ssh_host, Hmmer.blast_ssh_user, 
+                         Hmmer.blast_ssh_options)
+        end
       else
         render :action => "new"
         return 
@@ -46,62 +72,40 @@ module Quorum
       @jobs = Job.find(params[:id])
     end
 
+    def get_results
+      @results = Job.find(params[:id])
+      respond_to do |format|
+        format.json { render :json => @results.blastn_job_reports }
+      end
+    end
+
     private
 
     #
     # Create system commands based on config/quorum_settings.yml
     #
-    def create_system_command
-      tblastn = blastp = blastn = blastx = hmmer = nil
-
+    def create_system_command(algorithm)
       # System command
-      cmd = "#{Quorum.blast_script} -s blast -i #{@job.id} " <<
-        "-e #{::Rails.env.to_s} -l #{Quorum.blast_log_dir} " <<
-        "-m #{Quorum.blast_tmp_dir} " <<
+      @cmd = ""
+
+      if Quorum::BLAST_ALGORITHMS.include?(algorithm)
+        @cmd << "#{Quorum.blast_script} -l #{Quorum.blast_log_dir} " <<
+          "-m #{Quorum.blast_tmp_dir} -b #{Quorum.blast_db} " <<
+          "-t #{Quorum.blast_threads} "
+      elsif Quorum::HMMER_ALGORITHMS.include?(algorithm)
+        @cmd << "#{Quorum.hmmer_script} -l #{Quorum.hmmer_log_dir} " <<
+          "-m #{Quorum.hmmer_tmp_dir} -b #{Quorum.hmmer_db} " <<
+          "-t #{Quorum.hmmer_threads} "
+      else
+        raise "Algorithm not found: #{algorithm}"
+      end
+
+      @cmd << "-s #{algorithm} -i #{@job.id} " <<
         "-d #{ActiveRecord::Base.configurations[::Rails.env.to_s]['database']} " <<
         "-a #{ActiveRecord::Base.configurations[::Rails.env.to_s]['adapter']} " <<
         "-k #{ActiveRecord::Base.configurations[::Rails.env.to_s]['host']} " <<
         "-u #{ActiveRecord::Base.configurations[::Rails.env.to_s]['username']} " <<
-        "-p #{ActiveRecord::Base.configurations[::Rails.env.to_s]['password']} " <<
-        "-b #{Quorum.blast_db} -t #{Quorum.blast_threads} "
-
-      ## Optional Quorum collections ##
-      unless Quorum.tblastn.empty?
-        tblastn = Quorum.tblastn.join(';')
-        cmd << "-q " << tblastn << " "
-      end
-      unless Quorum.blastp.empty?
-        blastp = Quorum.blastp.join(';')
-        cmd << "-r " << blastp << " "
-      end
-      unless Quorum.blastn.empty?
-        blastn = Quorum.blastn.join(';')
-        cmd << "-n " << blastn << " "
-      end
-      unless Quorum.blastx.empty?
-        blastx = Quorum.blastx.join(';')
-        cmd << "-x " << blastx << " "
-      end
-
-      logger.info @job.inspect
-      ## Optional Quorum params ##
-      cmd << "-v #{@job.expectation} " unless @job.expectation.blank?
-      cmd << "-c #{@job.max_score} " unless @job.max_score.blank?
-      cmd << "-j #{@job.min_bit_score} " unless @job.min_bit_score.blank?
-      cmd << "-g " unless @job.gapped_alignments.blank?
-
-      if @job.gap_opening_penalty
-        cmd << "-o #{@job.gap_opening_penalty} "
-      end
-
-      if @job.gap_extension_penalty
-        cmd << "-y #{@job.gap_extension_penalty} "
-      end
-
-      @exit_status = execute_cmd(
-        cmd, Quorum.blast_remote, Quorum.blast_ssh_host,
-        Quorum.blast_ssh_user, Quorum.blast_ssh_options
-      )
+        "-p #{ActiveRecord::Base.configurations[::Rails.env.to_s]['password']} "
     end
 
     #

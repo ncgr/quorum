@@ -1,6 +1,77 @@
 <div id="show">
   <h1>Search Results</h1>
   <p class="small right"><%= link_to raw("Search Again &raquo;"), :jobs %></p>
-  <%= @jobs.inspect %>
+  <div id="tabs">
+    <ul>
+      <li><a href="#tabs-1">Blastn</a></li>
+      <li><a href="#tabs-2">Blastx</a></li>
+      <li><a href="#tabs-3">Tblastn</a></li>
+      <li><a href="#tabs-4">Blastp</a></li>
+      <li><a href="#tabs-5">Hmmer</a></li>
+    </ul>
+    
+    <div id="tabs-1">
+      <h2>Blastn</h2>
+      <div id="blastn-results"></div>
+    </div>
+
+    <div id="tabs-2">
+      <h2>Blastx</h2>
+      <div id="blastx-results"></div>
+    </div>
+
+    <div id="tabs-3">
+      <h2>Tblastn</h2>
+      <div id="tblastn-results"></div>
+    </div>
+
+    <div id="tabs-4">
+      <h2>Blastp</h2>
+      <div id="blastp-results"></div>
+    </div>
+
+    <div id="tabs-5">
+      <h2>Hmmer</h2>
+      <div id="hmmer-results"></div>
+    </div>
+  </div>
   <p class="small right"><%= link_to raw("Search Again &raquo;"), :jobs %></p>
 </div>
+
+<script type="text/javascript">
+  $(function() {
+    var loaded = false;
+    function pollResults() {
+      $.getJSON(
+        '/quorum/jobs/<%= @jobs.id %>/get_results.json',
+        function(data) {
+          if (data.length === 0) {
+            setTimeout(function() { pollResults(); }, 0.1);
+          } else {
+            $.each(data, function(i, v) {
+              var content = '<p>align len: ' + v.align_len + '</p>';
+              content += '<p>bit score: ' + v.bit_score + '</p>';
+              content += '<p>evalue: ' + v.evalue + '</p>';
+              content += '<p>hit def: ' + v.hit_def + '</p>';
+              content += '<p>hit frame: ' + v.hit_frame + '</p>';
+              content += '<p>hit from: ' + v.hit_from + '</p>';
+              content += '<p>hit id: ' + v.hit_id + '</p>';
+              content += '<p>hit len: ' + v.hit_len + '</p>';
+              content += '<p>hit to: ' + v.hit_to + '</p>';
+              content += '<pre>' + v.hseq + '<br />';
+              content += v.midline + '<br />';
+              content += v.qseq + '</pre>';
+              content += '<p>hit to: ' + v.hit_to + '</p>';
+              $(content).appendTo('#blastn-results');  
+            });
+            loaded = true;
+            return;
+          }
+        } 
+      );
+    }
+    if (!loaded) {
+      pollResults();
+    }
+  });
+</script>

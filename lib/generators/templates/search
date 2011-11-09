@@ -4,7 +4,6 @@ $LOAD_PATH.unshift(File.expand_path("../../lib", __FILE__))
 
 require 'trollop'
 require 'active_record'
-require 'active_support/inflector'
 require 'search_tools/blast'
 require 'search_tools/hmmer'
 
@@ -116,11 +115,11 @@ Options:
 
       ## Execute search tool ##
 
-      case @args[:search_tool]
-      when "blast"
+      case
+      when @args[:search_tool].include? "blast"
         blast = Quorum::SearchTools::Blast.new(@args)
         blast.execute_blast
-      when "hmmer"
+      when @args[:search_tool].include? "hmmer"
         hmmer = Quorum::SearchTools::Hmmer.new(@args)
         hmmer.execute_hmmer
       end

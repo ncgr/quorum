@@ -6,7 +6,7 @@ module Quorum
       desc "Creates Quorum initializer, settings and " <<
            "search tool files."
 
-      DEPENDENCIES = ["makeblastdb", "seqret", "redis-server"]
+      DEPENDENCIES = ["makeblastdb", "seqret"]
 
       def copy_initializer
         template "quorum_initializer.rb", 
@@ -40,8 +40,8 @@ module Quorum
         route %Q(mount Quorum::Engine => "/quorum")
       end
 
-      def show_readme
-        readme "README"
+      def add_resque_mount_engine
+        route %Q(mount Resque::Server.new, :at => "/quorum/resque")
       end
 
       def check_dependencies
@@ -58,6 +58,10 @@ module Quorum
           puts "*** Quorum system dependencies not found ***"
           puts messages.join('\n')
         end
+      end
+
+      def show_readme
+        readme "README"
       end
 
     end

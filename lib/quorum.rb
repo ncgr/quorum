@@ -1,14 +1,19 @@
 require "quorum/engine"
-require "quorum/system"
 require "quorum/helpers"
+require "quorum/sequence"
+require "quorum/system"
+require "workers/blast"
+require "workers/hmmer"
+require "resque"
+require "resque/server"
 require "kaminari"
 require "net/ssh"
 
 module Quorum
 
-  autoload :Helpers, 'quorum/helpers'
-  autoload :Sequence, 'quorum/sequence'
-  autoload :System, 'quorum/system'
+  ## Supported Algorithms ##
+  BLAST_ALGORITHMS = ["blastn", "blastx", "blastp", "tblastn"]
+  HMMER_ALGORITHMS = ["hmmscan"]
 
   mattr_accessor :blast_remote, :blast_ssh_host, :blast_ssh_user, 
     :blast_ssh_options, :blast_script, :blast_log_dir, :blast_tmp_dir,

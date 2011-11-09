@@ -77,7 +77,9 @@ module Quorum
     private
 
     def set_blast_dbs
-      self.blast_dbs = self.blast_dbs.join(';')
+      if self.blast_dbs.present?
+        self.blast_dbs = self.blast_dbs.join(';')
+      end
     end
 
     def set_optional_params

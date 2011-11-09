@@ -20,7 +20,7 @@ module Quorum
 
     accepts_nested_attributes_for :blastn_job, :blastx_job, :tblastn_job,
       :blastp_job, :hmmer_job,
-      :reject_if => proc { |attributes| attributes['queue'] == false }
+      :reject_if => proc { |attributes| attributes['queue'] == '0' }
 
     attr_accessible :sequence, :na_sequence, :aa_sequence, 
       :blastn_job_attributes, :blastx_job_attributes, :tblastn_job_attributes,
@@ -63,8 +63,8 @@ module Quorum
       else
         fasta = File.read(File.join(tmp, hash + ".fa"))
       ensure
-        #File.delete(File.join(tmp, hash + ".fa"))
-        #File.delete(File.join(tmp, hash + ".seq"))
+        File.delete(File.join(tmp, hash + ".fa"))
+        File.delete(File.join(tmp, hash + ".seq"))
       end
 
       self.na_sequence = ""

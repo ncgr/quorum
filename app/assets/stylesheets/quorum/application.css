@@ -9,7 +9,7 @@
 /*** Content Styles ***/
 
 html {
-    color: #000000;
+    color: #222222;
     font-family: Lucida Grande, Helvetica, Arial, sans-serif;	
     background: #b8b8b8 url("bg.png") repeat-x top;
 }
@@ -77,7 +77,7 @@ hr {
 }
 
 .right {
-    float: right;	
+    text-align: right;	
     font-style: italic;
 }
 

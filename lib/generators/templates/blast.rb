@@ -42,55 +42,77 @@ module Quorum
           @logger.log("ActiveRecord", e.message, 80)
         end
 
+        @sequence = @job.na_sequence
+
         @tblastn = @blastp = @blastn = @blastx = nil
 
         case @algorithm
         when "blastn"
-          @sequence              = @job.na_sequence
-          @expectation           = @job.blastn_job.expectation
-          @max_score             = @job.blastn_job_max_score
-          @min_score             = @job.blastn_job_min_bit_score
-          @gapped_alignments     = @job.blastn_job_gapped_alignments
-          @gap_opening_penalty   = @job.blastn_job_gap_opening_penalty
-          @gap_extension_penalty = @job.blastn_job_gap_extension_penalty
+          begin
+            @blastn_job = QuorumBlastnJob.find(@id)
+          rescue Exception => e
+            @logger.log("ActiveRecord", e.message, 80)
+          end
 
-          @blastn = @job.blastn_job.blast_dbs.split(';')
+          @expectation           = @blastn_job.expectation
+          @max_score             = @blastn_job.max_score
+          @min_score             = @blastn_job.min_bit_score
+          @gapped_alignments     = @blastn_job.gapped_alignments
+          @gap_opening_penalty   = @blastn_job.gap_opening_penalty
+          @gap_extension_penalty = @blastn_job.gap_extension_penalty
+
+          @blastn = @blastn_job.blast_dbs.split(';')
           @blastn.map! { |d| File.join(@search_database, d) }
           @blastn = @blastn.join(' ')
         when "blastx"
-          @sequence              = @job.na_sequence
-          @expectation           = @job.blastx_job.expectation
-          @max_score             = @job.blastx_job_max_score
-          @min_score             = @job.blastx_job_min_bit_score
-          @gapped_alignments     = @job.blastx_job_gapped_alignments
-          @gap_opening_penalty   = @job.blastx_job_gap_opening_penalty
-          @gap_extension_penalty = @job.blastx_job_gap_extension_penalty
+          begin
+            @blastx_job = QuorumBlastxJob.find(@id)
+          rescue Exception => e
+            @logger.log("ActiveRecord", e.message, 80)
+          end
 
-          @blastx = @job.blastx_job.blast_dbs.split(';')
+          @expectation           = @blastx_job.expectation
+          @max_score             = @blastx_job.max_score
+          @min_score             = @blastx_job.min_bit_score
+          @gapped_alignments     = @blastx_job.gapped_alignments
+          @gap_opening_penalty   = @blastx_job.gap_opening_penalty
+          @gap_extension_penalty = @blastx_job.gap_extension_penalty
+
+          @blastx = @blastx_job.blast_dbs.split(';')
           @blastx.map! { |d| File.join(@search_database, d) }
           @blastx = @blastx.join(' ')
         when "tblastn"
-          @sequence              = @job.aa_sequence
-          @expectation           = @job.tblastn_job.expectation
-          @max_score             = @job.tblastn_job_max_score
-          @min_score             = @job.tblastn_job_min_bit_score
-          @gapped_alignments     = @job.tblastn_job_gapped_alignments
-          @gap_opening_penalty   = @job.tblastn_job_gap_opening_penalty
-          @gap_extension_penalty = @job.tblastn_job_gap_extension_penalty
+          begin
+            @tblastn_job = QuorumTblastnJob.find(@id)
+          rescue Exception => e
+            @logger.log("ActiveRecord", e.message, 80)
+          end
 
-          @tblastn = @job.tblastn_job.blast_dbs.split(';')
+          @expectation           = @tblastn_job.expectation
+          @max_score             = @tblastn_job.max_score
+          @min_score             = @tblastn_job.min_bit_score
+          @gapped_alignments     = @tblastn_job.gapped_alignments
+          @gap_opening_penalty   = @tblastn_job.gap_opening_penalty
+          @gap_extension_penalty = @tblastn_job.gap_extension_penalty
+
+          @tblastn = @tblastn_job.blast_dbs.split(';')
           @tblastn.map! { |d| File.join(@search_database, d) }
           @tblastn = @tblastn.join(' ')
         when "blastp"
-          @sequence              = @job.aa_sequence
-          @expectation           = @job.blastp_job.expectation
-          @max_score             = @job.blastp_job_max_score
-          @min_score             = @job.blastp_job_min_bit_score
-          @gapped_alignments     = @job.blastp_job_gapped_alignments
-          @gap_opening_penalty   = @job.blastp_job_gap_opening_penalty
-          @gap_extension_penalty = @job.blastp_job_gap_extension_penalty
+          begin
+            @blastp_job = QuorumBlastpJob.find(@id)
+          rescue Exception => e
+            @logger.log("ActiveRecord", e.message, 80)
+          end
 
-          @blastp = @job.blastp_job.blast_dbs.split(';')
+          @expectation           = @blastp_job.expectation
+          @max_score             = @blastp_job.max_score
+          @min_score             = @blastp_job.min_bit_score
+          @gapped_alignments     = @blastp_job.gapped_alignments
+          @gap_opening_penalty   = @blastp_job.gap_opening_penalty
+          @gap_extension_penalty = @blastp_job.gap_extension_penalty
+
+          @blastp = @blastp_job.blast_dbs.split(';')
           @blastp.map! { |d| File.join(@search_database, d) }
           @blastp = @blastp.join(' ')
         end
@@ -108,11 +130,10 @@ module Quorum
         @fasta = File.join(@tmp, @hash + ".fa")
         File.open(@fasta, "w") { |f| f << @sequence }
         
-        @nucl = File.join(@tmp, @hash + ".nucl.xml") 
-        @prot = File.join(@tmp, @hash + ".prot.xml")
+        @out = File.join(@tmp, @hash + ".out.xml") 
 
-        File.new(@nucl, "w")
-        File.new(@prot, "w")
+        File.new(@out, "w")
+        File.new(@out, "w")
 
         case @algorithm
         when "blastn"
@@ -124,7 +145,7 @@ module Quorum
             "-num_threads #{@threads} " <<
             "-evalue #{@expectation} " <<
             "-max_target_seqs #{@max_score} " <<
-            "-out #{@nucl} "
+            "-out #{@out} "
             if @gapped_alignments
               blastn << "-gapopen #{@gap_opening_penalty} "
               blastn << "-gapextend #{@gap_extension_penalty} "
@@ -142,7 +163,7 @@ module Quorum
             "-num_threads #{@threads} " <<
             "-evalue #{@expectation} " <<
             "-max_target_seqs #{@max_score} " <<
-            "-out #{@prot} "
+            "-out #{@out} "
             if @gapped_alignments
               blastx << "-gapopen #{@gap_opening_penalty} "
               blastx << "-gapextend #{@gap_extension_penalty} "
@@ -160,7 +181,7 @@ module Quorum
             "-num_threads #{@threads} " <<
             "-evalue #{@expectation} " <<
             "-max_target_seqs #{@max_score} " <<
-            "-out #{@nucl} "
+            "-out #{@out} "
             if @gapped_alignments
               tblastn << "-gapopen #{@gap_opening_penalty} "
               tblastn << "-gapextend #{@gap_extension_penalty} "
@@ -180,7 +201,7 @@ module Quorum
             "-num_threads #{@threads} " <<
             "-evalue #{@expectation} " <<
             "-max_target_seqs #{@max_score} " <<
-            "-out #{@prot} "
+            "-out #{@out} "
             if @gapped_alignments
               blastp << "-gapopen #{@gap_opening_penalty} "
               blastp << "-gapextend #{@gap_extension_penalty} "
@@ -203,66 +224,73 @@ module Quorum
         # Helper to avoid having to perform a query.
         saved = false
         
-        [@prot, @nucl].each do |f|
-          report = Bio::Blast::XmlIterator.new(f)
-          report.to_enum.each do |iteration|
-            const   = "Quorum#{@algorithm.capitalize}JobReport"
-            @report = const.constantize.new
+        report = Bio::Blast::XmlIterator.new(@out)
+        report.to_enum.each do |iteration|
 
-            @report.query     = iteration.query_def
-            @report.query_len = iteration.query_len
+          case @algorithm
+          when "blastn"
+            @report = QuorumBlastnJobReport.new
+          when "blastx"
+            @report = QuorumBlastxJobReport.new
+          when "tblastn"
+            @report = QuorumTblastnJobReport.new
+          when "blastp"
+            @report = QuorumBlastpJobReport.new
+          end
 
-            iteration.each do |hit|
-              @report.hit_id        = hit.hit_id            
-              @report.hit_def       = hit.hit_def
-              @report.hit_accession = hit.accession
-              @report.hit_len       = hit.len
+          @report.query     = iteration.query_def
+          @report.query_len = iteration.query_len
 
-              hit.each do |hsp|
-                @report.bit_score   = hsp.bit_score
-                @report.score       = hsp.score
-                @report.evalue      = hsp.evalue
-                @report.query_from  = hsp.query_from
-                @report.query_to    = hsp.query_to
-                @report.hit_from    = hsp.hit_from
-                @report.hit_to      = hsp.hit_to
-                @report.query_frame = hsp.query_frame
-                @report.hit_frame   = hsp.hit_frame
-                @report.identity    = hsp.identity
-                @report.positive    = hsp.positive
-                @report.align_len   = hsp.align_len
-                @report.qseq        = hsp.qseq
-                @report.hseq        = hsp.hseq
-                @report.midline     = hsp.midline
-              end
+          iteration.each do |hit|
+            @report.hit_id        = hit.hit_id            
+            @report.hit_def       = hit.hit_def
+            @report.hit_accession = hit.accession
+            @report.hit_len       = hit.len
+
+            hit.each do |hsp|
+              @report.bit_score   = hsp.bit_score
+              @report.score       = hsp.score
+              @report.evalue      = hsp.evalue
+              @report.query_from  = hsp.query_from
+              @report.query_to    = hsp.query_to
+              @report.hit_from    = hsp.hit_from
+              @report.hit_to      = hsp.hit_to
+              @report.query_frame = hsp.query_frame
+              @report.hit_frame   = hsp.hit_frame
+              @report.identity    = hsp.identity
+              @report.positive    = hsp.positive
+              @report.align_len   = hsp.align_len
+              @report.qseq        = hsp.qseq
+              @report.hseq        = hsp.hseq
+              @report.midline     = hsp.midline
             end
+          end
 
-            case @algorithm
-            when "blastn"
-              @report.blastn_job_id = @job.blastn_job.id
-            when "blastx"
-              @report.blastx_job_id = @job.blastx_job.id
-            when "tblastn"
-              @report.tblastn_job_id = @job.tblastn_job.id
-            when "blastp"
-              @report.blastp_job_id = @job.blastp_job.id
-            end
+          case @algorithm
+          when "blastn"
+            @report.blastn_job_id = @blastn_job.id
+          when "blastx"
+            @report.blastx_job_id = @blastx_job.id
+          when "tblastn"
+            @report.tblastn_job_id = @tblastn_job.id
+          when "blastp"
+            @report.blastp_job_id = @blastp_job.id
+          end
 
-            # Hsps are only reported if a query hit against the Blast db.
-            # Only save the @report if bit_score exists.
-            if @report.bit_score && 
-              (@report.bit_score.to_i > @min_score.to_i)
-              saved = true
-              unless @report.save!
-                @logger.log(
-                  "ActiveRecord",
-                  "Unable to save Blast results to database.",
-                  81,
-                  @tmp_files
-                )
-              end
+          # Hsps are only reported if a query hit against the Blast db.
+          # Only save the @report if bit_score exists.
+          if @report.bit_score && 
+            (@report.bit_score.to_i > @min_score.to_i)
+            saved = true
+            unless @report.save!
+              @logger.log(
+                "ActiveRecord",
+                "Unable to save Blast results to database.",
+                81,
+                @tmp_files
+              )
             end
-          end 
+          end
         end
 
         unless saved

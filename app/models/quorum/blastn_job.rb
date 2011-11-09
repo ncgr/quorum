@@ -77,11 +77,13 @@ module Quorum
     private
 
     def set_blast_dbs
-      self.blast_dbs = self.blast_dbs.join(';')
+      if self.blast_dbs.present?
+        self.blast_dbs = self.blast_dbs.join(';')
+      end
     end
 
     def set_optional_params
-      self.expectation   ||= "5e-20"
+      self.expectation   = "5e-10" if self.expectation.blank?
       self.max_score     ||= 25
       self.min_bit_score ||= 0
       unless self.gapped_alignments

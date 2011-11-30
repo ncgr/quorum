@@ -11,11 +11,11 @@
     </div>
     <%= render :partial => "blastn_form", :locals => { 
       :f => f, :blast_dbs => @blast_dbs } %>
-    <%= render :partial => "blastp_form", :locals => { 
-      :f => f, :blast_dbs => @blast_dbs } %>
     <%= render :partial => "blastx_form", :locals => { 
       :f => f, :blast_dbs => @blast_dbs } %>
     <%= render :partial => "tblastn_form", :locals => { 
+      :f => f, :blast_dbs => @blast_dbs } %>
+    <%= render :partial => "blastp_form", :locals => { 
       :f => f, :blast_dbs => @blast_dbs } %>
     <%= render :partial => "hmmer_form", :locals => { :f => f } %>
     <div>

@@ -22,6 +22,7 @@ class CreateBlastxJobReports < ActiveRecord::Migration
       t.text :qseq
       t.text :hseq
       t.text :midline
+      t.boolean :results
 
       t.references :blastx_job
 

@@ -12,66 +12,81 @@
     
     <div id="tabs-1">
       <h2>Blastn</h2>
-      <div id="blastn-results"></div>
+      <div id="blastn-results">
+        Searching... <%= image_tag "quorum/knight_rider.gif" %> 
+      </div>
     </div>
 
     <div id="tabs-2">
       <h2>Blastx</h2>
-      <div id="blastx-results"></div>
+      <div id="blastx-results">
+        Searching... <%= image_tag "quorum/knight_rider.gif" %> 
+      </div>
     </div>
 
     <div id="tabs-3">
       <h2>Tblastn</h2>
-      <div id="tblastn-results"></div>
+      <div id="tblastn-results">
+        Searching... <%= image_tag "quorum/knight_rider.gif" %> 
+      </div>
     </div>
 
     <div id="tabs-4">
       <h2>Blastp</h2>
-      <div id="blastp-results"></div>
+      <div id="blastp-results">
+        Searching... <%= image_tag "quorum/knight_rider.gif" %> 
+      </div>
     </div>
 
     <div id="tabs-5">
       <h2>Hmmer</h2>
-      <div id="hmmer-results"></div>
+      <div id="hmmer-results">
+      </div>
     </div>
   </div>
   <p class="small right"><%= link_to raw("Search Again &raquo;"), :jobs %></p>
 </div>
 
+<script type="text/template" id="blast_template">
+  {{ if (data[0].results === false) { }}
+    <p><strong>Your search returned 0 hits.</strong></p>
+  {{ } else { }}
+	  <table class="report_details">
+	    <tr>
+	      <th>Query ID</th>
+	      <th>Query Length</th>
+	      <th>Hit ID</th>
+	      <th>Hit Length</th>
+	      <th>Hit Description</th>
+	      <th>Alignment Length</th>
+	      <th>Bit Score</th>
+	      <th>E-value</th>
+	    </tr>
+	    {{ var i = 1; var style = "" }}
+	    {{ _.each(data, function(v) { }}
+	      {{ i % 2 == 0 ? style = "even" : style = "odd" }}
+	      <tr class="{{= style }}">
+	        <td>{{= v.query }}</td>
+	        <td>{{= v.query_len }}</td>
+	        <td>{{= v.hit_id }}</td>
+	        <td>{{= v.hit_len }}</td>
+	        <td></td>
+	        <td>{{= v.align_len }}</td>
+	        <td>{{= v.bit_score }}</td>
+	        <td>{{= v.evalue }}</td>
+	      </tr>
+	      {{ i++ }}
+	    {{ }); }}
+	  </table>
+  {{ } }}
+</script>
+
 <script type="text/javascript">
   $(function() {
-    var loaded = false;
-    function pollResults() {
-      $.getJSON(
-        '/quorum/jobs/<%= @jobs.id %>/get_results.json',
-        function(data) {
-          if (data.length === 0) {
-            setTimeout(function() { pollResults(); }, 0.1);
-          } else {
-            $.each(data, function(i, v) {
-              var content = '<p>align len: ' + v.align_len + '</p>';
-              content += '<p>bit score: ' + v.bit_score + '</p>';
-              content += '<p>evalue: ' + v.evalue + '</p>';
-              content += '<p>hit def: ' + v.hit_def + '</p>';
-              content += '<p>hit frame: ' + v.hit_frame + '</p>';
-              content += '<p>hit from: ' + v.hit_from + '</p>';
-              content += '<p>hit id: ' + v.hit_id + '</p>';
-              content += '<p>hit len: ' + v.hit_len + '</p>';
-              content += '<p>hit to: ' + v.hit_to + '</p>';
-              content += '<pre>' + v.hseq + '<br />';
-              content += v.midline + '<br />';
-              content += v.qseq + '</pre>';
-              content += '<p>hit to: ' + v.hit_to + '</p>';
-              $(content).appendTo('#blastn-results');  
-            });
-            loaded = true;
-            return;
-          }
-        } 
-      );
-    }
-    if (!loaded) {
-      pollResults();
-    }
+    pollResults(<%= @jobs.id %>, "blastn");
+    pollResults(<%= @jobs.id %>, "blastx");
+    pollResults(<%= @jobs.id %>, "tblastn");
+    pollResults(<%= @jobs.id %>, "blastp");
+    //pollResults(<%= @jobs.id %>, "hmmer");
   });
 </script>

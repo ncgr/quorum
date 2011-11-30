@@ -4,11 +4,11 @@
 */
 
 #new {
-    width: 50%;
+    width: 60%;
 }
 
 #show {
-    width: 70%;
+    width: 90%;
 }
 
 /*** Table Styles ***/
@@ -19,21 +19,21 @@ table.options {
   border-collapse: collapse;
 }
 
-table#report_details {
+table.report_details {
   margin: 0;
   border: 0;
-  width: 50%;
+  width: 100%;
   border-collapse: collapse;
 }
 
 th {
   white-space: normal;
+  font-size: 14px;
 }
 
 th, td {
   padding: 3px;
   text-align: left;
-  font-size: 12px;
 }
 
 th a, a:hover {
@@ -43,6 +43,7 @@ th a, a:hover {
 
 td {
   white-space: normal;
+  font-size: 12px;
 }
 
 tr.odd {

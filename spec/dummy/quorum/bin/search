@@ -115,20 +115,10 @@ Options:
 
       ## Execute search tool ##
 
-      case @args[:search_tool]
-      when "blastn"
+      if @args[:search_tool].include? "blast"
         blast = Quorum::SearchTools::Blast.new(@args)
         blast.execute_blast
-      when "blastx"
-        blast = Quorum::SearchTools::Blast.new(@args)
-        blast.execute_blast
-      when "tblastn"
-        blast = Quorum::SearchTools::Blast.new(@args)
-        blast.execute_blast
-      when "blastp"
-        blast = Quorum::SearchTools::Blast.new(@args)
-        blast.execute_blast
-      when "hmmer"
+      elsif @args[:search_tool].include? "hmmer"
         hmmer = Quorum::SearchTools::Hmmer.new(@args)
         hmmer.execute_hmmer
       end

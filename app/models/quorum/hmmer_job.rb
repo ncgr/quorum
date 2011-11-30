@@ -19,7 +19,7 @@ module Quorum
     private
 
     def set_optional_params
-      self.expectation ||= "5e-20"
+      self.expectation = "5e-20" if self.expectation.blank?
       self.min_score   ||= 0
     end
 

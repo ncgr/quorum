@@ -10,7 +10,7 @@
 	        <label>Database(s)</label>
 	      </td>
 	      <td>
-          <%= n.select :blast_dbs, @blast_dbs, {}, { :multiple => true } %> 
+          <%= n.select :blast_dbs, @blast_dbs[:blastn], {}, { :multiple => true } %> 
 	      </td>
 	      <td>
 	        <%= n.label :filter %>

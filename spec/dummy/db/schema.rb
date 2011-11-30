@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111102225267) do
+ActiveRecord::Schema.define(:version => 20111130165754) do
 
   create_table "quorum_blastn_job_reports", :force => true do |t|
     t.string   "query"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20111102225267) do
     t.text     "qseq"
     t.text     "hseq"
     t.text     "midline"
+    t.boolean  "results"
     t.integer  "blastn_job_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -77,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20111102225267) do
     t.text     "qseq"
     t.text     "hseq"
     t.text     "midline"
+    t.boolean  "results"
     t.integer  "blastp_job_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -119,6 +121,7 @@ ActiveRecord::Schema.define(:version => 20111102225267) do
     t.text     "qseq"
     t.text     "hseq"
     t.text     "midline"
+    t.boolean  "results"
     t.integer  "blastx_job_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -179,6 +182,7 @@ ActiveRecord::Schema.define(:version => 20111102225267) do
     t.text     "qseq"
     t.text     "hseq"
     t.text     "midline"
+    t.boolean  "results"
     t.integer  "tblastn_job_id"
     t.datetime "created_at"
     t.datetime "updated_at"

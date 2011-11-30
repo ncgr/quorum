@@ -83,7 +83,7 @@ module Quorum
     end
 
     def set_optional_params
-      self.expectation   ||= "5e-20"
+      self.expectation   = "5e-20" if self.expectation.blank?
       self.max_score     ||= 25
       self.min_bit_score ||= 0
       unless self.gapped_alignments

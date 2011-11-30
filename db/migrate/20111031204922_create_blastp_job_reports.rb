@@ -22,6 +22,7 @@ class CreateBlastpJobReports < ActiveRecord::Migration
       t.text :qseq
       t.text :hseq
       t.text :midline
+      t.boolean :results
 
       t.references :blastp_job
 

@@ -5,7 +5,7 @@ module Quorum
     # Create a unique hash plus timestamp.
     #
     def create_hash(sequence)
-      Digest::MD5.hexdigest(sequence).to_s + "-" + Time.now.to_i.to_s
+      Digest::MD5.hexdigest(sequence).to_s + "-" + Time.now.to_f.to_s
     end
 
     #

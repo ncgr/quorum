@@ -4,7 +4,6 @@ require "quorum/sequence"
 require "workers/quorum"
 require "resque"
 require "resque/server"
-require "kaminari"
 require "net/ssh"
 
 module Quorum

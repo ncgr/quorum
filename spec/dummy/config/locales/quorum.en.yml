@@ -1,15 +1,7 @@
 en:
   quorum:
-    blasts:
+    jobs:
       errors:
-        error_save: "Unable to save Blast data."
-        error_1: "Quorum Blast failed."
-        error_70: "Please enter your sequence(s) in Plain Text as FASTA."
-        error_71: "Your search returned 0 hits."
-        error_80: "ActiveRecord Error: Record not found."
-        error_81: "ActiveRecord Error: Unable to save record."
-        error_127: "Quorum or system executable not found."
-        error_255: "Quorum option_parser error. Please ensure your config/quorum_settings.yml file is properly set."
       notices:
         data_not_found: "The data you requested is unavailable. Please check your URL and try again."
       alerts:

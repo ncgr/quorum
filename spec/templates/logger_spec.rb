@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'generators/templates/logger'
 
-describe "Quorum::Utils::Logger" do
+describe "Quorum::Logger" do
   describe "#log" do
     before(:all) do
       @args   = File.join(::Rails.root.to_s, "log") 
-      @logger = Quorum::Utils::Logger.new(@args)
+      @logger = Quorum::Logger.new(@args)
     end
 
     it "records program and message in a log file" do

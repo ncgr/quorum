@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Quorum::BlastReportsHelper do
+describe Quorum::JobsHelper do
   describe "#format_sequence_report" do
 
     it "formats Blast report sequence data. (qseq, hseq and midline)" do

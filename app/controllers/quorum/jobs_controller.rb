@@ -42,7 +42,12 @@ module Quorum
     end
 
     def show
-      @jobs = Job.find(params[:id])
+      begin
+        @jobs = Job.find(params[:id])
+      rescue ActiveRecord::RecordNotFound => e
+        set_flash_message(:notice, :data_not_found)
+        redirect_to :action => "new"
+      end        
     end
 
     #

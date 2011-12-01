@@ -56,7 +56,7 @@ module Quorum
       # Index of the first newline char.
       start = sequence.index(/\n/)
       # Remove the sequence FASTA header.
-      seq   = sequence.slice(start..-1).gsub!(/\n/, '')
+      seq = sequence.slice(start..-1).gsub!(/\n/, '')
 
       if seq =~ /[EQILFP]+/
         type = "amino_acid"

@@ -100,40 +100,33 @@ development:
     ssh_host:
     ssh_user:
     ssh_options:
-      # Example:
-      # password: "secret password"
-      # port: 8888
     script: "%{RAILS_ROOT}/quorum/bin/search"
     log_dir: "%{RAILS_ROOT}/quorum/log"
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
     tblastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
+      - gm_genome
+      - mt_3_0_genome
+      - mt_3_5_1_genome
+      - lj_genome
+      - mt_affy_genechip_target 
     blastp:
-      # Example:
-      # - prot_1
-      # - prot_2 
+      - swissprot_viridiplantae
     blastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
-      - tmp
+      - gm_genome
+      - mt_3_0_genome
+      - mt_3_5_1_genome
+      - lj_genome
+      - mt_affy_genechip_target 
+      - ca_transcripts
     blastx:
-      # Example:
-      # - prot_1
-      # - prot_2 
-      - tmp
+      - swissprot_viridiplantae
     blast_threads: 4
   hmmer:
     remote: false
     ssh_host:
     ssh_user:
     ssh_options:
-      # Example:
-      # password: "secret password"
-      # port: 8888
     script: "%{RAILS_ROOT}/quorum/bin/search"
     log_dir: "%{RAILS_ROOT}/quorum/log"
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
@@ -146,38 +139,24 @@ test:
     ssh_host:
     ssh_user:
     ssh_options:
-      # Example:
-      # password: "secret password"
-      # port: 8888
     script: "%{RAILS_ROOT}/quorum/bin/search"
     log_dir: "%{RAILS_ROOT}/quorum/log"
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
     tblastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
+      - tmp
     blastp:
-      # Example:
-      # - prot_1
-      # - prot_2 
+      - tmp
     blastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
+      - tmp
     blastx:
-      # Example:
-      # - prot_1
-      # - prot_2 
-    blast_threads:
+      - tmp
+    blast_threads: 4
   hmmer:
     remote: false
     ssh_host:
     ssh_user:
     ssh_options:
-      # Example:
-      # password: "secret password"
-      # port: 8888
     script: "%{RAILS_ROOT}/quorum/bin/search"
     log_dir: "%{RAILS_ROOT}/quorum/log"
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
@@ -190,38 +169,20 @@ production:
     ssh_host:
     ssh_user:
     ssh_options:
-      # Example:
-      # password: "secret password"
-      # port: 8888
     script:
     log_dir:
     tmp_dir:
     blast_db:
     tblastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
     blastp:
-      # Example:
-      # - prot_1
-      # - prot_2 
     blastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
     blastx:
-      # Example:
-      # - prot_1
-      # - prot_2 
     blast_threads:
   hmmer:
     remote: true
     ssh_host:
     ssh_user:
     ssh_options:
-      # Example:
-      # password: "secret password"
-      # port: 8888
     script:
     log_dir:
     tmp_dir:

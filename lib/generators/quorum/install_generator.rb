@@ -14,7 +14,7 @@ module Quorum
         template "quorum_settings.yml", "config/quorum_settings.yml"
         template "search", "quorum/bin/search"
         template "trollop.rb", "quorum/lib/trollop.rb"
-        template "logger.rb", "quorum/lib/search_tools/logger.rb"
+        template "logger.rb", "quorum/lib/logger.rb"
         template "blast.rb", "quorum/lib/search_tools/blast.rb"
         template "hmmer.rb", "quorum/lib/search_tools/hmmer.rb"
       end

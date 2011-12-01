@@ -4,7 +4,6 @@ PATH
     quorum (0.0.1)
       bio-blastxmlparser (~> 1.0.1)
       jquery-rails
-      kaminari (~> 0.12.4)
       net-ssh (~> 2.2.1)
       rails (~> 3.1.0)
       resque (~> 1.19.0)
@@ -75,8 +74,6 @@ GEM
       thor (~> 0.14)
     json_pure (1.5.4)
       spruz (~> 0.2.8)
-    kaminari (0.12.4)
-      rails (>= 3.0.0)
     linecache19 (0.5.12)
       ruby_core_source (>= 0.1.4)
     log4r (1.1.9)

@@ -1,4 +1,4 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__))
+$LOAD_PATH.unshift(File.expand_path("../../", __FILE__))
 
 require 'bio-blastxmlparser'
 require 'logger'
@@ -93,6 +93,7 @@ module Quorum
         @job_association        = "quorum_#{@algorithm}_job".to_sym
         @job_report_association = "quorum_#{@algorithm}_job_reports".to_sym
 
+        @filter                = @job.method(@job_association).call.filter
         @expectation           = @job.method(@job_association).call.expectation
         @max_score             = @job.method(@job_association).call.max_score
         @min_score             = @job.method(@job_association).call.min_bit_score
@@ -147,6 +148,7 @@ module Quorum
           else
             blastn << "-ungapped "
           end
+          blastn << "-dust yes " if @filter
           @cmd << blastn
         when "blastx"
           blastx = "blastx " <<
@@ -163,6 +165,7 @@ module Quorum
           else
             blastx << "-ungapped "
           end
+          blastx << "-seg yes " if @filter
           @cmd << blastx
         when "tblastn"
           tblastn = "tblastn " <<
@@ -181,6 +184,7 @@ module Quorum
             tblastn << "-ungapped "
             tblastn << "-comp_based_stats F "
           end
+          tblastn << "-seg yes " if @filter
           @cmd << tblastn
         when "blastp"
           blastp = "blastp " <<
@@ -198,8 +202,8 @@ module Quorum
           else
             blastp << "-ungapped "
             blastp << "-comp_based_stats F "
-            blastp << "-seg yes "
           end
+          blastp << "-seg yes " if @filter
           @cmd << blastp
         end
       end
@@ -274,6 +278,7 @@ module Quorum
           end
         end
 
+        # Save the record and set results to false.
         unless saved
           @report = @job.method(@job_report_association).call.build
           @report.results = false

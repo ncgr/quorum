@@ -46,6 +46,12 @@ td {
   font-size: 12px;
 }
 
+td a.detailed_report, td a.detailed_report a:hover {
+  color: #783C3C;
+  text-decoration: none;
+  border: none;
+}
+
 tr.odd {
   background-color: #ffffff;
 }

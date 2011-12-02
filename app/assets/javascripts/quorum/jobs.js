@@ -149,41 +149,126 @@ $(function() {
 // Poll quorum search results asynchronously
 //
 var pollResults = function(id, algo) {
+  _.each(algo, function(a) {
+	  $.getJSON(
+	    '/quorum/jobs/' + id + '/get_quorum_search_results.json?algo=' + a,
+	    function(data) {
+	      if (data.length === 0) {
+	        setTimeout(function() { pollResults(id, algo); }, 900);
+	      } else {
+	        switch(a) {
+	          case "blastn":
+	            $('#blastn-results').empty();
+	            var temp = _.template(
+	              $('#blast_template').html(), { 
+	                data: data,
+	                algo: a
+	              }
+	            );
+	            $('#blastn-results').html(temp);
+	            break;
+	          case "blastx":
+	            $('#blastx-results').empty();
+	            var temp = _.template(
+	              $('#blast_template').html(), { 
+	                data: data,
+	                algo: a
+	              }
+	            );
+	            $('#blastx-results').html(temp);
+	            break;
+	          case "tblastn":
+	            $('#tblastn-results').empty();
+	            var temp = _.template(
+	              $('#blast_template').html(), { 
+	                data: data,
+	                algo: a
+	              }
+	            );
+	            $('#tblastn-results').html(temp);
+	            break;
+	          case "blastp":
+	            $('#blastp-results').empty();
+	            var temp = _.template(
+	              $('#blast_template').html(), { 
+	                data: data,
+	                algo: a
+	              }
+	            );
+	            $('#blastp-results').html(temp);
+	            break;
+	          case "hmmer":
+	            $('#hmmer-results').empty();
+	            var temp = _.template(
+	              $('#blast_template').html(), { 
+	                data: data,
+	                algo: a
+	              }
+	            );
+	            $('#hmmer-results').html(temp);
+	            break;
+	        }
+	      }
+	    } 
+	  );
+  });
+}
+
+//
+// Display jQuery-UI Modal Box containing detailed report of hit plus
+// other hits to the same query.
+//
+var viewDetailedReport = function(id, focus_id, query, algo) {
   $.getJSON(
-    '/quorum/jobs/' + id + '/get_quorum_search_results.json?algo=' + algo,
+    '/quorum/jobs/' + id + '/get_quorum_search_results.json?algo=' + algo + 
+    '&query=' + query,
     function(data) {
-      if (data.length === 0) {
-        setTimeout(function() { pollResults(id, algo); }, 500);
-      } else {
-        switch(algo) {
-          case "blastn":
-            $('#blastn-results').empty();
-            var temp = _.template($('#blast_template').html(), { data: data });
-            $('#blastn-results').html(temp);
-            break;
-          case "blastx":
-            $('#blastx-results').empty();
-            var temp = _.template($('#blast_template').html(), { data: data });
-            $('#blastx-results').html(temp);
-            break;
-          case "tblastn":
-            $('#tblastn-results').empty();
-            var temp = _.template($('#blast_template').html(), { data: data });
-            $('#tblastn-results').html(temp);
-            break;
-          case "blastp":
-            $('#blastp-results').empty();
-            var temp = _.template($('#blast_template').html(), { data: data });
-            $('#blastp-results').html(temp);
-            break;
-          case "hmmer":
-            $('#hmmer-results').empty();
-            var temp = _.template($('#blast_template').html(), { data: data });
-            $('#hmmer-results').html(temp);
-            break;
+      var temp = _.template(
+        $('#detailed_report_template').html(), {
+          data: data,
+          query: query
         }
-      }
-    } 
-  );
+      );
+      $('#detailed_report_dialog').html(temp).dialog({
+        modal:    true,
+        width:    850,
+        position: 'top'
+      });
+    }
+  );  
+}
+
+//
+// Make sequence report data look pretty. 
+//
+var formatSequenceReport = function(qseq, midline, hseq, q_from, q_to, h_from, h_to) {
+  var max = qseq.length;
+  var s   = 0;
+  var e   = 60;
+  var seq = "\n";
+
+  var indent = 0;
+  (q_from.length >= h_from.length) ? indent = q_from.length : indent = h_from.length;
+
+  while(true) {
+    if (e >= max) {
+      seq += qseq.slice(s, max) + "\n";
+      seq += midline.slice(s, max) + "\n";
+      seq += hseq.slice(s, max) + "\n\n";
+      break;
+    }
+    if (s === 0) {
+      seq += qseq.slice(s, e) + "\n";
+      seq += midline.slice(s, e) + "\n";
+      seq += hseq.slice(s, e) + "\n\n";
+    } else {
+      seq += qseq.slice(s, e) + "\n";
+      seq += midline.slice(s, e) + "\n";
+      seq += hseq.slice(s, e) + "\n\n";
+    }
+    s += 60;
+    e += 60;
+  }
+  return "<p class='small'>Sequence:</p><pre>" + seq + "</pre>";
 }
 

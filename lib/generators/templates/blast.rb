@@ -78,7 +78,7 @@ module Quorum
         @search_database = args[:search_database]
         @threads         = args[:threads]
 
-        @logger = Quorum::Utils::Logger.new(@log_directory)
+        @logger = Quorum::Logger.new(@log_directory)
 
         begin
           @job = QuorumJob.find(@id)

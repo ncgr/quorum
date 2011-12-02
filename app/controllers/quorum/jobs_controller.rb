@@ -1,6 +1,7 @@
 module Quorum
   class JobsController < ApplicationController
 
+    respond_to :html, :json
     before_filter :set_blast_dbs, :only => [:new, :create]
 
     def index
@@ -70,7 +71,11 @@ module Quorum
 	      else
 	        if job.method(queued).call.present?
 	          if job.method(report).call.present?
-              json = job.method(report).call.default_order
+              if params[:query]
+                json = job.method(report).call.where("query = ?", params[:query]).default_order
+              else
+                json = job.method(report).call.default_order
+              end
             else
               json = []
             end
@@ -78,11 +83,7 @@ module Quorum
 	      end
       end
 
-      respond_to do |format|
-        format.json { 
-          render :json => json
-        }
-      end
+      respond_with json
     end
 
     private

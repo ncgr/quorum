@@ -45,6 +45,8 @@
     </div>
   </div>
   <p class="small right"><%= link_to raw("Search Again &raquo;"), :jobs %></p>
+
+  <div id="detailed_report_dialog" title="Quorum Report Details"></div>
 </div>
 
 <script type="text/template" id="blast_template">
@@ -55,7 +57,7 @@
 	    <tr>
 	      <th>Query ID</th>
 	      <th>Query Length</th>
-	      <th>Hit ID</th>
+	      <th>Subject Accession</th>
 	      <th>Hit Length</th>
 	      <th>Hit Description</th>
 	      <th>Alignment Length</th>
@@ -68,12 +70,21 @@
 	      <tr class="{{= style }}">
 	        <td>{{= v.query }}</td>
 	        <td>{{= v.query_len }}</td>
-	        <td>{{= v.hit_id }}</td>
+	        <td></td>
 	        <td>{{= v.hit_len }}</td>
 	        <td></td>
 	        <td>{{= v.align_len }}</td>
 	        <td>{{= v.bit_score }}</td>
-	        <td>{{= v.evalue }}</td>
+          <td>
+            <a class="detailed_report" 
+              onclick="viewDetailedReport(
+                <%= @jobs.id %>, 
+                {{= v.id }}, 
+                '{{= v.query }}', 
+                '{{= algo }}')">
+              {{= v.evalue }}
+            </a>
+          </td>
 	      </tr>
 	      {{ i++ }}
 	    {{ }); }}
@@ -81,12 +92,53 @@
   {{ } }}
 </script>
 
+<script type="text/template" id="detailed_report_template">
+  <h3>Query ID {{= query }}</h3>
+  {{ _.each(data, function(v) { }}
+    <table class="report_details">
+      <tr>
+        <td>Bit Score:</td>
+        <td>{{= v.bit_score }}</td>
+        <td>E-value:</td>
+        <td>{{= v.evalue }}</td>
+      </tr>
+      <tr>
+        <td>Subject Accession:</td>
+        <td></td>
+        <td>Hit Length:</td>
+        <td>{{= v.hit_len }}</td>
+      </tr>
+      <tr>
+        <td>Hit From:</td>
+        <td>{{= v.hit_from }}</td>
+        <td>Hit To:</td>
+        <td>{{= v.hit_to }}</td>
+      </tr>
+      <tr>
+        <td>Query Length:</td>
+        <td>{{= v.query_len }}</td>
+        <td>Alignment Length:</td>
+        <td>{{= v.align_len }}</td>
+      </tr>
+      <tr>
+        <td>Query From:</td>
+        <td>{{= v.query_from }}</td>
+        <td>Query To:</td>
+        <td>{{= v.query_to }}</td>
+      </tr>
+    </table>
+    {{ var qseq = v.qseq; var midline = v.midline; var hseq = v.hseq }}
+    {{ var q_from = v.query_from; var h_from = v.hit_from }} 
+    {{ var q_to = v.query_to; var h_to = v.hit_to }}
+    {{= formatSequenceReport(qseq, midline, hseq, q_from, q_to, h_from, h_to) }}
+  {{ }); }}
+</script>
+
 <script type="text/javascript">
   $(function() {
-    pollResults(<%= @jobs.id %>, "blastn");
-    pollResults(<%= @jobs.id %>, "blastx");
-    pollResults(<%= @jobs.id %>, "tblastn");
-    pollResults(<%= @jobs.id %>, "blastp");
-    //pollResults(<%= @jobs.id %>, "hmmer");
+    pollResults(
+      <%= @jobs.id %>, 
+      ["blastn", "blastx", "tblastn", "blastp"]
+    );
   });
 </script>

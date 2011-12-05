@@ -56,7 +56,7 @@ module Quorum
     #
     def get_quorum_search_results
       valid = ["blastn", "blastx", "tblastn", "blastp", "hmmer"]
-      empty = [{:results => false}].to_json
+      empty = [ {:results => false} ].to_json
 
       json = empty
 
@@ -72,7 +72,7 @@ module Quorum
 	        if job.method(queued).call.present?
 	          if job.method(report).call.present?
               if params[:query]
-                json = job.method(report).call.where("query = ?", params[:query]).default_order
+                json = job.method(report).call.by_query(params[:query])
               else
                 json = job.method(report).call.default_order
               end

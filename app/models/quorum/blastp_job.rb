@@ -4,7 +4,10 @@ module Quorum
     before_save :set_optional_params, :set_blast_dbs
 
     belongs_to :job
-    has_many :blastp_job_reports, :dependent => :destroy
+    has_many :blastp_job_reports, 
+      :dependent   => :destroy,
+      :foreign_key => :blastp_job_id,
+      :primary_key => :job_id
 
     attr_accessible :expectation, :max_score, :min_bit_score,
       :filter,  :gapped_alignments, :gap_opening_penalty,

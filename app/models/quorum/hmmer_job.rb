@@ -4,7 +4,10 @@ module Quorum
     before_save :set_optional_params
 
     belongs_to :job
-    has_many :hmmer_job_reports, :dependent => :destroy
+    has_many :hmmer_job_reports, 
+      :dependent   => :destroy,
+      :foreign_key => :hmmer_job_id,
+      :primary_key => :job_id
 
     attr_accessible :expectation, :min_score, :queue
 

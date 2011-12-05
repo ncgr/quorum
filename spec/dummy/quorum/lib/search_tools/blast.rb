@@ -116,6 +116,86 @@ module Quorum
         Digest::MD5.hexdigest(sequence).to_s + "-" + Time.now.to_f.to_s
       end
 
+      def generate_blastn_cmd
+        blastn = "blastn " <<
+        "-db \"#{@db}\" " <<
+        "-query #{@na_fasta} " <<
+        "-outfmt 5 " <<
+        "-num_threads #{@threads} " <<
+        "-evalue #{@expectation} " <<
+        "-max_target_seqs #{@max_score} " <<
+        "-out #{@out} "
+        if @gapped_alignments
+          blastn << "-gapopen #{@gap_opening_penalty} "
+          blastn << "-gapextend #{@gap_extension_penalty} "
+        else
+          blastn << "-ungapped "
+        end
+        blastn << "-dust yes " if @filter
+        blastn
+      end
+
+      def generate_blastx_cmd
+        blastx = "blastx " <<
+        "-db \"#{@db}\" " <<
+        "-query #{@na_fasta} " <<
+        "-outfmt 5 " <<
+        "-num_threads #{@threads} " <<
+        "-evalue #{@expectation} " <<
+        "-max_target_seqs #{@max_score} " <<
+        "-out #{@out} "
+        if @gapped_alignments
+          blastx << "-gapopen #{@gap_opening_penalty} "
+          blastx << "-gapextend #{@gap_extension_penalty} "
+        else
+          blastx << "-ungapped "
+        end
+        blastx << "-seg yes " if @filter
+        blastx
+      end
+
+      def generate_tblastn_cmd
+        tblastn = "tblastn " <<
+        "-db \"#{@db}\" " <<
+        "-query #{@aa_fasta} " <<
+        "-outfmt 5 " <<
+        "-num_threads #{@threads} " <<
+        "-evalue #{@expectation} " <<
+        "-max_target_seqs #{@max_score} " <<
+        "-out #{@out} "
+        if @gapped_alignments
+          tblastn << "-gapopen #{@gap_opening_penalty} "
+          tblastn << "-gapextend #{@gap_extension_penalty} "
+          tblastn << "-comp_based_stats D "
+        else
+          tblastn << "-ungapped "
+          tblastn << "-comp_based_stats F "
+        end
+        tblastn << "-seg yes " if @filter
+        tblastn
+      end
+
+      def generate_blastp_cmd
+        blastp = "blastp " <<
+        "-db \"#{@db}\" " <<
+        "-query #{@aa_fasta} " <<
+        "-outfmt 5 " <<
+        "-num_threads #{@threads} " <<
+        "-evalue #{@expectation} " <<
+        "-max_target_seqs #{@max_score} " <<
+        "-out #{@out} "
+        if @gapped_alignments
+          blastp << "-gapopen #{@gap_opening_penalty} "
+          blastp << "-gapextend #{@gap_extension_penalty} "
+          blastp << "-comp_based_stats D "
+        else
+          blastp << "-ungapped "
+          blastp << "-comp_based_stats F "
+        end
+        blastp << "-seg yes " if @filter
+        blastp
+      end
+
       #
       # Generate Blast Command
       #
@@ -134,77 +214,13 @@ module Quorum
 
         case @algorithm
         when "blastn"
-          blastn = "blastn " <<
-          "-db \"#{@db}\" " <<
-          "-query #{@na_fasta} " <<
-          "-outfmt 5 " <<
-          "-num_threads #{@threads} " <<
-          "-evalue #{@expectation} " <<
-          "-max_target_seqs #{@max_score} " <<
-          "-out #{@out} "
-          if @gapped_alignments
-            blastn << "-gapopen #{@gap_opening_penalty} "
-            blastn << "-gapextend #{@gap_extension_penalty} "
-          else
-            blastn << "-ungapped "
-          end
-          blastn << "-dust yes " if @filter
-          @cmd << blastn
+          @cmd << generate_blastn_cmd
         when "blastx"
-          blastx = "blastx " <<
-          "-db \"#{@db}\" " <<
-          "-query #{@na_fasta} " <<
-          "-outfmt 5 " <<
-          "-num_threads #{@threads} " <<
-          "-evalue #{@expectation} " <<
-          "-max_target_seqs #{@max_score} " <<
-          "-out #{@out} "
-          if @gapped_alignments
-            blastx << "-gapopen #{@gap_opening_penalty} "
-            blastx << "-gapextend #{@gap_extension_penalty} "
-          else
-            blastx << "-ungapped "
-          end
-          blastx << "-seg yes " if @filter
-          @cmd << blastx
+          @cmd << generate_blastx_cmd
         when "tblastn"
-          tblastn = "tblastn " <<
-          "-db \"#{@db}\" " <<
-          "-query #{@aa_fasta} " <<
-          "-outfmt 5 " <<
-          "-num_threads #{@threads} " <<
-          "-evalue #{@expectation} " <<
-          "-max_target_seqs #{@max_score} " <<
-          "-out #{@out} "
-          if @gapped_alignments
-            tblastn << "-gapopen #{@gap_opening_penalty} "
-            tblastn << "-gapextend #{@gap_extension_penalty} "
-            tblastn << "-comp_based_stats D "
-          else
-            tblastn << "-ungapped "
-            tblastn << "-comp_based_stats F "
-          end
-          tblastn << "-seg yes " if @filter
-          @cmd << tblastn
+          @cmd << generate_tblastn_cmd
         when "blastp"
-          blastp = "blastp " <<
-          "-db \"#{@db}\" " <<
-          "-query #{@aa_fasta} " <<
-          "-outfmt 5 " <<
-          "-num_threads #{@threads} " <<
-          "-evalue #{@expectation} " <<
-          "-max_target_seqs #{@max_score} " <<
-          "-out #{@out} "
-          if @gapped_alignments
-            blastp << "-gapopen #{@gap_opening_penalty} "
-            blastp << "-gapextend #{@gap_extension_penalty} "
-            blastp << "-comp_based_stats D "
-          else
-            blastp << "-ungapped "
-            blastp << "-comp_based_stats F "
-          end
-          blastp << "-seg yes " if @filter
-          @cmd << blastp
+          @cmd << generate_blastp_cmd
         end
       end
 
@@ -228,61 +244,69 @@ module Quorum
         # Helper to avoid having to perform a query.
         saved = false
         
-        report = Bio::Blast::XmlIterator.new(@out)
-        report.to_enum.each do |iteration|
-
-          @report = @job.method(@job_report_association).call.build
-
-          @report.query     = iteration.query_def
-          @report.query_len = iteration.query_len
-
-          iteration.each do |hit|
-            @report.hit_id        = hit.hit_id            
-            @report.hit_def       = hit.hit_def
-            @report.hit_accession = hit.accession
-            @report.hit_len       = hit.len
-
-            hit.each do |hsp|
-              @report.bit_score   = hsp.bit_score
-              @report.score       = hsp.score
-              @report.evalue      = format_evalue(hsp.evalue)
-              @report.query_from  = hsp.query_from
-              @report.query_to    = hsp.query_to
-              @report.hit_from    = hsp.hit_from
-              @report.hit_to      = hsp.hit_to
-              @report.query_frame = hsp.query_frame
-              @report.hit_frame   = hsp.hit_frame
-              @report.identity    = hsp.identity
-              @report.positive    = hsp.positive
-              @report.align_len   = hsp.align_len
-              @report.qseq        = hsp.qseq
-              @report.hseq        = hsp.hseq
-              @report.midline     = hsp.midline
-            end
-          end
-
-          # Hsps are only reported if a query hit against the Blast db.
-          # Only save the @report if bit_score exists.
-          if @report.bit_score && 
-            (@report.bit_score.to_i > @min_score.to_i)
-            @report.results = true
-            saved = true
-            unless @report.save!
-              @logger.log(
-                "ActiveRecord",
-                "Unable to save Blast results to database.",
-                81,
-                @tmp_files
-              )
-            end
-          end
+        if File.size(@out) > 0
+	        report = Bio::Blast::XmlIterator.new(@out)
+	        report.to_enum.each do |iteration|
+	
+	          @data = {}
+	
+	          @data[:query]     = iteration.query_def
+	          @data[:query_len] = iteration.query_len
+	
+	          iteration.each do |hit|
+	            @data[:hit_id]        = hit.hit_id            
+	            @data[:hit_def]       = hit.hit_def
+	            @data[:hit_accession] = hit.accession
+	            @data[:hit_len]       = hit.len
+	
+	            hit.each do |hsp|
+	              @data[:bit_score]   = hsp.bit_score
+	              @data[:score]       = hsp.score
+	              @data[:evalue]      = format_evalue(hsp.evalue)
+	              @data[:query_from]  = hsp.query_from
+	              @data[:query_to]    = hsp.query_to
+	              @data[:hit_from]    = hsp.hit_from
+	              @data[:hit_to]      = hsp.hit_to
+	              @data[:query_frame] = hsp.query_frame
+	              @data[:hit_frame]   = hsp.hit_frame
+	              @data[:identity]    = hsp.identity
+	              @data[:positive]    = hsp.positive
+	              @data[:align_len]   = hsp.align_len
+	              @data[:qseq]        = hsp.qseq
+	              @data[:hseq]        = hsp.hseq
+	              @data[:midline]     = hsp.midline
+	
+	              # Hsps are only reported if a query hit against the Blast db.
+	              # Only save the @data if bit_score exists.
+	              if @data[:bit_score] && 
+	                (@data[:bit_score].to_i > @min_score.to_i)
+	                @data[:results] = true
+	                @data["#{@algorithm}_job_id".to_sym] = @job.method(@job_association).call.job_id
+	                saved = true
+	                # Build a new report for each Hsp.
+	                job_report = @job.method(@job_report_association).call.build(@data)
+	                unless job_report.save!
+	                  @logger.log(
+	                    "ActiveRecord",
+	                    "Unable to save Blast results to database.",
+	                    81,
+	                    @tmp_files
+	                  )
+	                end
+	              end
+	
+	            end
+	          end
+	        end
         end
 
         # Save the record and set results to false.
         unless saved
-          @report = @job.method(@job_report_association).call.build
-          @report.results = false
-          unless @report.save!
+          job_report = @job.method(@job_report_association).call.build(
+            "#{@algorithm}_job_id" => @job.method(@job_association).call.job_id,
+            "results"              => false
+          )
+          unless job_report.save!
             @logger.log(
               "ActiveRecord",
               "Unable to save Blast results to database.",

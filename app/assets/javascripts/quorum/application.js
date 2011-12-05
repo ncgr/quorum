@@ -8,6 +8,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require underscore-min
+//= require jquery.tipsy
 //= require_tree .
 
 _.templateSettings = {

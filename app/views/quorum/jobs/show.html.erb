@@ -127,10 +127,14 @@
         <td>{{= v.query_to }}</td>
       </tr>
     </table>
-    {{ var qseq = v.qseq; var midline = v.midline; var hseq = v.hseq }}
-    {{ var q_from = v.query_from; var h_from = v.hit_from }} 
-    {{ var q_to = v.query_to; var h_to = v.hit_to }}
-    {{= formatSequenceReport(qseq, midline, hseq, q_from, q_to, h_from, h_to) }}
+    {{ var qseq    = v.qseq }}
+    {{ var midline = v.midline }}
+    {{ var hseq    = v.hseq }}
+    {{ var q_from  = v.query_from }}
+    {{ var h_from  = v.hit_from }} 
+    {{ var q_to    = v.query_to }}
+    {{ var h_to    = v.hit_to }}
+    {{= formatSequenceReport(qseq, midline, hseq, q_from, h_from) }}
   {{ }); }}
 </script>
 

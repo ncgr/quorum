@@ -234,40 +234,48 @@ var viewDetailedReport = function(id, focus_id, query, algo) {
         width:    850,
         position: 'top'
       });
+      // Add tipsy to the sequence data.
+      $('a[rel=quorum-tipsy]').tipsy({gravity: 's'});
     }
   );  
 }
 
 //
+// Helper to add title attribute for tipsy.
+//
+var addBaseTitleIndex = function(bases, index) {
+  return _.map(bases, function(c) {
+    return "<a rel='quorum-tipsy' title=" + index++ + ">" + c + "</a>"
+  }).join(''); 
+}
+
+//
 // Make sequence report data look pretty. 
 //
-var formatSequenceReport = function(qseq, midline, hseq, q_from, q_to, h_from, h_to) {
-  var max = qseq.length;
-  var s   = 0;
-  var e   = 60;
-  var seq = "\n";
+var formatSequenceReport = function(qseq, midline, hseq, q_from, h_from) {
+  var max       = qseq.length;
+  var increment = 60;
 
-  var indent = 0;
-  (q_from.length >= h_from.length) ? indent = q_from.length : indent = h_from.length;
+  var s   = 0;
+  var e   = increment;
+  var seq = "\n";
 
   while(true) {
     if (e >= max) {
-      seq += qseq.slice(s, max) + "\n";
-      seq += midline.slice(s, max) + "\n";
-      seq += hseq.slice(s, max) + "\n\n";
+      seq += "qseq " + addBaseTitleIndex(qseq.slice(s, max).split(''), q_from) + "\n";
+      seq += "     " + midline.slice(s, max) + "\n";
+      seq += "hseq " + addBaseTitleIndex(hseq.slice(s, max).split(''), h_from) + "\n\n";
       break;
     }
-    if (s === 0) {
-      seq += qseq.slice(s, e) + "\n";
-      seq += midline.slice(s, e) + "\n";
-      seq += hseq.slice(s, e) + "\n\n";
-    } else {
-      seq += qseq.slice(s, e) + "\n";
-      seq += midline.slice(s, e) + "\n";
-      seq += hseq.slice(s, e) + "\n\n";
-    }
-    s += 60;
-    e += 60;
+    seq += "qseq " + addBaseTitleIndex(qseq.slice(s, e).split(''), q_from) + "\n";
+    seq += "     " + midline.slice(s, e) + "\n";
+    seq += "hseq " + addBaseTitleIndex(hseq.slice(s, e).split(''), h_from) + "\n\n";
+
+    s += increment;
+    e += increment;
+
+    q_from += increment;
+    h_from += increment;
   }
   return "<p class='small'>Sequence:</p><pre>" + seq + "</pre>";
 }

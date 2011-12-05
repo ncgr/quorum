@@ -154,7 +154,7 @@ var pollResults = function(id, algo) {
 	    '/quorum/jobs/' + id + '/get_quorum_search_results.json?algo=' + a,
 	    function(data) {
 	      if (data.length === 0) {
-	        setTimeout(function() { pollResults(id, algo); }, 900);
+	        setTimeout(function() { pollResults(id, algo); }, 1500);
 	      } else {
 	        switch(a) {
 	          case "blastn":
@@ -216,7 +216,7 @@ var pollResults = function(id, algo) {
 
 //
 // Display jQuery-UI Modal Box containing detailed report of hit plus
-// other hits to the same query.
+// other hits to the same query. 
 //
 var viewDetailedReport = function(id, focus_id, query, algo) {
   $.getJSON(
@@ -236,6 +236,12 @@ var viewDetailedReport = function(id, focus_id, query, algo) {
       });
       // Add tipsy to the sequence data.
       $('a[rel=quorum-tipsy]').tipsy({gravity: 's'});
+      // Highlight the selected id.
+      $('#' + focus_id).addClass("ui-state-highlight");
+      // Scroll to the selected id.
+      $('html, body').animate({
+        scrollTop: $('#' + focus_id).offset().top
+      }, 500);
     }
   );  
 }
@@ -250,7 +256,7 @@ var addBaseTitleIndex = function(bases, index) {
 }
 
 //
-// Make sequence report data look pretty. 
+// Format sequence data for detailed report. 
 //
 var formatSequenceReport = function(qseq, midline, hseq, q_from, h_from) {
   var max       = qseq.length;

@@ -95,46 +95,46 @@
 <script type="text/template" id="detailed_report_template">
   <h3>Query ID {{= query }}</h3>
   {{ _.each(data, function(v) { }}
-    <table class="report_details">
-      <tr>
-        <td>Bit Score:</td>
-        <td>{{= v.bit_score }}</td>
-        <td>E-value:</td>
-        <td>{{= v.evalue }}</td>
-      </tr>
-      <tr>
-        <td>Subject Accession:</td>
-        <td></td>
-        <td>Hit Length:</td>
-        <td>{{= v.hit_len }}</td>
-      </tr>
-      <tr>
-        <td>Hit From:</td>
-        <td>{{= v.hit_from }}</td>
-        <td>Hit To:</td>
-        <td>{{= v.hit_to }}</td>
-      </tr>
-      <tr>
-        <td>Query Length:</td>
-        <td>{{= v.query_len }}</td>
-        <td>Alignment Length:</td>
-        <td>{{= v.align_len }}</td>
-      </tr>
-      <tr>
-        <td>Query From:</td>
-        <td>{{= v.query_from }}</td>
-        <td>Query To:</td>
-        <td>{{= v.query_to }}</td>
-      </tr>
-    </table>
-    {{ var qseq    = v.qseq }}
-    {{ var midline = v.midline }}
-    {{ var hseq    = v.hseq }}
-    {{ var q_from  = v.query_from }}
-    {{ var h_from  = v.hit_from }} 
-    {{ var q_to    = v.query_to }}
-    {{ var h_to    = v.hit_to }}
-    {{= formatSequenceReport(qseq, midline, hseq, q_from, h_from) }}
+    <div id="{{= v.id }}">
+	    <table class="report_details">
+	      <tr>
+	        <td>Bit Score:</td>
+	        <td>{{= v.bit_score }}</td>
+	        <td>E-value:</td>
+	        <td>{{= v.evalue }}</td>
+	      </tr>
+	      <tr>
+	        <td>Subject Accession:</td>
+	        <td></td>
+	        <td>Hit Length:</td>
+	        <td>{{= v.hit_len }}</td>
+	      </tr>
+	      <tr>
+	        <td>Hit From:</td>
+	        <td>{{= v.hit_from }}</td>
+	        <td>Hit To:</td>
+	        <td>{{= v.hit_to }}</td>
+	      </tr>
+	      <tr>
+	        <td>Query Length:</td>
+	        <td>{{= v.query_len }}</td>
+	        <td>Alignment Length:</td>
+	        <td>{{= v.align_len }}</td>
+	      </tr>
+	      <tr>
+	        <td>Query From:</td>
+	        <td>{{= v.query_from }}</td>
+	        <td>Query To:</td>
+	        <td>{{= v.query_to }}</td>
+	      </tr>
+	    </table>
+	    {{ var qseq    = v.qseq }}
+	    {{ var midline = v.midline }}
+	    {{ var hseq    = v.hseq }}
+	    {{ var q_from  = v.query_from }}
+	    {{ var h_from  = v.hit_from }} 
+	    {{= formatSequenceReport(qseq, midline, hseq, q_from, h_from) }}
+    </div>
   {{ }); }}
 </script>
 

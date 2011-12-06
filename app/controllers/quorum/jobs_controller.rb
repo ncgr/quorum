@@ -72,7 +72,7 @@ module Quorum
 	        if job.method(queued).call.present?
 	          if job.method(report).call.present?
               if params[:query]
-                json = job.method(report).call.by_query(params[:query])
+                json = job.method(report).call.by_query(params[:query]).default_order
               else
                 json = job.method(report).call.default_order
               end

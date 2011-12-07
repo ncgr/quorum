@@ -231,7 +231,7 @@ module Quorum
         evalue = evalue.to_s
         e      = evalue.slice!(/e.*/)
         unless e.nil?
-          e = "e<sup>" << e.sub(/e/, '') << "</sup>"
+          e = " x 10<sup>" << e.sub(/e/, '') << "</sup>"
         end
         evalue.to_f.round(1).to_s << e.to_s 
       end

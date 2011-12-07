@@ -146,7 +146,8 @@ $(function() {
 });
 
 // 
-// Poll quorum search results asynchronously
+// Poll quorum search results asynchronously and insert them into
+// the DOM via #blast_template.
 //
 var pollResults = function(id, algo) {
   _.each(algo, function(a) {
@@ -215,8 +216,9 @@ var pollResults = function(id, algo) {
 }
 
 //
-// Display jQuery-UI Modal Box containing detailed report of hit plus
-// other hits to the same query. 
+// Display jQuery UI modal box containing detailed report of all hits 
+// to the same query. After the modal box is inserted into the DOM,
+// automatically scroll to the highlighted hit.
 //
 var viewDetailedReport = function(id, focus_id, query, algo) {
   $.getJSON(
@@ -225,20 +227,26 @@ var viewDetailedReport = function(id, focus_id, query, algo) {
     function(data) {
       var temp = _.template(
         $('#detailed_report_template').html(), {
-          data: data,
-          query: query
+          data:  data,
+          query: query,
+          algo:  algo
         }
       );
+      
+      // Create the modal box.
       $('#detailed_report_dialog').html(temp).dialog({
         modal:    true,
         width:    850,
         position: 'top'
       });
+
       // Add tipsy to the sequence data.
       $('a[rel=quorum-tipsy]').tipsy({gravity: 's'});
+      
       // Highlight the selected id.
       $('#' + focus_id).addClass("ui-state-highlight");
-      // Scroll to the selected id.
+      
+      // Automatically scroll to the selected id.
       $('html, body').animate({
         scrollTop: $('#' + focus_id).offset().top
       }, 500);
@@ -247,42 +255,85 @@ var viewDetailedReport = function(id, focus_id, query, algo) {
 }
 
 //
-// Helper to add title attribute for tipsy.
+// Helper to add title sequence position attribute for tipsy.
 //
-var addBaseTitleIndex = function(bases, index) {
-  return _.map(bases, function(c) {
-    return "<a rel='quorum-tipsy' title=" + index++ + ">" + c + "</a>"
+// If from > to decrement index; otherwise increment.
+// If the algo is tblastn and hseq is true, increment / decrement 
+// by 3; otherwise increment / decrement by 1.
+//
+var addBaseTitleIndex = function(bases, from, to, algo, hseq) {
+  var forward = true;
+  var value   = 1;
+  var index   = from;
+
+  if (from > to) {
+    forward = false;
+  }
+
+  // Only set value to 3 if hseq is true and algo is tblastn.
+  if (hseq && (algo === "tblastn")) {
+    value = 3;
+  }
+
+  // Add tipsy to each base.
+  return _.map(bases.split(''), function(c) {
+    var str = "<a rel='quorum-tipsy' title=" + index + ">" + c + "</a>";
+    forward ? index += value : index -= value;
+    return str;
   }).join(''); 
 }
 
 //
 // Format sequence data for detailed report. 
 //
-var formatSequenceReport = function(qseq, midline, hseq, q_from, h_from) {
-  var max       = qseq.length;
-  var increment = 60;
-
-  var s   = 0;
-  var e   = increment;
-  var seq = "\n";
+// If q_from > q_to or h_from > h_to, subtract by increment; otherwise add
+// by increment.
+//
+// If algo is tblastn, multiple increment by 3.
+//
+var formatSequenceReport = function(qseq, midline, hseq, q_from, q_to, h_from, h_to, algo) {
+  var max       = qseq.length; // max length
+  var increment = 60;          // increment value
+  var s         = 0;           // start position
+  var e         = increment;   // end position
+  var seq       = "\n";        // seq string to return
 
   while(true) {
+    seq += "qseq " + addBaseTitleIndex(qseq.slice(s, e), q_from, q_to, algo, false) + "\n";
+    seq += "     " + midline.slice(s, e) + "\n";
+    seq += "hseq " + addBaseTitleIndex(hseq.slice(s, e), h_from, h_to, algo, true) + "\n\n";
+
     if (e >= max) {
-      seq += "qseq " + addBaseTitleIndex(qseq.slice(s, max).split(''), q_from) + "\n";
-      seq += "     " + midline.slice(s, max) + "\n";
-      seq += "hseq " + addBaseTitleIndex(hseq.slice(s, max).split(''), h_from) + "\n\n";
       break;
     }
-    seq += "qseq " + addBaseTitleIndex(qseq.slice(s, e).split(''), q_from) + "\n";
-    seq += "     " + midline.slice(s, e) + "\n";
-    seq += "hseq " + addBaseTitleIndex(hseq.slice(s, e).split(''), h_from) + "\n\n";
 
     s += increment;
     e += increment;
 
-    q_from += increment;
-    h_from += increment;
+    // Check the forward / reverse nature of the sequence.
+    q_from < q_to ? q_from += increment : q_from -= increment;
+    // If the algorithm is tblastn, increment * 3 only for hseq.
+    if (algo === "tblastn") {
+      increment = (increment * 3);
+    }
+    h_from < h_to ? h_from += increment : h_from -= increment;
   }
-  return "<p class='small'>Sequence:</p><pre>" + seq + "</pre>";
+  return "<p class='small'>Alignment (Mouse over for positions):</p>" + 
+    "<span class='small'><pre>" + seq + "</pre></span>";
+}
+
+//
+// Format Query and Hit Strand.
+//
+// If query_frame or hit_frame < 0, print 'reverse'; print 'forward' otherwise.
+//
+var formatStrand = function(qstrand, hstrand) {
+  var q = "";
+  var h = "";
+
+  qstrand < 0 ? q = "reverse" : q = "forward";
+  hstrand < 0 ? h = "reverse" : h = "forward";
+
+  return q + " / " + h;
 }
 

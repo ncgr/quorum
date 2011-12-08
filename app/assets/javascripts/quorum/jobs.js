@@ -221,6 +221,17 @@ var pollResults = function(id, algo) {
 // automatically scroll to the highlighted hit.
 //
 var viewDetailedReport = function(id, focus_id, query, algo) {
+  // Create the modal box.
+  $('#detailed_report_dialog').html(
+      "<p class='center'>" + 
+        "Loading... <img src='/assets/quorum/knight_rider.gif' alt='Loading'>" +
+      "</p>"
+  ).dialog({
+    modal:    true,
+    width:    850,
+    position: 'top'
+  });
+
   $.getJSON(
     '/quorum/jobs/' + id + '/get_quorum_search_results.json?algo=' + algo + 
     '&query=' + query,
@@ -233,12 +244,8 @@ var viewDetailedReport = function(id, focus_id, query, algo) {
         }
       );
       
-      // Create the modal box.
-      $('#detailed_report_dialog').html(temp).dialog({
-        modal:    true,
-        width:    850,
-        position: 'top'
-      });
+      // Insert the detailed report data.
+      $('#detailed_report_dialog').empty().html(temp);
 
       // Add tipsy to the sequence data.
       $('a[rel=quorum-tipsy]').tipsy({gravity: 's'});

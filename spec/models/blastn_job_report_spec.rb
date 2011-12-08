@@ -6,4 +6,8 @@ describe Quorum::BlastnJobReport do
     Quorum::BlastnJobReport.methods.should include(:default_order) 
   end
 
+  it "should respond to by_query" do
+    Quorum::BlastnJobReport.methods.should include(:by_query) 
+  end
+
 end

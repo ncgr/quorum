@@ -48,7 +48,7 @@ module Quorum
         puts "Checking Quorum system dependencies..."
         messages = []
         DEPENDENCIES.each do |b|
-          system("which #{b} >& /dev/null")
+          system("which #{b} 2>&1 /dev/null")
           if $?.exitstatus > 0
             messages << "Quorum dependency not found. " <<
             "Please add `#{b}` to your PATH."

@@ -129,7 +129,7 @@ Options:
     #
     def check_dependencies
       SEARCH_TOOLS[@args[:search_tool]].each do |b|
-        system("which #{b} >& /dev/null")
+        system("which #{b} > /dev/null 2>&1")
         if $?.exitstatus > 0
           Trollop::die "Quorum dependency not found for tool " <<
           "#{@args[:search_tool].to_s}. Please add `#{b}` to your PATH."

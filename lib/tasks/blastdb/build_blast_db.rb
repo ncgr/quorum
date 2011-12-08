@@ -34,7 +34,7 @@ module Quorum
     #
     def check_dependencies
       DEPENDENCIES.each do |b|
-        system("which #{b} >& /dev/null")
+        system("which #{b} > /dev/null 2>&1")
         if $?.exitstatus > 0
           raise "Dependency not found. Please add `#{b}` to your PATH."
         end

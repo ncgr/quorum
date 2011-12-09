@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Jobs" do
+describe "Jobs", :focus do
   describe "GET /" do
     it "redirects to new" do
       visit jobs_path
@@ -47,29 +47,50 @@ describe "Jobs" do
     end
   end
 
-  describe "submit sequences in attached file" do
-    it "check Blast algorithms and view query results" do
-      visit new_job_path
-      current_path.should eq(new_job_path)
+  context "javascript" do
+    before(:all) do
+      Capybara.current_driver = :selenium
+    end
+    describe "submit sequences in attached file" do
+	    it "check Blast algorithms and view query results" do
+	      visit new_job_path
+	      current_path.should eq(new_job_path)
+	
+	      nucl_seqs = File.expand_path("../../data/nucl_prot_seqs.txt", __FILE__)
+	      attach_file "job_sequence_file", nucl_seqs
+	
+	      check "job_blastn_job_attributes_queue"
+	      select "tmp", :from => "job_blastn_job_attributes_blast_dbs" 
+	
+	      check "job_blastx_job_attributes_queue"
+	      select "tmp", :from => "job_blastx_job_attributes_blast_dbs" 
+	
+	      check "job_tblastn_job_attributes_queue"
+	      select "tmp", :from => "job_tblastn_job_attributes_blast_dbs" 
+	
+	      check "job_blastp_job_attributes_queue"
+	      select "tmp", :from => "job_blastp_job_attributes_blast_dbs" 
+	      
+	      click_button "Submit"
+	
+	      page.should have_content("Search Results") 
+        
+        click_link "Blastx"
+	      page.should have_content("Your search returned 0 hits.") 
 
-      nucl_seqs = File.expand_path("../../data/nucl_prot_seqs.txt", __FILE__)
-      attach_file "job_sequence_file", nucl_seqs
+        click_link "Tblastn"
+	      page.should have_content("Your search returned 0 hits.") 
 
-      check "job_blastn_job_attributes_queue"
-      select "tmp", :from => "job_blastn_job_attributes_blast_dbs" 
+        click_link "Blastp"
+	      page.should have_content("Your search returned 0 hits.") 
 
-      check "job_blastx_job_attributes_queue"
-      select "tmp", :from => "job_blastx_job_attributes_blast_dbs" 
+        click_link "Blastn"
+	      find_link("0.0").visible? 
 
-      check "job_tblastn_job_attributes_queue"
-      select "tmp", :from => "job_tblastn_job_attributes_blast_dbs" 
-
-      check "job_blastp_job_attributes_queue"
-      select "tmp", :from => "job_blastp_job_attributes_blast_dbs" 
-      
-      click_button "Submit"
-
-      page.should have_content("Search Results") 
+	    end
+    end
+    after(:all) do
+      Capybara.use_default_driver
     end
   end
 

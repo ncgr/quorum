@@ -256,7 +256,7 @@ var viewDetailedReport = function(id, focus_id, query, algo) {
       // Automatically scroll to the selected id.
       $('html, body').animate({
         scrollTop: $('#' + focus_id).offset().top
-      }, 500);
+      }, 1000);
     }
   );  
 }

@@ -124,6 +124,7 @@ module Quorum
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
         "-max_target_seqs #{@max_score} " <<
+        "-parse_deflines " <<
         "-out #{@out} "
         if @gapped_alignments
           blastn << "-gapopen #{@gap_opening_penalty} "
@@ -143,6 +144,7 @@ module Quorum
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
         "-max_target_seqs #{@max_score} " <<
+        "-parse_deflines " <<
         "-out #{@out} "
         if @gapped_alignments
           blastx << "-gapopen #{@gap_opening_penalty} "
@@ -162,6 +164,7 @@ module Quorum
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
         "-max_target_seqs #{@max_score} " <<
+        "-parse_deflines " <<
         "-out #{@out} "
         if @gapped_alignments
           tblastn << "-gapopen #{@gap_opening_penalty} "
@@ -183,6 +186,7 @@ module Quorum
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
         "-max_target_seqs #{@max_score} " <<
+        "-parse_deflines " <<
         "-out #{@out} "
         if @gapped_alignments
           blastp << "-gapopen #{@gap_opening_penalty} "

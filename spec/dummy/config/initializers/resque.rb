@@ -1,1 +1,1 @@
-Resque.inline = ENV['RAILS_ENV'] == "test"
+Resque.inline = Rails.env.test?

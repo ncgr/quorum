@@ -21,4 +21,20 @@ describe Quorum::Job do
     @job.should have(0).errors_on(:algorithm)
   end
 
+  it "queues workers after save" do
+    resque = double("Resque")
+    resque.stub(:enqueue)
+  
+    @job.sequence = File.open(
+      File.expand_path("../../data/nucl_prot_seqs.txt", __FILE__)
+    ).read
+
+    @job.build_blastn_job
+    @job.blastn_job.queue     = true
+    @job.blastn_job.blast_dbs = ["tmp"]
+
+    @job.should_receive(:queue_workers)
+    @job.save!
+  end
+
 end

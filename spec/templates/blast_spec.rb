@@ -4,7 +4,5 @@ require 'generators/templates/blast'
 # Let the request specs handle Quorum::SearchTools
 describe "Quorum::SearchTools::Blast" do
   describe "#execute_blast" do
-    before(:all) do
-    end
   end
 end

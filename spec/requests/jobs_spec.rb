@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Jobs", :focus do
+describe "Jobs" do
   describe "GET /" do
     it "redirects to new" do
       visit jobs_path
@@ -47,30 +47,58 @@ describe "Jobs", :focus do
     end
   end
 
-  context "javascript" do
+  context "javascript", @javascript do
     before(:all) do
       Capybara.current_driver = :selenium
     end
     describe "submit sequences in attached file" do
-	    it "check Blast algorithms and view query results" do
+	    it "check Blast algorithms, fill in default values and view query results" do
 	      visit new_job_path
 	      current_path.should eq(new_job_path)
 	
 	      nucl_seqs = File.expand_path("../../data/nucl_prot_seqs.txt", __FILE__)
 	      attach_file "job_sequence_file", nucl_seqs
 	
+        # Blastn
 	      check "job_blastn_job_attributes_queue"
 	      select "tmp", :from => "job_blastn_job_attributes_blast_dbs" 
+        check "job_blastn_job_attributes_filter"
+        fill_in "job_blastn_job_attributes_expectation", :with => "5e-20"
+        fill_in "job_blastn_job_attributes_min_bit_score", :with => "0"
+        fill_in "job_blastn_job_attributes_max_score", :with => "25"
+        select "Yes", :from => "job_blastn_job_attributes_gapped_alignments"
+        select "11, 2", :from => "job_blastn_job_attributes_gap_opening_extension"
 	
+        # Blastx
 	      check "job_blastx_job_attributes_queue"
 	      select "tmp", :from => "job_blastx_job_attributes_blast_dbs" 
+        check "job_blastx_job_attributes_filter"
+        fill_in "job_blastx_job_attributes_expectation", :with => "5e-20"
+        fill_in "job_blastx_job_attributes_min_bit_score", :with => "0"
+        fill_in "job_blastx_job_attributes_max_score", :with => "25"
+        select "Yes", :from => "job_blastx_job_attributes_gapped_alignments"
+        select "10, 2", :from => "job_blastx_job_attributes_gap_opening_extension"
 	
+	      # Tblastn
 	      check "job_tblastn_job_attributes_queue"
 	      select "tmp", :from => "job_tblastn_job_attributes_blast_dbs" 
+        check "job_tblastn_job_attributes_filter"
+        fill_in "job_tblastn_job_attributes_expectation", :with => "5e-20"
+        fill_in "job_tblastn_job_attributes_min_bit_score", :with => "0"
+        fill_in "job_tblastn_job_attributes_max_score", :with => "25"
+        select "Yes", :from => "job_tblastn_job_attributes_gapped_alignments"
+        select "9, 2", :from => "job_tblastn_job_attributes_gap_opening_extension"
 	
+	      # Blastp
 	      check "job_blastp_job_attributes_queue"
 	      select "tmp", :from => "job_blastp_job_attributes_blast_dbs" 
-	      
+        check "job_blastp_job_attributes_filter"
+        fill_in "job_blastp_job_attributes_expectation", :with => "5e-20"
+        fill_in "job_blastp_job_attributes_min_bit_score", :with => "0"
+        fill_in "job_blastp_job_attributes_max_score", :with => "25"
+        select "Yes", :from => "job_blastp_job_attributes_gapped_alignments"
+        select "13, 1", :from => "job_blastp_job_attributes_gap_opening_extension"
+	
 	      click_button "Submit"
 	
 	      page.should have_content("Search Results") 
@@ -81,12 +109,17 @@ describe "Jobs", :focus do
         click_link "Tblastn"
 	      page.should have_content("Your search returned 0 hits.") 
 
-        click_link "Blastp"
-	      page.should have_content("Your search returned 0 hits.") 
-
         click_link "Blastn"
-	      find_link("0.0").visible? 
+	      find("#blastn-results").find("a").click
+        page.should have_content("Quorum Report Details")
+        page.should have_content("qseq")
+        page.should have_content("hseq")
 
+        click_link "Blastp"
+	      find("#blastp-results").find("a").click
+        page.should have_content("Quorum Report Details")
+        page.should have_content("qseq")
+        page.should have_content("hseq")
 	    end
     end
     after(:all) do

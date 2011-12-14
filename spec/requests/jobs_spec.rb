@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Jobs" do
+describe "Jobs", :focus do
   describe "GET /" do
     it "redirects to new" do
       visit jobs_path
@@ -110,13 +110,13 @@ describe "Jobs" do
 	      page.should have_content("Your search returned 0 hits.") 
 
         click_link "Blastn"
-	      find("#blastn-results").find("a").click
+	      find("#blastn-results").find("td a").click
         page.should have_content("Quorum Report Details")
         page.should have_content("qseq")
         page.should have_content("hseq")
 
         click_link "Blastp"
-	      find("#blastp-results").find("a").click
+	      find("#blastp-results").find("td a").click
         page.should have_content("Quorum Report Details")
         page.should have_content("qseq")
         page.should have_content("hseq")

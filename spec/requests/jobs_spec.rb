@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Jobs", :focus do
+describe "Jobs" do
   describe "GET /" do
     it "redirects to new" do
       visit jobs_path

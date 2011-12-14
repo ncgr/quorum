@@ -11,8 +11,6 @@ module Quorum
     class Blast
 
       class QuorumJob < ActiveRecord::Base
-        set_table_name "quorum_jobs"
-
         has_one :quorum_blastn_job, 
           :foreign_key => "job_id"
         has_many :quorum_blastn_job_reports, 
@@ -35,46 +33,38 @@ module Quorum
       end
 
       class QuorumBlastnJob < ActiveRecord::Base
-        set_table_name "quorum_blastn_jobs"
         belongs_to :quorum_job
         has_many :quorum_blastn_job_reports
       end
 
       class QuorumBlastnJobReport < ActiveRecord::Base
-        set_table_name "quorum_blastn_job_reports"
         belongs_to :quorum_blastn_job
       end
 
       class QuorumBlastxJob < ActiveRecord::Base
-        set_table_name "quorum_blastx_jobs"
         belongs_to :quorum_job
         has_many :quorum_blastx_job_reports
       end
 
       class QuorumBlastxJobReport < ActiveRecord::Base
-        set_table_name "quorum_blastx_job_reports"
         belongs_to :quorum_blastx_job
       end
 
       class QuorumTblastnJob < ActiveRecord::Base
-        set_table_name "quorum_tblastn_jobs"
         belongs_to :quorum_job
         has_many :quorum_tblastn_job_reports
       end
 
       class QuorumTblastnJobReport < ActiveRecord::Base
-        set_table_name "quorum_tblastn_job_reports"
         belongs_to :quorum_tblastn_job
       end
 
       class QuorumBlastpJob < ActiveRecord::Base
-        set_table_name "quorum_blastp_jobs"
         belongs_to :quorum_job
         has_many :quorum_blastp_job_reports
       end
 
       class QuorumBlastpJobReport < ActiveRecord::Base
-        set_table_name "quorum_blastp_job_reports"
         belongs_to :quorum_blastp_job
       end
 
@@ -250,6 +240,10 @@ module Quorum
         evalue.to_f.round(1).to_s << e.to_s 
       end
 
+      def format_hit_def(str)
+        str == "No definition line" ? "None" : str
+      end
+
       #
       # Parse and save Blast results using bio-blastxmlparser.
       # Only save Blast results if results.bit_score > @min_score. 
@@ -264,16 +258,17 @@ module Quorum
 	
 	          @data = {}
 	
-	          @data[:query]     = iteration.query_def
+	          @data[:query]     = iteration.query_id
 	          @data[:query_len] = iteration.query_len
 	
 	          iteration.each do |hit|
 	            @data[:hit_id]        = hit.hit_id            
-	            @data[:hit_def]       = hit.hit_def
+	            @data[:hit_def]       = format_hit_def(hit.hit_def)
 	            @data[:hit_accession] = hit.accession
 	            @data[:hit_len]       = hit.len
 	
 	            hit.each do |hsp|
+	              @data[:hsp_num]     = hsp.hsp_num
 	              @data[:bit_score]   = hsp.bit_score
 	              @data[:score]       = hsp.score
 	              @data[:evalue]      = format_evalue(hsp.evalue)

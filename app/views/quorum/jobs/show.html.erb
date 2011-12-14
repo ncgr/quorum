@@ -53,17 +53,37 @@
   {{ if (data[0].results === false) { }}
     <p><strong>Your search returned 0 hits.</strong></p>
   {{ } else { }}
-	  <table class="report_details">
+	  <table class="results">
 	    <tr>
-	      <th>Query ID</th>
+	      <th>Query Accession</th>
 	      <th>Query Length</th>
 	      <th>Hit Accession</th>
 	      <th>Hit Length</th>
 	      <th>Qstrand / Hstrand</th>
 	      <th>Hit Description</th>
 	      <th>Alignment Length</th>
-	      <th>Bit Score</th>
-	      <th>E-value</th>
+        <th>
+          <a class="bit-score"
+            onclick="openWindow(
+              'http://www.ncbi.nlm.nih.gov/books/NBK21106/def-item/app8/',
+              'Bit Score',
+              800,
+              300
+            )">
+            Bit Score
+          </a>
+        </th>
+        <th>
+          <a class="e-value"
+            onclick="openWindow(
+              'http://www.ncbi.nlm.nih.gov/books/NBK21106/def-item/app42/',
+              'Bit Score',
+              800,
+              300
+            )">
+            E-value
+          </a>
+        </th>
 	    </tr>
 	    {{ var i = 1; var style = "" }}
 	    {{ _.each(data, function(v) { }}
@@ -72,14 +92,14 @@
         {{ var hstrand = v.hit_frame }}
 	      <tr class="{{= style }}">
 	        <td>{{= v.query }}</td>
-	        <td>{{= v.query_len }}</td>
-	        <td></td>
-	        <td>{{= v.hit_len }}</td>
+	        <td class="right">{{= v.query_len }}</td>
+          <td>{{= v.hit_accession }}</td>
+	        <td class="right">{{= v.hit_len }}</td>
           <td>{{= formatStrand(qstrand, hstrand) }}</td>
-	        <td></td>
-	        <td>{{= v.align_len }}</td>
-	        <td>{{= v.bit_score }}</td>
-          <td>
+          <td>{{= v.hit_def.trunc(20) }}</td>
+	        <td class="right">{{= v.align_len }}</td>
+	        <td class="right">{{= v.bit_score }}</td>
+          <td class="right">
             <a class="detailed_report" 
               onclick="viewDetailedReport(
                 <%= @jobs.id %>, 
@@ -97,7 +117,7 @@
 </script>
 
 <script type="text/template" id="detailed_report_template">
-  <h3>Query ID {{= query }}</h3>
+  <h3>Query Accession {{= query }}</h3>
   {{ _.each(data, function(v) { }}
     {{ var qseq    = v.qseq }}
     {{ var midline = v.midline }}
@@ -113,36 +133,24 @@
       <p class="small">Hit Description: {{= v.hit_def }}</p>
 	    <table class="report_details">
 	      <tr>
-	        <td>E-value:</td>
-	        <td>{{= v.evalue }}</td>
-	        <td>Bit Score:</td>
-	        <td>{{= v.bit_score }}</td>
-          <td></td>
+	        <td>E-value: {{= v.evalue }}</td>
+	        <td>Bit Score: {{= v.bit_score }}</td>
           <td></td>
 	      </tr>
 	      <tr>
-	        <td>Alignment Length:</td>
-	        <td>{{= v.align_len }}</td>
-	        <td>Qstrand / Hstrand:</td>
-	        <td>{{= formatStrand(qstrand, hstrand) }}</td>
-          <td></td>
+	        <td>Alignment Length: {{= v.align_len }}</td>
+	        <td>Qstrand / Hstrand: {{= formatStrand(qstrand, hstrand) }}</td>
           <td></td>
 	      </tr>
 	      <tr>
-	        <td>Query From:</td>
-	        <td>{{= v.query_from }}</td>
-	        <td>Query To:</td>
-	        <td>{{= v.query_to }}</td>
-          <td>Query Length:</td>
-	        <td>{{= v.query_len }}</td>
+          <td>Query Length: {{= v.query_len }}</td>
+	        <td>Query From: {{= v.query_from }}</td>
+	        <td>Query To: {{= v.query_to }}</td>
 	      </tr>
 	      <tr>
-	        <td>Hit From:</td>
-	        <td>{{= v.hit_from }}</td>
-	        <td>Hit To:</td>
-	        <td>{{= v.hit_to }}</td>
-          <td>Hit Length:</td>
-	        <td>{{= v.hit_len }}</td>
+          <td>Hit Length: {{= v.hit_len }}</td>
+	        <td>Hit From: {{= v.hit_from }}</td>
+	        <td>Hit To: {{= v.hit_to }}</td>
 	      </tr>
 	    </table>
 	    {{= formatSequenceReport(qseq, midline, hseq, q_from, q_to, h_from, h_to, algo) }}

@@ -240,6 +240,10 @@ module Quorum
         evalue.to_f.round(1).to_s << e.to_s 
       end
 
+      def format_hit_def(str)
+        str == "No definition line" ? "None" : str
+      end
+
       #
       # Parse and save Blast results using bio-blastxmlparser.
       # Only save Blast results if results.bit_score > @min_score. 
@@ -254,16 +258,17 @@ module Quorum
 	
 	          @data = {}
 	
-	          @data[:query]     = iteration.query_def
+	          @data[:query]     = iteration.query_id
 	          @data[:query_len] = iteration.query_len
 	
 	          iteration.each do |hit|
 	            @data[:hit_id]        = hit.hit_id            
-	            @data[:hit_def]       = hit.hit_def
+	            @data[:hit_def]       = format_hit_def(hit.hit_def)
 	            @data[:hit_accession] = hit.accession
 	            @data[:hit_len]       = hit.len
 	
 	            hit.each do |hsp|
+	              @data[:hsp_num]     = hsp.hsp_num
 	              @data[:bit_score]   = hsp.bit_score
 	              @data[:score]       = hsp.score
 	              @data[:evalue]      = format_evalue(hsp.evalue)

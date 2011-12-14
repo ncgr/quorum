@@ -344,3 +344,24 @@ var formatStrand = function(qstrand, hstrand) {
   return q + " / " + h;
 }
 
+//
+// Truncate string to length n using word boundary.
+//
+String.prototype.trunc = function(n) {
+  var longStr = this.length > n;
+  var str     = longStr ? this.substr(0, n-1) : this;
+
+  longStr ? str.substr(0, str.lastIndexOf(' ')) : str;
+  return longStr ? str + '...' : str;
+}
+
+//
+// Open URL in new window.
+//
+var openWindow = function(url, name, width, height) {
+
+  var windowSize = "width=" + width + ",height=" + height + ",scrollbars=yes";
+
+  window.open(url, name, windowSize);
+}
+

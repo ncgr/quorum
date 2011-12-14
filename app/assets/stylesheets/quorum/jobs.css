@@ -19,10 +19,17 @@ table.options {
   border-collapse: collapse;
 }
 
-table.report_details {
+table.results {
   margin: 0;
   border: 0;
   width: 100%;
+  border-collapse: collapse;
+}
+
+table.report_details {
+  margin: 0;
+  border: 0;
+  width: 70%;
   border-collapse: collapse;
 }
 
@@ -32,7 +39,7 @@ th {
 }
 
 th, td {
-  padding: 3px;
+  padding: 3px 5px 3px 5px;
   text-align: left;
 }
 

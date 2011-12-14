@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111213210045) do
+ActiveRecord::Schema.define(:version => 20111214000724) do
 
   create_table "quorum_blastn_job_reports", :force => true do |t|
     t.string   "query"

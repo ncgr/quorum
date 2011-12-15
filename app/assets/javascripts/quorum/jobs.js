@@ -254,9 +254,7 @@ var viewDetailedReport = function(id, focus_id, query, algo) {
       $('#' + focus_id).addClass("ui-state-highlight");
       
       // Automatically scroll to the selected id.
-      $('html, body').animate({
-        scrollTop: $('#' + focus_id).offset().top
-      }, 1000);
+      autoScroll(focus_id, false);
     }
   );  
 }
@@ -342,6 +340,42 @@ var formatStrand = function(qstrand, hstrand) {
   hstrand < 0 ? h = "reverse" : h = "forward";
 
   return q + " / " + h;
+}
+
+//
+// Display links to Hsps in the same group.
+//
+var displayHspLinks = function(focus, group, data) {
+  if (group !== null) {
+    var str = "Hsps: ";
+    var ids = _.map(group.split(","), function(i) { return parseInt(i); });
+  
+    var selected = _(data).chain()
+      .reject(function(d) { return !_.include(ids, d.id); })
+      .sortBy(function(d) { return d.id; })
+      .value();
+
+    _.each(selected, function(e) {
+      if (e.id !== focus) {
+        str += "<a onclick='(autoScroll(" + e.id + ", true))'>" + e.hsp_num + "</a> ";
+      } else {
+        str += e.hsp_num + " ";
+      }
+    });
+    return str;
+  }
+}
+
+//
+// Autoscroll to given div id.
+//
+var autoScroll = function(id, highlight) {
+  $('html, body').animate({
+    scrollTop: $('#' + id).offset().top
+  }, 1000);
+  if (highlight) {
+    $('#' + id).effect("highlight", {}, 4000);
+  }
 }
 
 //

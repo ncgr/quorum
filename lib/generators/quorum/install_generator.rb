@@ -55,7 +55,7 @@ module Quorum
           end
         end
         unless messages.empty?
-          puts "*** Quorum system dependencies not found ***"
+          puts "*** Warning: Quorum system dependencies not found ***"
           puts messages.join('\n')
         end
       end

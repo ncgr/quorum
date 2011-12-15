@@ -11,7 +11,3 @@
 //= require jquery.tipsy
 //= require_tree .
 
-_.templateSettings = {
-  evaluate: /\{\{(.+?)\}\}/g,
-  interpolate: /\{\{\=(.+?)\}\}/g
-};

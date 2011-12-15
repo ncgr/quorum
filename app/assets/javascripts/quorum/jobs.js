@@ -1,3 +1,15 @@
+//
+// Mustache style Underscore.js templating.
+//
+_.templateSettings = {
+  evaluate: /\{\{(.+?)\}\}/g,
+  interpolate: /\{\{\=(.+?)\}\}/g
+};
+
+//
+// jQuery
+//---------------------------------------------------------------------------//
+
 $(function() {
 
   // jQuery Functions //
@@ -55,8 +67,6 @@ $(function() {
 
   // Hide Elements //
 
-  $('#loading').hide();
-
   if (!$('#job_blastn_job_attributes_queue').is(':checked')) {
     $('#blastn').hide();
   }
@@ -111,13 +121,11 @@ $(function() {
 
   // End Algorithms //
 
-  // Disable submit button and display gif.
-  // Remove input values equal to attr title.
+  // Disable submit button and remove input values equal to attr title.
   $('form').submit(function() {
     $('input[type=submit]', this).val('Processing...').attr(
       'disabled', 'disabled'
     );
-    $('#loading').show();
     form.removeHintsOnSubmit();
   });
 
@@ -145,73 +153,79 @@ $(function() {
 
 });
 
+
+//
+// JavaScript Functions
+//---------------------------------------------------------------------------// 
+
 // 
 // Poll quorum search results asynchronously and insert them into
 // the DOM via #blast_template.
 //
 var pollResults = function(id, algo) {
   _.each(algo, function(a) {
-	  $.getJSON(
-	    '/quorum/jobs/' + id + '/get_quorum_search_results.json?algo=' + a,
-	    function(data) {
-	      if (data.length === 0) {
-	        setTimeout(function() { pollResults(id, algo); }, 1500);
-	      } else {
-	        switch(a) {
-	          case "blastn":
-	            $('#blastn-results').empty();
-	            var temp = _.template(
-	              $('#blast_template').html(), { 
-	                data: data,
-	                algo: a
-	              }
-	            );
-	            $('#blastn-results').html(temp);
-	            break;
-	          case "blastx":
-	            $('#blastx-results').empty();
-	            var temp = _.template(
-	              $('#blast_template').html(), { 
-	                data: data,
-	                algo: a
-	              }
-	            );
-	            $('#blastx-results').html(temp);
-	            break;
-	          case "tblastn":
-	            $('#tblastn-results').empty();
-	            var temp = _.template(
-	              $('#blast_template').html(), { 
-	                data: data,
-	                algo: a
-	              }
-	            );
-	            $('#tblastn-results').html(temp);
-	            break;
-	          case "blastp":
-	            $('#blastp-results').empty();
-	            var temp = _.template(
-	              $('#blast_template').html(), { 
-	                data: data,
-	                algo: a
-	              }
-	            );
-	            $('#blastp-results').html(temp);
-	            break;
-	          case "hmmer":
-	            $('#hmmer-results').empty();
-	            var temp = _.template(
-	              $('#blast_template').html(), { 
-	                data: data,
-	                algo: a
-	              }
-	            );
-	            $('#hmmer-results').html(temp);
-	            break;
-	        }
-	      }
-	    } 
-	  );
+    $.getJSON(
+      '/quorum/jobs/' + id + '/get_quorum_search_results.json?algo=' + a,
+      function(data) {
+        if (data.length === 0) {
+          setTimeout(function() { pollResults(id, algo); }, 2000);
+        } else {
+          switch(a) {
+            case "blastn":
+              $('#blastn-results').empty();
+              var temp = _.template(
+                $('#blast_template').html(), { 
+                  data: data,
+                  algo: a
+                }
+              );
+              $('#blastn-results').html(temp);
+              break;
+            case "blastx":
+              $('#blastx-results').empty();
+              var temp = _.template(
+                $('#blast_template').html(), { 
+                  data: data,
+                  algo: a
+                }
+              );
+              $('#blastx-results').html(temp);
+              break;
+            case "tblastn":
+              $('#tblastn-results').empty();
+              var temp = _.template(
+                $('#blast_template').html(), { 
+                  data: data,
+                  algo: a
+                }
+              );
+              $('#tblastn-results').html(temp);
+              break;
+            case "blastp":
+              $('#blastp-results').empty();
+              var temp = _.template(
+                $('#blast_template').html(), { 
+                  data: data,
+                  algo: a
+                }
+              );
+              $('#blastp-results').html(temp);
+              break;
+            case "hmmer":
+              $('#hmmer-results').empty();
+              var temp = _.template(
+                $('#blast_template').html(), { 
+                  data: data,
+                  algo: a
+                }
+              );
+              $('#hmmer-results').html(temp);
+              break;
+          }
+          return;
+        }
+      } 
+    );
   });
 }
 
@@ -223,9 +237,9 @@ var pollResults = function(id, algo) {
 var viewDetailedReport = function(id, focus_id, query, algo) {
   // Create the modal box.
   $('#detailed_report_dialog').html(
-      "<p class='center'>" + 
-        "Loading... <img src='/assets/quorum/knight_rider.gif' alt='Loading'>" +
-      "</p>"
+    "<p class='center'>" + 
+    "Loading... <img src='/assets/quorum/knight_rider.gif' alt='Loading'>" +
+    "</p>"
   ).dialog({
     modal:    true,
     width:    850,
@@ -347,7 +361,9 @@ var formatStrand = function(qstrand, hstrand) {
 //
 var displayHspLinks = function(focus, group, data) {
   if (group !== null) {
-    var str = "Hsps: ";
+    var str = "Related <a onclick=\"(openWindow(" + 
+      "'http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.HSP'," + 
+      "'HSP', 800, 300))\">HSPs</a>: ";
     var ids = _.map(group.split(","), function(i) { return parseInt(i); });
   
     var selected = _(data).chain()

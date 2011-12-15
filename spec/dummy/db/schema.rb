@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111214000724) do
+ActiveRecord::Schema.define(:version => 20111214174653) do
 
   create_table "quorum_blastn_job_reports", :force => true do |t|
     t.string   "query"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20111214000724) do
     t.string   "hit_accession"
     t.integer  "hit_len"
     t.integer  "hsp_num"
+    t.string   "hsp_group"
     t.integer  "bit_score"
     t.integer  "score"
     t.string   "evalue"
@@ -65,6 +66,7 @@ ActiveRecord::Schema.define(:version => 20111214000724) do
     t.string   "hit_accession"
     t.integer  "hit_len"
     t.integer  "hsp_num"
+    t.string   "hsp_group"
     t.integer  "bit_score"
     t.integer  "score"
     t.string   "evalue"
@@ -109,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20111214000724) do
     t.string   "hit_accession"
     t.integer  "hit_len"
     t.integer  "hsp_num"
+    t.string   "hsp_group"
     t.integer  "bit_score"
     t.integer  "score"
     t.string   "evalue"
@@ -171,6 +174,7 @@ ActiveRecord::Schema.define(:version => 20111214000724) do
     t.string   "hit_accession"
     t.integer  "hit_len"
     t.integer  "hsp_num"
+    t.string   "hsp_group"
     t.integer  "bit_score"
     t.integer  "score"
     t.string   "evalue"

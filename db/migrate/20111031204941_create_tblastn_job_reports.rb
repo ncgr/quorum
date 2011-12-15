@@ -8,6 +8,7 @@ class CreateTblastnJobReports < ActiveRecord::Migration
       t.string :hit_accession
       t.integer :hit_len
       t.integer :hsp_num
+      t.string :hsp_group
       t.integer :bit_score
       t.integer :score
       t.string :evalue

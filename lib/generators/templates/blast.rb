@@ -210,7 +210,7 @@ module Quorum
         @aa_fasta = File.join(@tmp, @hash + ".aa.fa")
         File.open(@na_fasta, "w") { |f| f << @na_sequence }
         File.open(@aa_fasta, "w") { |f| f << @aa_sequence }
-        
+
         @out = File.join(@tmp, @hash + ".out.xml") 
 
         File.new(@out, "w")
@@ -251,62 +251,62 @@ module Quorum
       def parse_and_save_results
         # Helper to avoid having to perform a query.
         saved = false
-        
+
         if File.size(@out) > 0
-	        report = Bio::Blast::XmlIterator.new(@out)
-	        report.to_enum.each do |iteration|
-	
-	          @data = {}
-	
-	          @data[:query]     = iteration.query_id
-	          @data[:query_len] = iteration.query_len
-	
-	          iteration.each do |hit|
-	            @data[:hit_id]        = hit.hit_id            
-	            @data[:hit_def]       = format_hit_def(hit.hit_def)
-	            @data[:hit_accession] = hit.accession
-	            @data[:hit_len]       = hit.len
-	
-	            hit.each do |hsp|
-	              @data[:hsp_num]     = hsp.hsp_num
-	              @data[:bit_score]   = hsp.bit_score
-	              @data[:score]       = hsp.score
-	              @data[:evalue]      = format_evalue(hsp.evalue)
-	              @data[:query_from]  = hsp.query_from
-	              @data[:query_to]    = hsp.query_to
-	              @data[:hit_from]    = hsp.hit_from
-	              @data[:hit_to]      = hsp.hit_to
-	              @data[:query_frame] = hsp.query_frame
-	              @data[:hit_frame]   = hsp.hit_frame
-	              @data[:identity]    = hsp.identity
-	              @data[:positive]    = hsp.positive
-	              @data[:align_len]   = hsp.align_len
-	              @data[:qseq]        = hsp.qseq
-	              @data[:hseq]        = hsp.hseq
-	              @data[:midline]     = hsp.midline
-	
-	              # Hsps are only reported if a query hit against the Blast db.
-	              # Only save the @data if bit_score exists.
-	              if @data[:bit_score] && 
-	                (@data[:bit_score].to_i > @min_score.to_i)
-	                @data[:results] = true
-	                @data["#{@algorithm}_job_id".to_sym] = @job.method(@job_association).call.job_id
-	                saved = true
-	                # Build a new report for each Hsp.
-	                job_report = @job.method(@job_report_association).call.build(@data)
-	                unless job_report.save!
-	                  @logger.log(
-	                    "ActiveRecord",
-	                    "Unable to save Blast results to database.",
-	                    81,
-	                    @tmp_files
-	                  )
-	                end
-	              end
-	
-	            end
-	          end
-	        end
+          report = Bio::Blast::XmlIterator.new(@out)
+          report.to_enum.each do |iteration|
+
+            @data = {}
+
+            @data[:query]     = iteration.query_id
+            @data[:query_len] = iteration.query_len
+
+            iteration.each do |hit|
+              @data[:hit_id]        = hit.hit_id            
+              @data[:hit_def]       = format_hit_def(hit.hit_def)
+              @data[:hit_accession] = hit.accession
+              @data[:hit_len]       = hit.len
+
+              hit.each do |hsp|
+                @data[:hsp_num]     = hsp.hsp_num
+                @data[:bit_score]   = hsp.bit_score
+                @data[:score]       = hsp.score
+                @data[:evalue]      = format_evalue(hsp.evalue)
+                @data[:query_from]  = hsp.query_from
+                @data[:query_to]    = hsp.query_to
+                @data[:hit_from]    = hsp.hit_from
+                @data[:hit_to]      = hsp.hit_to
+                @data[:query_frame] = hsp.query_frame
+                @data[:hit_frame]   = hsp.hit_frame
+                @data[:identity]    = hsp.identity
+                @data[:positive]    = hsp.positive
+                @data[:align_len]   = hsp.align_len
+                @data[:qseq]        = hsp.qseq
+                @data[:hseq]        = hsp.hseq
+                @data[:midline]     = hsp.midline
+
+                # Hsps are only reported if a query hit against the Blast db.
+                # Only save the @data if bit_score exists.
+                if @data[:bit_score] && 
+                  (@data[:bit_score].to_i > @min_score.to_i)
+                  @data[:results] = true
+                  @data["#{@algorithm}_job_id".to_sym] = @job.method(@job_association).call.job_id
+                  saved = true
+                  # Build a new report for each Hsp.
+                  job_report = @job.method(@job_report_association).call.build(@data)
+                  unless job_report.save!
+                    @logger.log(
+                      "ActiveRecord",
+                      "Unable to save Blast results to database.",
+                      81,
+                      @tmp_files
+                    )
+                  end
+                end
+
+              end
+            end
+          end
         end
 
         # Save the record and set results to false.
@@ -332,6 +332,50 @@ module Quorum
         end
       end
 
+      #
+      # Group record ids of hsps belonging to the same query and hit_accession.
+      #
+      def add_hps_groups_to_reports
+        groups = {}
+
+        query_hit_acc = @job.method(
+          @job_report_association
+        ).call.select("DISTINCT query, hit_accession")
+
+        # Populate the hash of hashes with correct query and hit_accession.
+        query_hit_acc.each do |q|
+          groups[q.query] = {}
+        end
+        query_hit_acc.each do |q|
+          groups[q.query][q.hit_accession] = []
+        end
+
+        # Group record ids.
+        reports = @job.method(@job_report_association).call.order("id ASC")
+        reports.each do |r|
+          if groups[r.query][r.hit_accession]
+            groups[r.query][r.hit_accession] << r.id
+          end
+        end
+
+        # Save hsp_group as a comma delimited string.
+        reports.each do |r|
+          if groups[r.query][r.hit_accession]
+            if groups[r.query][r.hit_accession].length > 1
+              r.hsp_group = groups[r.query][r.hit_accession].join(",")
+              unless r.save!
+                @logger.log(
+                  "ActiveRecord",
+                  "Unable to save Blast results to database.",
+                  81,
+                  @tmp_files
+                )
+              end
+            end
+          end
+        end
+      end
+
       def remove_tmp_files
         `rm #{@tmp_files}` if @tmp_files
       end
@@ -346,6 +390,7 @@ module Quorum
         @logger.log("NCBI Blast", @cmd)
         system(@cmd)
         parse_and_save_results
+        add_hps_groups_to_reports
         remove_tmp_files
       end
 

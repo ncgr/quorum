@@ -118,27 +118,27 @@ module Quorum
     # Queue Resque workers.
     #
     def queue_workers
-      blast_jobs = []
+      jobs = []
       if self.blastn_job && self.blastn_job.queue
-        blast_jobs << create_system_command("blastn")
+        jobs << create_system_command("blastn")
       end
       if self.blastx_job && self.blastx_job.queue
-        blast_jobs << create_system_command("blastx")
+        jobs << create_system_command("blastx")
       end
       if self.tblastn_job && self.tblastn_job.queue
-        blast_jobs << create_system_command("tblastn")
+        jobs << create_system_command("tblastn")
       end
       if self.blastp_job && self.blastp_job.queue
-        blast_jobs << create_system_command("blastp")
+        jobs << create_system_command("blastp")
       end
       if self.hmmer_job && self.hmmer_job.queue
         hmmer = create_system_command("hmmscan")
       end
       
-      unless blast_jobs.blank?
-        blast_jobs.each do |j|
+      unless jobs.blank?
+        jobs.each do |j|
           Resque.enqueue(
-            Workers::Blast, j, Quorum.blast_remote, 
+            Workers::System, j, Quorum.blast_remote, 
             Quorum.blast_ssh_host, Quorum.blast_ssh_user, 
             Quorum.blast_ssh_options
           )
@@ -147,7 +147,7 @@ module Quorum
 
       unless hmmer.blank?
         Resque.enqueue(
-          Workers::Hmmer, hmmer, Hmmer.blast_remote, 
+          Workers::System, hmmer, Hmmer.blast_remote, 
           Hmmer.blast_ssh_host, Hmmer.blast_ssh_user, 
           Hmmer.blast_ssh_options
         )

@@ -3,21 +3,35 @@
   <%= form_for @job, :html => {:id => "quorum_job"} do |f| %>
     <%= render "shared/error_messages", :target => @job %>
     <div>
-      <%= f.text_area :sequence, :title => "Paste FASTA sequence(s) here or upload a file below.",
+      <%= f.text_area :sequence, 
+        :title => "Paste nucleic and amino acid FASTA sequence(s) here or upload a file below.",
         :class => "auto-hint" %>
     </div>
     <div>
       <%= f.file_field :sequence_file %>
     </div>
+    <!-- Search Algorithms -->
+    <!-- Comment out an alorithm below to remove it from the form. -->
+
+    <!-- blastn -->
     <%= render :partial => "blastn_form", :locals => { 
       :f => f, :blast_dbs => @blast_dbs } %>
+
+    <!-- blastx -->
     <%= render :partial => "blastx_form", :locals => { 
       :f => f, :blast_dbs => @blast_dbs } %>
+
+    <!-- tblastn -->
     <%= render :partial => "tblastn_form", :locals => { 
       :f => f, :blast_dbs => @blast_dbs } %>
+
+    <!-- blastp -->
     <%= render :partial => "blastp_form", :locals => { 
       :f => f, :blast_dbs => @blast_dbs } %>
+
+    <!-- hmmer -->
     <%= render :partial => "hmmer_form", :locals => { :f => f } %>
+    <!-- End Search Algorithms -->
     <div>
       <%= f.submit "Submit" %>&nbsp;&nbsp;
       <%= submit_tag "Reset", :name => "reset", 

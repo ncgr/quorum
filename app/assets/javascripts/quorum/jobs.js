@@ -21,8 +21,10 @@ $(function() {
         if ($(this).attr('title') === '') { 
           return; 
         }
+
         if ($(this).val() === '') { 
           $(this).val($(this).attr('title')); 
+
           if (!$(this).hasClass('auto-hint')) {
             $(this).addClass('auto-hint');
           }
@@ -126,6 +128,7 @@ $(function() {
     $('input[type=submit]', this).val('Processing...').attr(
       'disabled', 'disabled'
     );
+
     form.removeHintsOnSubmit();
   });
 
@@ -135,9 +138,11 @@ $(function() {
     $('input:file').val('');
     $('input:checkbox').attr('checked', false);
     $('select').val('');
+
     $('.toggle').each(function() {
       $(this).hide();
     });
+
     form.addHints();
   });
 
@@ -181,6 +186,7 @@ var pollResults = function(id, algo) {
               );
               $('#blastn-results').html(temp);
               break;
+
             case "blastx":
               $('#blastx-results').empty();
               var temp = _.template(
@@ -191,6 +197,7 @@ var pollResults = function(id, algo) {
               );
               $('#blastx-results').html(temp);
               break;
+
             case "tblastn":
               $('#tblastn-results').empty();
               var temp = _.template(
@@ -201,6 +208,7 @@ var pollResults = function(id, algo) {
               );
               $('#tblastn-results').html(temp);
               break;
+
             case "blastp":
               $('#blastp-results').empty();
               var temp = _.template(
@@ -211,6 +219,7 @@ var pollResults = function(id, algo) {
               );
               $('#blastp-results').html(temp);
               break;
+
             case "hmmer":
               $('#hmmer-results').empty();
               var temp = _.template(
@@ -262,7 +271,7 @@ var viewDetailedReport = function(id, focus_id, query, algo) {
       $('#detailed_report_dialog').empty().html(temp);
 
       // Add tipsy to the sequence data.
-      $('a[rel=quorum-tipsy]').tipsy({gravity: 's'});
+      $('a[rel=quorum-tipsy]').tipsy({ gravity: 's' });
       
       // Highlight the selected id.
       $('#' + focus_id).addClass("ui-state-highlight");
@@ -331,10 +340,12 @@ var formatSequenceReport = function(qseq, midline, hseq, q_from, q_to, h_from, h
 
     // Check the forward / reverse nature of the sequence.
     q_from < q_to ? q_from += increment : q_from -= increment;
+
     // If the algorithm is tblastn, increment * 3 only for hseq.
     if (algo === "tblastn") {
       increment = (increment * 3);
     }
+
     h_from < h_to ? h_from += increment : h_from -= increment;
   }
   return "<p class='small'>Alignment (Mouse over for positions):</p>" + 
@@ -364,6 +375,7 @@ var displayHspLinks = function(focus, group, data) {
     var str = "Related <a onclick=\"(openWindow(" + 
       "'http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.HSP'," + 
       "'HSP', 800, 300))\">HSPs</a>: ";
+
     var ids = _.map(group.split(","), function(i) { return parseInt(i); });
   
     var selected = _(data).chain()
@@ -389,6 +401,7 @@ var autoScroll = function(id, highlight) {
   $('html, body').animate({
     scrollTop: $('#' + id).offset().top
   }, 1000);
+
   if (highlight) {
     $('#' + id).effect("highlight", {}, 4000);
   }

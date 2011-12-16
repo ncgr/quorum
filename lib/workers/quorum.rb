@@ -33,7 +33,6 @@ module Workers
         system(cmd)
         exit_status = $?.exitstatus
       end
-      raise "Worker queue failed :'(" if exit_status > 0
     end
   end
 end

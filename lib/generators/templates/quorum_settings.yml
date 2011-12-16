@@ -32,33 +32,33 @@
 #     Execute the rake task below to build your Blast DB.
 #     rake quorum:blastdb:build
 #
-#   tblastn: Collection of Blast DBs under the parent blast_db
-#     to use with tblastn.
-#     Example Usage:
-#     tblastn:
-#       - genome_1 
-#       - genome_2 
-#
-#   blastp: Collection of Blast DBs under the parent blast_db
-#     to use with blastp.
-#     Example Usage:
-#     blastp:
-#       - prot_1 
-#       - prot_2 
-#
 #   blastn: Collection of Blast DBs under the parent blast_db
 #     to use with blastn.
 #     Example Usage:
 #     blastn:
-#       - genome_1 
-#       - genome_2 
+#       "Display name": blastn_database_name
+#       "A really cool genome": really_cool_genome
 #
 #   blastx: Collection of Blast DBs under the parent blast_db
 #     to use with blastx.
 #     Example Usage:
 #     blastx:
-#       - prot_1 
-#       - prot_2 
+#       "Display name": blastx_database_name
+#       "A really cool genome": really_cool_genome
+#
+#   tblastn: Collection of Blast DBs under the parent blast_db
+#     to use with tblastn.
+#     Example Usage:
+#     tblastn:
+#       "Display name": tblastn_database_name
+#       "A really cool genome": really_cool_genome
+#
+#   blastp: Collection of Blast DBs under the parent blast_db
+#     to use with blastp.
+#     Example Usage:
+#     blastp:
+#       "Display name": blastp_database_name
+#       "A really cool genome": really_cool_genome
 #
 #   blast_threads: Number of Blast threads. >= 1
 #     Defaults to 1.
@@ -107,22 +107,22 @@ development:
     log_dir: "%{RAILS_ROOT}/quorum/log"
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
-    tblastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
-    blastp:
-      # Example:
-      # - prot_1
-      # - prot_2 
     blastn:
       # Example:
-      # - genome_1
-      # - genome_2 
+      # "Display name": blastn_database_name
+      # "A really cool genome": really_cool_genome
     blastx:
       # Example:
-      # - prot_1
-      # - prot_2 
+      # "Display name": blastx_database_name
+      # "A really cool genome": really_cool_genome
+    tblastn:
+      # Example:
+      # "Display name": tblastn_database_name
+      # "A really cool genome": really_cool_genome
+    blastp:
+      # Example:
+      # "Display name": blastp_database_name
+      # "A really cool genome": really_cool_genome
     blast_threads:
   hmmer:
     remote: false
@@ -151,22 +151,22 @@ test:
     log_dir: "%{RAILS_ROOT}/quorum/log"
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
-    tblastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
-    blastp:
-      # Example:
-      # - prot_1
-      # - prot_2 
     blastn:
       # Example:
-      # - genome_1
-      # - genome_2 
+      # "Display name": blastn_database_name
+      # "A really cool genome": really_cool_genome
     blastx:
       # Example:
-      # - prot_1
-      # - prot_2 
+      # "Display name": blastx_database_name
+      # "A really cool genome": really_cool_genome
+    tblastn:
+      # Example:
+      # "Display name": tblastn_database_name
+      # "A really cool genome": really_cool_genome
+    blastp:
+      # Example:
+      # "Display name": blastp_database_name
+      # "A really cool genome": really_cool_genome
     blast_threads:
   hmmer:
     remote: false
@@ -195,22 +195,22 @@ production:
     log_dir:
     tmp_dir:
     blast_db:
-    tblastn:
-      # Example:
-      # - genome_1
-      # - genome_2 
-    blastp:
-      # Example:
-      # - prot_1
-      # - prot_2 
     blastn:
       # Example:
-      # - genome_1
-      # - genome_2 
+      # "Display name": blastn_database_name
+      # "A really cool genome": really_cool_genome
     blastx:
       # Example:
-      # - prot_1
-      # - prot_2 
+      # "Display name": blastx_database_name
+      # "A really cool genome": really_cool_genome
+    tblastn:
+      # Example:
+      # "Display name": tblastn_database_name
+      # "A really cool genome": really_cool_genome
+    blastp:
+      # Example:
+      # "Display name": blastp_database_name
+      # "A really cool genome": really_cool_genome
     blast_threads:
   hmmer:
     remote: true

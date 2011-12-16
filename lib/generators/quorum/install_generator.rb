@@ -45,18 +45,19 @@ module Quorum
       end
 
       def check_dependencies
+        puts ""
         puts "Checking Quorum system dependencies..."
         messages = []
         DEPENDENCIES.each do |b|
-          system("which #{b} 2>&1 /dev/null")
+          system("which #{b} > /dev/null 2>&1")
           if $?.exitstatus > 0
-            messages << "Quorum dependency not found. " <<
-            "Please add `#{b}` to your PATH."
+            messages << "Please add `#{b}` to your PATH."
           end
         end
         unless messages.empty?
           puts "*** Warning: Quorum system dependencies not found ***"
-          puts messages.join('\n')
+          messages.each { |m| puts m }
+          puts ""
         end
       end
 

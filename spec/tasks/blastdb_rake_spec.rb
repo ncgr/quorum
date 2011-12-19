@@ -7,6 +7,7 @@ describe "blastdb rake tasks" do
       # Set args as though we executed the rake task.
       @args = {
         :dir         => File.expand_path("../../data/tmp",  __FILE__),
+        :empty       => false,
         :type        => "both",
         :prot_file   => "peptides.fa",
         :nucl_file   => "contigs.fa",
@@ -86,11 +87,11 @@ describe "blastdb rake tasks" do
       Dir.glob(@args[:blastdb_dir]).length.should be > 0
 
       File.exists?(
-        File.join(@args[:blastdb_dir], "tmp", "contigs.fa")
+        File.join(@args[:blastdb_dir], "test", "contigs.fa")
       ).should be_true
 
       File.exists?(
-        File.join(@args[:blastdb_dir], "tmp", "peptides.fa")
+        File.join(@args[:blastdb_dir], "test", "peptides.fa")
       ).should be_true
 
       File.directory?(@args[:gff_dir]).should be_true

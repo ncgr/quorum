@@ -15,7 +15,10 @@ namespace :quorum do
     "PROT_FILE_NAME= -- defaults to peptides.fa. " <<
     "NUCL_FILE_NAME= -- defaults to contigs.fa. " <<
     "REBUILD_DB= {true or false} -- remove existing blast database(s). " <<
-    "defaults to false)"
+    "defaults to false. " <<
+    "EMPTY= {true or false} -- skip makeblastdb and create empty " <<
+    "directories. Use this option if you prefer to create your own " <<
+    "Blast database. Defaults to false.)"
     task :build do
 
       args = {}
@@ -25,6 +28,7 @@ namespace :quorum do
       args[:prot_file]  = ENV['PROT_FILE_NAME'] || 'peptides.fa'
       args[:nucl_file]  = ENV['NUCL_FILE_NAME'] || 'contigs.fa'
       args[:rebuild_db] = ENV['REBUILD_DB'] || false
+      args[:empty]      = ENV['EMPTY'] || false
 
       args[:blastdb_dir] = File.join(::Rails.root.to_s, "quorum", "blastdb")
       args[:gff_dir]     = File.join(::Rails.root.to_s, "quorum", "gff3")

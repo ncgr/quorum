@@ -22,6 +22,7 @@ module Quorum
       @prot_file   = args[:prot_file]
       @nucl_file   = args[:nucl_file]
       @rebuild_db  = args[:rebuild_db]
+      @empty       = args[:empty]
       @blastdb_dir = args[:blastdb_dir]
       @gff_dir     = args[:gff_dir]
       @log_dir     = args[:log_dir]
@@ -59,6 +60,18 @@ module Quorum
           "Perhaps you forgot to execute the quorum initializer. \n\n" <<
           "rails generate quorum:install"
       end
+    end
+
+    #
+    # Create directories per tarball and return tarball file name 
+    # minus the file extension.
+    #
+    def create_file_name(file, base_dir)
+      file_name = file.split("/").delete_if { |f| f.include?(".") }.first
+      unless File.exists?(File.join(base_dir, file_name))
+        Dir.mkdir(File.join(base_dir, file_name))
+      end
+      file_name
     end
 
     #
@@ -102,24 +115,28 @@ module Quorum
     #
     # Builds a Blast database from parse_blast_db_data.
     #
-    def build_blast_db(blastdb, title)
-      contigs  = File.join(blastdb, "contigs.fa")
-      peptides = File.join(blastdb, "peptides.fa")
+    def build_blast_db(blastdb)
+      Dir.glob(File.expand_path(blastdb) + "/*").each do |d|
+        if File.directory?(d)
+          contigs  = File.join(d, "contigs.fa")
+          peptides = File.join(d, "peptides.fa")
 
-      found = false # set to true is data is found.
+          found = false 
 
-      if File.exists?(contigs) && File.readable?(contigs)
-        execute_makeblastdb("nucl", title, contigs)
-        found = true
-      end
-      if File.exists?(peptides) && File.readable?(peptides)
-        execute_makeblastdb("prot", title, peptides)
-        found = true
-      end
+          if File.exists?(contigs) && File.readable?(contigs)
+            execute_makeblastdb("nucl", d, contigs)
+            found = true
+          end
+          if File.exists?(peptides) && File.readable?(peptides)
+            execute_makeblastdb("prot", d, peptides)
+            found = true
+          end
 
-      unless found
-        raise "Extracted data not found for #{contigs} or #{peptides}. " <<
-          "Make sure you supplied the correct data directory and file names."
+          unless found
+            raise "Extracted data not found for #{contigs} or #{peptides}. " <<
+            "Make sure you supplied the correct data directory and file names."
+          end
+        end
       end
     end
 
@@ -137,6 +154,12 @@ module Quorum
     # Parse Blast database data.
     #
     def build_blast_db_data
+      # Create necessary directories and return.
+      if @empty
+        make_directories
+        return
+      end
+
       if @dir.blank?
         raise "DIR must be set to continue. Execute `rake -D` for more information."
       end
@@ -149,9 +172,6 @@ module Quorum
       check_dependencies
 
       make_directories
-
-      # Container for directories created in @blastdb_dir and @gff_dir.
-      dirs = []
 
       begin
         @dir.split(':').each do |d|
@@ -166,15 +186,6 @@ module Quorum
             "again.\nDirectory Entered: #{d}"
           end
 
-          dataset = d.split('/').last
-          blastdb = File.join(@blastdb_dir, dataset)
-          gff     = File.join(@gff_dir, dataset)
-
-          Dir.mkdir(blastdb)
-          Dir.mkdir(gff)
-
-          dirs << blastdb << gff
-
           @data.each do |s|
             if s =~ GZIP
               files = `tar -tzf #{s}` 
@@ -186,21 +197,23 @@ module Quorum
             files = files.split(/\n/)
             files.each do |f|
               if f.include?(@prot_file)
-                extract_files(s, f, flag, File.join(blastdb, "peptides.fa"))
+                file_name = create_file_name(f, @blastdb_dir)
+                extract_files(s, f, flag, File.join(@blastdb_dir, file_name, "peptides.fa"))
               elsif f.include?(@nucl_file)
-                extract_files(s, f, flag, File.join(blastdb, "contigs.fa"))
+                file_name = create_file_name(f, @blastdb_dir)
+                extract_files(s, f, flag, File.join(@blastdb_dir, file_name, "contigs.fa"))
               elsif f.include?("gff")
-                extract_files(s, f, flag, File.join(gff, "annots.gff"))
+                file_name = create_file_name(f, @gff_dir)
+                extract_files(s, f, flag, File.join(@gff_dir, file_name, "annots.gff"))
               end
             end
           end
-          build_blast_db(blastdb, dataset)
         end
+        build_blast_db(@blastdb_dir)
       rescue Exception => e
         # Remove empty directories.
-        dirs.each do |d|
-          `rm -rf #{d}`
-        end
+        `rm -rf #{@blastdb_dir}/*` if File.directory?(@blastdb_dir)
+        `rm -rf #{@gff_dir}/*` if File.directory?(@gff_dir)
         raise e
       end
       readme

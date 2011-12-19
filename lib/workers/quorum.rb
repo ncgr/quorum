@@ -33,6 +33,9 @@ module Workers
         system(cmd)
         exit_status = $?.exitstatus
       end
+      if exit_status > 0
+        raise "Worker failed :'(. See quorum/log/quorum.log for more information."
+      end
     end
   end
 end

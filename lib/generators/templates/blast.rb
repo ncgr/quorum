@@ -83,7 +83,7 @@ module Quorum
         begin
           @job = QuorumJob.find(@id)
         rescue Exception => e
-          @logger.log("ActiveRecord", e.message, 80)
+          @logger.log("ActiveRecord", e.message, 1)
         end
 
         @na_sequence = @job.na_sequence
@@ -297,8 +297,8 @@ module Quorum
                   unless job_report.save!
                     @logger.log(
                       "ActiveRecord",
-                      "Unable to save Blast results to database.",
-                      81,
+                      "Unable to save #{@algorithm} results to database.",
+                      1,
                       @tmp_files
                     )
                   end
@@ -318,15 +318,15 @@ module Quorum
           unless job_report.save!
             @logger.log(
               "ActiveRecord",
-              "Unable to save Blast results to database.",
-              81,
+              "Unable to save #{@algorithm} results to database.",
+              1,
               @tmp_files
             )
           end
           @logger.log(
             "Blast",
-            "Blast Report empty.",
-            71,
+            "#{@algorithm} report empty.",
+            0,
             @tmp_files
           )
         end
@@ -366,8 +366,8 @@ module Quorum
               unless r.save!
                 @logger.log(
                   "ActiveRecord",
-                  "Unable to save Blast results to database.",
-                  81,
+                  "Unable to save #{@algorithm} results to database.",
+                  1,
                   @tmp_files
                 )
               end

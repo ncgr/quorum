@@ -70,12 +70,30 @@ describe "blastdb rake tasks" do
       )
     end
 
+    it "creates directories and ignores makeblastdb if empty is true" do
+      # Suppress printing to STDOUT.
+      output = double("IO")
+      output.stub(:puts)
+      output.stub(:print)
+
+      @args[:empty] = true
+      @build = Quorum::BuildBlastDB.new(@args, output)
+
+      expect {
+        @build.build_blast_db_data 
+      }.to_not raise_error
+
+      File.directory?(@args[:blastdb_dir]).should be_true
+      File.directory?(@args[:gff_dir]).should be_true
+    end
+
     it "builds Blast database with valid arguments" do
       # Suppress printing to STDOUT.
       output = double("IO")
       output.stub(:puts)
       output.stub(:print)
 
+      @args[:empty] = false
       @build = Quorum::BuildBlastDB.new(@args, output)
       
       expect {
@@ -96,24 +114,6 @@ describe "blastdb rake tasks" do
 
       File.directory?(@args[:gff_dir]).should be_true
     end
-
-    it "creates directories and ignores makeblastdb if empty is true" do
-      # Suppress printing to STDOUT.
-      output = double("IO")
-      output.stub(:puts)
-      output.stub(:print)
-
-      @args[:empty] = true
-      @build = Quorum::BuildBlastDB.new(@args, output)
-
-      expect {
-        @build.build_blast_db_data 
-      }.to_not raise_error
-
-      File.directory?(@args[:blastdb_dir]).should be_true
-      File.directory?(@args[:gff_dir]).should be_true
-    end
-
   end
 end
 

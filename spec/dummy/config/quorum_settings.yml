@@ -154,13 +154,13 @@ test:
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
     blastn:
-      "tmp": tmp
+      "tmp": test
     blastx:
-      "tmp": tmp
+      "tmp": test
     tblastn:
-      "tmp": tmp
+      "tmp": test
     blastp:
-      "tmp": tmp
+      "tmp": test
     blast_threads:
   hmmer:
     remote: false

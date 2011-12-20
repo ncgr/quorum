@@ -13,7 +13,6 @@ module Quorum
           directory d.to_s, "app/views/quorum/#{d.to_s}"
         end
       end
-
     end
   end
 end

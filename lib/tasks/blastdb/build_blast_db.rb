@@ -103,7 +103,6 @@ module Quorum
         "-title #{title} " <<
         "-in #{input} " <<
         "-out #{output} " <<
-        "-parse_seqids " <<
         "-hash_index >> #{makeblast_log}"
       system(cmd)
       if $?.exitstatus > 0

@@ -286,10 +286,10 @@ var viewDetailedReport = function(id, focus_id, query, algo) {
 // Helper to add title sequence position attribute for tipsy.
 //
 // If from > to decrement index; otherwise increment.
-// If the algo is tblastn and hseq is true, increment / decrement 
-// by 3; otherwise increment / decrement by 1.
+// If the algo is tblastn and type is hit OR algo is blastx and type is query, 
+// increment / decrement by 3; otherwise increment / decrement by 1.
 //
-var addBaseTitleIndex = function(bases, from, to, algo, hseq) {
+var addBaseTitleIndex = function(bases, from, to, algo, type) {
   var forward = true;
   var value   = 1;
   var index   = from;
@@ -299,7 +299,8 @@ var addBaseTitleIndex = function(bases, from, to, algo, hseq) {
   }
 
   // Only set value to 3 if hseq is true and algo is tblastn.
-  if (hseq && (algo === "tblastn")) {
+  if ((type === "hit" && algo === "tblastn") ||
+      (type === "query" && algo === "blastx")) {
     value = 3;
   }
 
@@ -317,7 +318,7 @@ var addBaseTitleIndex = function(bases, from, to, algo, hseq) {
 // If q_from > q_to or h_from > h_to, subtract by increment; otherwise add
 // by increment.
 //
-// If algo is tblastn, multiple increment by 3.
+// If algo is tblastn or blastx, multiple increment by 3.
 //
 var formatSequenceReport = function(qseq, midline, hseq, q_from, q_to, h_from, h_to, algo) {
   var max       = qseq.length; // max length
@@ -327,9 +328,9 @@ var formatSequenceReport = function(qseq, midline, hseq, q_from, q_to, h_from, h
   var seq       = "\n";        // seq string to return
 
   while(true) {
-    seq += "qseq " + addBaseTitleIndex(qseq.slice(s, e), q_from, q_to, algo, false) + "\n";
+    seq += "qseq " + addBaseTitleIndex(qseq.slice(s, e), q_from, q_to, algo, 'query') + "\n";
     seq += "     " + midline.slice(s, e) + "\n";
-    seq += "hseq " + addBaseTitleIndex(hseq.slice(s, e), h_from, h_to, algo, true) + "\n\n";
+    seq += "hseq " + addBaseTitleIndex(hseq.slice(s, e), h_from, h_to, algo, 'hit') + "\n\n";
 
     if (e >= max) {
       break;
@@ -338,15 +339,19 @@ var formatSequenceReport = function(qseq, midline, hseq, q_from, q_to, h_from, h
     s += increment;
     e += increment;
 
-    // Check the forward / reverse nature of the sequence.
-    q_from < q_to ? q_from += increment : q_from -= increment;
+    // If the algorithm is blastx, increment * 3 only for qseq.
+    if (algo === "blastx") {
+      q_from < q_to ? q_from += (increment * 3) : q_from -= (increment * 3);
+    } else {
+      q_from < q_to ? q_from += increment : q_from -= increment;
+    }
 
     // If the algorithm is tblastn, increment * 3 only for hseq.
     if (algo === "tblastn") {
-      increment = (increment * 3);
+      h_from < h_to ? h_from += (increment * 3) : h_from -= (increment * 3);
+    } else {
+      h_from < h_to ? h_from += increment : h_from -= increment;
     }
-
-    h_from < h_to ? h_from += increment : h_from -= increment;
   }
   return "<p class='small'>Alignment (Mouse over for positions):</p>" + 
     "<span class='small'><pre>" + seq + "</pre></span>";

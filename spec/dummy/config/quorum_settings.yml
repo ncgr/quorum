@@ -108,23 +108,31 @@ development:
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
     blastn:
-      "Glycine max": gm_genome
-      "Medicago Truncatula Build 3.0": mt_3_0_genome
-      "Medicago Truncatula Build 3.5.1": mt_3_5_1_genome
-      "Lotus japonicus build 2.5": lj_genome
-      "Cicer arietinum transcripts": ca_transcripts 
-      "Noble Foundation Medicago truncatula Gene Expression Atlas": mt_affy_genechip_target
+#      "Glycine max": gm_genome
+#      "Medicago Truncatula Build 3.0": mt_3_0_genome
+#      "Medicago Truncatula Build 3.5.1": mt_3_5_1_genome
+#      "Lotus japonicus build 2.5": lj_genome
+#      "Cicer arietinum transcripts": ca_transcripts 
+#      "Noble Foundation Medicago truncatula Gene Expression Atlas": mt_affy_genechip_target
+      "camptotheca_acuminata-20101112": camptotheca_acuminata-20101112
+      "colchicum_autumnale-20101112": colchicum_autumnale-20101112
     blastx:
-      "Swissprot Viridiplantae": swissprot_viridiplantae
+#      "Swissprot Viridiplantae": swissprot_viridiplantae
+      "camptotheca_acuminata-20101112": camptotheca_acuminata-20101112
+      "colchicum_autumnale-20101112": colchicum_autumnale-20101112
     tblastn:
-      "Glycine max": gm_genome
-      "Medicago Truncatula Build 3.0": mt_3_0_genome
-      "Medicago Truncatula Build 3.5.1": mt_3_5_1_genome
-      "Lotus japonicus build 2.5": lj_genome
-      "Cicer arietinum transcripts": ca_transcripts 
-      "Noble Foundation Medicago truncatula Gene Expression Atlas": mt_affy_genechip_target
+#      "Glycine max": gm_genome
+#      "Medicago Truncatula Build 3.0": mt_3_0_genome
+#      "Medicago Truncatula Build 3.5.1": mt_3_5_1_genome
+#      "Lotus japonicus build 2.5": lj_genome
+#      "Cicer arietinum transcripts": ca_transcripts 
+#      "Noble Foundation Medicago truncatula Gene Expression Atlas": mt_affy_genechip_target
+      "camptotheca_acuminata-20101112": camptotheca_acuminata-20101112
+      "colchicum_autumnale-20101112": colchicum_autumnale-20101112
     blastp:
-      "Swissprot Viridiplantae": swissprot_viridiplantae
+#      "Swissprot Viridiplantae": swissprot_viridiplantae
+      "camptotheca_acuminata-20101112": camptotheca_acuminata-20101112
+      "colchicum_autumnale-20101112": colchicum_autumnale-20101112
     blast_threads:
   hmmer:
     remote: false

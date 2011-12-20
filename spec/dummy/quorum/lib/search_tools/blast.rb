@@ -124,7 +124,6 @@ module Quorum
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
         "-max_target_seqs #{@max_score} " <<
-        "-parse_deflines " <<
         "-out #{@out} "
         if @gapped_alignments
           blastn << "-gapopen #{@gap_opening_penalty} "
@@ -144,7 +143,6 @@ module Quorum
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
         "-max_target_seqs #{@max_score} " <<
-        "-parse_deflines " <<
         "-out #{@out} "
         if @gapped_alignments
           blastx << "-gapopen #{@gap_opening_penalty} "
@@ -164,7 +162,6 @@ module Quorum
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
         "-max_target_seqs #{@max_score} " <<
-        "-parse_deflines " <<
         "-out #{@out} "
         if @gapped_alignments
           tblastn << "-gapopen #{@gap_opening_penalty} "
@@ -186,7 +183,6 @@ module Quorum
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
         "-max_target_seqs #{@max_score} " <<
-        "-parse_deflines " <<
         "-out #{@out} "
         if @gapped_alignments
           blastp << "-gapopen #{@gap_opening_penalty} "
@@ -240,8 +236,27 @@ module Quorum
         evalue.to_f.round(1).to_s << e.to_s 
       end
 
-      def format_hit_def(str)
-        str == "No definition line" ? "None" : str
+      #
+      # Format Blast report hit_id and hit_def.
+      #
+      # For added flexibility, Quorum doesn't parse seqids or deflines.
+      # Instead, format_hit splits the hit_def on whitespace and
+      # reports hit_id as the first element and hit_def as the second.
+      #
+      def format_hit(str)
+        hit_id  = ""
+        hit_def = ""
+
+        hit = str.split(" ", 2)
+        if hit.length < 2
+          hit_id  = hit.first
+          hit_def = "None"
+        else
+          hit_id  = hit.first
+          hit_def = hit.last
+        end
+
+        return hit_id, hit_def
       end
 
       #
@@ -258,12 +273,14 @@ module Quorum
 
             @data = {}
 
-            @data[:query]     = iteration.query_id
+            @data[:query]     = iteration.query_def.split(" ").first
             @data[:query_len] = iteration.query_len
 
             iteration.each do |hit|
-              @data[:hit_id]        = hit.hit_id            
-              @data[:hit_def]       = format_hit_def(hit.hit_def)
+              hit_id  = hit.hit_id
+              hit_def = hit.hit_def
+              @data[:hit_id], @data[:hit_def] = format_hit(hit_def)
+
               @data[:hit_accession] = hit.accession
               @data[:hit_len]       = hit.len
 

@@ -13,7 +13,6 @@ module Quorum
           directory d.to_s, "app/assets/stylesheets/#{d.to_s}"
         end
       end
-
     end
   end
 end

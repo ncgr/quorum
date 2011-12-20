@@ -64,7 +64,6 @@ module Quorum
       def show_readme
         readme "README"
       end
-
     end
   end
 end

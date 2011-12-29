@@ -277,9 +277,7 @@ module Quorum
             @data[:query_len] = iteration.query_len
 
             iteration.each do |hit|
-              hit_id  = hit.hit_id
-              hit_def = hit.hit_def
-              @data[:hit_id], @data[:hit_def] = format_hit(hit_def)
+              @data[:hit_id], @data[:hit_def] = format_hit(hit.hit_def)
 
               @data[:hit_accession] = hit.accession
               @data[:hit_len]       = hit.len

@@ -208,8 +208,6 @@ module Quorum
         File.open(@aa_fasta, "w") { |f| f << @aa_sequence }
 
         @out = File.join(@tmp, @hash + ".out.xml") 
-
-        File.new(@out, "w")
         File.new(@out, "w")
 
         case @algorithm
@@ -339,7 +337,7 @@ module Quorum
             )
           end
           @logger.log(
-            "Blast",
+            "NCBI Blast",
             "#{@algorithm} report empty.",
             0,
             @tmp_files

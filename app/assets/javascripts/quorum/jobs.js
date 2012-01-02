@@ -175,62 +175,14 @@ var pollResults = function(id, algo) {
         if (data.length === 0) {
           setTimeout(function() { pollResults(id, algo); }, 2000);
         } else {
-          switch(a) {
-            case "blastn":
-              $('#blastn-results').empty();
-              var temp = _.template(
-                $('#blast_template').html(), { 
-                  data: data,
-                  algo: a
-                }
-              );
-              $('#blastn-results').html(temp);
-              break;
-
-            case "blastx":
-              $('#blastx-results').empty();
-              var temp = _.template(
-                $('#blast_template').html(), { 
-                  data: data,
-                  algo: a
-                }
-              );
-              $('#blastx-results').html(temp);
-              break;
-
-            case "tblastn":
-              $('#tblastn-results').empty();
-              var temp = _.template(
-                $('#blast_template').html(), { 
-                  data: data,
-                  algo: a
-                }
-              );
-              $('#tblastn-results').html(temp);
-              break;
-
-            case "blastp":
-              $('#blastp-results').empty();
-              var temp = _.template(
-                $('#blast_template').html(), { 
-                  data: data,
-                  algo: a
-                }
-              );
-              $('#blastp-results').html(temp);
-              break;
-
-            case "hmmer":
-              $('#hmmer-results').empty();
-              var temp = _.template(
-                $('#blast_template').html(), { 
-                  data: data,
-                  algo: a
-                }
-              );
-              $('#hmmer-results').html(temp);
-              break;
-          }
+          $('#' + a + '-results').empty();
+          var temp = _.template(
+            $('#blast_template').html(), { 
+              data: data,
+              algo: a
+            }
+            );
+          $('#' + a + '-results').html(temp);
           return;
         }
       } 

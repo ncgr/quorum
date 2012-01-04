@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111214174653) do
+ActiveRecord::Schema.define(:version => 20111227224920) do
 
   create_table "quorum_blastn_job_reports", :force => true do |t|
     t.string   "query"
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(:version => 20111214174653) do
     t.boolean  "gapped_alignments"
     t.integer  "gap_opening_penalty"
     t.integer  "gap_extension_penalty"
-    t.string   "blast_dbs"
+    t.text     "blast_dbs"
     t.boolean  "queue"
     t.integer  "job_id"
     t.datetime "created_at"
@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(:version => 20111214174653) do
     t.boolean  "gapped_alignments"
     t.integer  "gap_opening_penalty"
     t.integer  "gap_extension_penalty"
-    t.string   "blast_dbs"
+    t.text     "blast_dbs"
     t.boolean  "queue"
     t.integer  "job_id"
     t.datetime "created_at"
@@ -141,7 +141,7 @@ ActiveRecord::Schema.define(:version => 20111214174653) do
     t.boolean  "gapped_alignments"
     t.integer  "gap_opening_penalty"
     t.integer  "gap_extension_penalty"
-    t.string   "blast_dbs"
+    t.text     "blast_dbs"
     t.boolean  "queue"
     t.integer  "job_id"
     t.datetime "created_at"
@@ -204,7 +204,7 @@ ActiveRecord::Schema.define(:version => 20111214174653) do
     t.boolean  "gapped_alignments"
     t.integer  "gap_opening_penalty"
     t.integer  "gap_extension_penalty"
-    t.string   "blast_dbs"
+    t.text     "blast_dbs"
     t.boolean  "queue"
     t.integer  "job_id"
     t.datetime "created_at"

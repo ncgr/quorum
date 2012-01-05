@@ -167,14 +167,22 @@ $(function() {
 // Poll quorum search results asynchronously and insert them into
 // the DOM via #blast_template.
 //
-var pollResults = function(id, algo) {
-  _.each(algo, function(a) {
+var pollResults = function(id, interval, algos) {
+
+  // Set the default poll interval to 5 seconds.
+  interval = interval || 5000;
+
+  // Algorithms
+  algos = algos || ["blastn", "blastx", "tblastn", "blastp", "hmmer"];
+
+  _.each(algos, function(a) {
     $.getJSON(
       '/quorum/jobs/' + id + '/get_quorum_search_results.json?algo=' + a,
       function(data) {
         if (data.length === 0) {
-          setTimeout(function() { pollResults(id, algo); }, 2000);
+          setTimeout(function() { pollResults(id, interval, [a]); }, interval);
         } else {
+          algos.splice(algos.indexOf(a), 1);
           $('#' + a + '-results').empty();
           var temp = _.template(
             $('#blast_template').html(), { 

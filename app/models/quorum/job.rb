@@ -147,9 +147,9 @@ module Quorum
 
       unless hmmer.blank?
         Resque.enqueue(
-          Workers::System, hmmer, Hmmer.blast_remote, 
-          Hmmer.blast_ssh_host, Hmmer.blast_ssh_user, 
-          Hmmer.blast_ssh_options
+          Workers::System, hmmer, Quorum.hmmer_remote, 
+          Quorum.hmmer_ssh_host, Quorum.hmmer_ssh_user, 
+          Quorum.hmmer_ssh_options
         )
       end
     end

@@ -173,13 +173,13 @@
 <script type="text/javascript">
   $(function() {
     //
-    // ==>> DO NOT EDIT <<==
-    //
     // Asynchronously poll Quorum for search results per algorithm.
     //
-    pollResults(
-      <%= @jobs.id %>, 
-      ["blastn", "blastx", "tblastn", "blastp", "hmmer"]
-    );
+    // Arguments: 
+    //   id: Job.id
+    //   ** Optional **
+    //   interval: poll interval in milliseconds. 5000 default.
+    //
+    pollResults(<%= @jobs.id %>);
   });
 </script>

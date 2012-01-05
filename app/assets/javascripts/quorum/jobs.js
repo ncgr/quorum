@@ -173,14 +173,14 @@ var pollResults = function(id, interval, algos) {
   interval = interval || 5000;
 
   // Algorithms
-  algos =  algos || ["blastn", "blastx", "tblastn", "blastp", "hmmer"];
+  algos = algos || ["blastn", "blastx", "tblastn", "blastp", "hmmer"];
 
   _.each(algos, function(a) {
     $.getJSON(
       '/quorum/jobs/' + id + '/get_quorum_search_results.json?algo=' + a,
       function(data) {
         if (data.length === 0) {
-          setTimeout(function() { pollResults(id, interval, algos); }, interval);
+          setTimeout(function() { pollResults(id, interval, [a]); }, interval);
         } else {
           algos.splice(algos.indexOf(a), 1);
           $('#' + a + '-results').empty();

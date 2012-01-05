@@ -182,7 +182,6 @@ var pollResults = function(id, interval, algos) {
         if (data.length === 0) {
           setTimeout(function() { pollResults(id, interval, [a]); }, interval);
         } else {
-          algos.splice(algos.indexOf(a), 1);
           $('#' + a + '-results').empty();
           var temp = _.template(
             $('#blast_template').html(), { 

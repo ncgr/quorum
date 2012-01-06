@@ -85,10 +85,6 @@ $(function() {
     $('#blastp').hide();
   }
 
-  if (!$('#job_hmmer_job_attributes_queue').is(':checked')) {
-    $('#hmmer').hide();
-  }
-
   // End Elements //
 
 
@@ -115,10 +111,6 @@ $(function() {
 
   $('#job_blastp_job_attributes_queue').change(function() {
     $('#blastp').slideToggle();
-  });
-
-  $('#job_hmmer_job_attributes_queue').change(function() {
-    $('#hmmer').slideToggle();
   });
 
   // End Algorithms //
@@ -173,7 +165,7 @@ var pollResults = function(id, interval, algos) {
   interval = interval || 5000;
 
   // Algorithms
-  algos = algos || ["blastn", "blastx", "tblastn", "blastp", "hmmer"];
+  algos = algos || ["blastn", "blastx", "tblastn", "blastp"];
 
   _.each(algos, function(a) {
     $.getJSON(

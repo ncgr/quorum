@@ -10,7 +10,6 @@
       <li><a href="#tabs-2">Blastx</a></li>
       <li><a href="#tabs-3">Tblastn</a></li>
       <li><a href="#tabs-4">Blastp</a></li>
-      <li><a href="#tabs-5">Hmmer</a></li>
     </ul>
 
     <!-- Search results per algorithm -->
@@ -41,18 +40,18 @@
         Searching... <%= image_tag "quorum/knight_rider.gif" %> 
       </div>
     </div>
-
-    <div id="tabs-5">
-      <h2>Hmmer</h2>
-      <div id="hmmer-results">
-      </div>
-    </div>
   </div>
   <!-- End Tabs -->
   <p class="small right"><%= link_to raw("Search Again &raquo;"), :jobs %></p>
 
   <!-- Detailed report element -->
   <div id="detailed_report_dialog" title="Quorum Report Details"></div>
+</div>
+<div id="quorum">              
+  <hr class="big" />
+  <p> 
+    Powered by <%= link_to "Quorum", "https://github.com/ncgr/quorum" %>
+  </p>
 </div>
 
 <!-- Blast Results Template -->
@@ -173,12 +172,11 @@
 <script type="text/javascript">
   $(function() {
     //
-    // Asynchronously poll Quorum for search results per algorithm.
+    // Asynchronously poll Quorum for search results.
     //
-    // Arguments: 
-    //   id: Job.id
-    //   ** Optional **
-    //   interval: poll interval in milliseconds. 5000 default.
+    //  pollResults(id, interval) 
+    //    id: Job.id
+    //    interval: poll interval in milliseconds. 5000 default.
     //
     pollResults(<%= @jobs.id %>);
   });

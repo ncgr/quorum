@@ -15,8 +15,8 @@ namespace :quorum do
     "PROT_FILE_NAME= -- defaults to peptides.fa. " <<
     "NUCL_FILE_NAME= -- defaults to contigs.fa. " <<
     "REBUILD_DB= {true or false} -- remove existing blast database(s). " <<
-    "defaults to false. " <<
-    "EMPTY= {true or false} -- skip makeblastdb and create empty " <<
+    "Defaults to false. " <<
+    "EMPTY={true or false} -- skip makeblastdb and create empty " <<
     "directories. Use this option if you prefer to create your own " <<
     "Blast database. Defaults to false.)"
     task :build do

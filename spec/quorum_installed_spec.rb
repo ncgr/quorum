@@ -37,10 +37,6 @@ describe "Quorum" do
     ).should be_true
 
     File.exists?(
-      File.join(@dummy_path, "quorum", "lib", "search_tools", "hmmer.rb")
-    ).should be_true
-
-    File.exists?(
       File.join(@dummy_path, "quorum", "lib", "trollop.rb")
     ).should be_true
   end

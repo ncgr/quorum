@@ -1,6 +1,10 @@
 module Workers 
   class System
     @queue = :system_queue
+
+    #
+    # Resque worker method.
+    #
     def self.perform(cmd, remote, ssh_host, ssh_user, ssh_options = {})
       unless ssh_options.empty?
         # Convert each key in ssh_options to a symbol.

@@ -54,7 +54,7 @@ module Quorum
     #
     def get_quorum_search_results
       valid = ["blastn", "blastx", "tblastn", "blastp"]
-      empty = [ {:results => false} ].to_json
+      empty = [{ :results => false }].to_json
 
       json = empty
 

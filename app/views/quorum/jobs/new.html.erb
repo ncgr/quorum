@@ -29,8 +29,6 @@
     <%= render :partial => "blastp_form", :locals => { 
       :f => f, :blast_dbs => @blast_dbs } %>
 
-    <!-- hmmer -->
-    <%= render :partial => "hmmer_form", :locals => { :f => f } %>
     <!-- End Search Algorithms -->
     <div>
       <%= f.submit "Submit" %>&nbsp;&nbsp;
@@ -38,4 +36,10 @@
         :type => "button", :id => "quorum_job_reset" %>
     </div>
   <% end %>
+</div>
+<div id="quorum">              
+  <hr class="big" />
+  <p> 
+    Powered by <%= link_to "Quorum", "https://github.com/ncgr/quorum" %>
+  </p>
 </div>

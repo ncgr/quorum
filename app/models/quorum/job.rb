@@ -21,20 +21,15 @@ module Quorum
     has_many :blastp_job_reports, :through => :blastp_job, 
       :dependent => :destroy
 
-    has_one :hmmer_job, :dependent => :destroy
-    has_many :hmmer_job_reports, :through => :hmmer_job, 
-      :dependent => :destroy
-
     accepts_nested_attributes_for :blastn_job, :blastx_job, :tblastn_job,
-      :blastp_job, :hmmer_job,
+      :blastp_job,
       :reject_if => proc { |attributes| attributes['queue'] == '0' }
 
     attr_accessible :sequence, :na_sequence, :aa_sequence, 
       :blastn_job_attributes, :blastx_job_attributes, :tblastn_job_attributes,
-      :blastp_job_attributes, :hmmer_job_attributes
+      :blastp_job_attributes
 
-    validates_associated :blastn_job, :blastx_job, :tblastn_job, :blastp_job,
-      :hmmer_job
+    validates_associated :blastn_job, :blastx_job, :tblastn_job, :blastp_job
 
     validate :filter_input_sequences, :algorithm_selected
 
@@ -102,8 +97,7 @@ module Quorum
       if (self.blastn_job && self.blastn_job.queue) || 
         (self.blastx_job && self.blastx_job.queue) ||
         (self.tblastn_job && self.tblastn_job.queue) || 
-        (self.blastp_job && self.blastp_job.queue) ||
-        (self.hmmer_job && self.hmmer_job.queue)
+        (self.blastp_job && self.blastp_job.queue)
         in_queue = true
       end
       unless in_queue
@@ -131,10 +125,7 @@ module Quorum
       if self.blastp_job && self.blastp_job.queue
         jobs << create_system_command("blastp")
       end
-      if self.hmmer_job && self.hmmer_job.queue
-        hmmer = create_system_command("hmmscan")
-      end
-      
+     
       unless jobs.blank?
         jobs.each do |j|
           Resque.enqueue(
@@ -143,14 +134,6 @@ module Quorum
             Quorum.blast_ssh_options
           )
         end
-      end
-
-      unless hmmer.blank?
-        Resque.enqueue(
-          Workers::System, hmmer, Quorum.hmmer_remote, 
-          Quorum.hmmer_ssh_host, Quorum.hmmer_ssh_user, 
-          Quorum.hmmer_ssh_options
-        )
       end
     end
 
@@ -165,10 +148,6 @@ module Quorum
         cmd << "#{Quorum.blast_script} -l #{Quorum.blast_log_dir} " <<
           "-m #{Quorum.blast_tmp_dir} -b #{Quorum.blast_db} " <<
           "-t #{Quorum.blast_threads} "
-      elsif Quorum::HMMER_ALGORITHMS.include?(algorithm)
-        cmd << "#{Quorum.hmmer_script} -l #{Quorum.hmmer_log_dir} " <<
-          "-m #{Quorum.hmmer_tmp_dir} -b #{Quorum.hmmer_db} " <<
-          "-t #{Quorum.hmmer_threads} "
       else
         return cmd
       end

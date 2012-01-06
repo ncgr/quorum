@@ -6,15 +6,17 @@ Quorum is a Rails 3.1 mountable engine that supports the following
 bioinformatics search tools.
 
 * NCBI Blast+ (http://blast.ncbi.nlm.nih.gov)
-* HMMER (http://hmmer.janelia.org)
 
 Dependencies:
 
 * Rails >= 3.1.0
 * Redis >= 0.900 for Resque (https://github.com/defunkt/resque)
 * NCBI Blast+ (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
-* HMMER (http://hmmer.janelia.org/software)
 * Emboss (http://emboss.sourceforge.net/)
+
+See the gem in action.
+
+http://medplants.ncgr.org/quorum/jobs/new
 
 == Installation
 
@@ -26,29 +28,22 @@ After you install Quorum and add it to your Gemfile, run the generator.
 
   rails generate quorum:install
 
-To override Quorum's default views, run the generator.
+The generator will create a directory in your application's root path
 
-  rails generate quorum:views
+  quorum/  
 
-A copy of Quorum's views can be found in your application under 
-"app/views/quorum/". 
+as well as the necessary config files to run and customize Quorum. You
+MUST customize "config/quorum_settings.yml" before using Quorum. See Remote
+Machine Setup below if you choose to execute Quorum remotely.
 
 Migrate the database.
 
   rake quorum:install:migrations
   rake db:migrate
 
-The generator will create a directory in your application's root path
-
-  quorum/  
-
-as well as the necessary config files to run and customize Quorum. You
-MUST customize config/quorum_settings.yml before using Quorum. See Remote
-Machine Setup below if you choose to execute Quorum remotely.
-
 == Getting Started
 
-=== NCBI Blast Setup
+=== NCBI Blast+ Setup
 
 Build your NCBI Blast+ database(s) using the rake task below.
 
@@ -56,54 +51,60 @@ Build your NCBI Blast+ database(s) using the rake task below.
 
 Arguments:
 
-*Required*
-
 * DIR= - path to {.tgz, .tar.gz, .tbz, .tar.bz2} files containg raw data.
-Separate multiple directories with a colon (:).
+  Separate multiple directories with a colon (:).
 
   DIR=/path/to/dir:/path/to/another/dir
 
-*Optional*
-
 * TYPE= - type of Blast database to build {both, prot, nucl}. Defaults to
-both.
+  both.
 
 * PROT_FILE_NAME= - name of the file containing protein data. Defaults to
-peptides.fa.
+  peptides.fa.
 
 * NUCL_FILE_NAME= - name of the file containing nucleotide data. Defaults
-to contigs.fa.
+  to contigs.fa.
 
 * REBUILD_DB= - removes existing blast database(s) before building {true or
-false}. Defaults to false. 
+  false}. Defaults to false. 
+
+* EMPTY= - skip makeblastdb and create necessary directories {true or false}.
+  Defaults to false. Set this argument to true if you wish to create your own
+  Blast database(s).
+
+Example:
+
+  rake quorum:blastdb:build DIR=/path/to/dir:/path/to/another/dir TYPE=nucl \
+  NUCL_FILE_NAME=my_contigs.fa REBUILD_DB=true
+
+Empty example:
+
+  rake quorum:blastdb:build EMPTY=true
 
 For a full list of supported arguments.
 
   rake -D
 
-Don't forget to update config/quorum_settings.yml with your newly created 
+Don't forget to update "config/quorum_settings.yml" with your newly created 
 database(s).
 
-=== HMMER Setup
-
-Quorum executes HMMER hmmscan against the Superfamily database specified in
-your quorum_settings.yml file.
-
-=== Remote Machine Setup -- *Recommended for Production Use*
+=== Remote Machine Setup -- Recommended for Production Use
 
 Follow the steps below to execute Quorum remotely via Net::SSH.
 
-* Ensure your ActiveRecord Database adapter in config/database.yml is set to 
-*any* supported adapter other than sqlite3.
+* Ensure your ActiveRecord Database adapter in "config/database.yml" is set to 
+  *any* supported adapter other than sqlite3.
+
+* Ensure your database host is set and accessible via the remote machine(s).
 
 * Ensure you have supplied the necessary information in 
-config/quorum_settings.yml to execute Quorum remotely.
+  "config/quorum_settings.yml" to execute Quorum remotely.
 
   remote: true
   ssh_host: remote.machine.org
   ssh_user: remote_user
   
-Net::SSH.start() optional params.
+Net::SSH.start() optional params (http://net-ssh.github.com/ssh/v2/api/index.html)
 
   ssh_options:
     password: "secret"
@@ -124,24 +125,194 @@ Net::SSH.start() optional params.
   tar -xzvf quorum.tar.gz
 
 * Ensure quorum script dependencies are added to the remote machine's PATH. 
-If the remote machine doens't have a .bashrc file, create one
+  If the remote machine doens't have a .bashrc file, create one
 
   touch /path/to/.bashrc
 
-and add script dependencies to the PATH.
+and add script dependencies to PATH.
 
   echo "export PATH=/path/to/dependencies:$PATH" >> /path/to/.bashrc
 
+=== Customize Quorum's Views and Styles
+
+To override Quorum's default views, run the generator.
+
+  rails generate quorum:views
+
+A copy of Quorum's views can be found in your application under 
+"app/views/quorum/". 
+
+To override Quorum's default styles, run the generator.
+
+  rails generate quorum:styles
+
+A copy of Quorum's styles can be found in your application under
+"app/assets/stylesheets/quorum/". If your application has existing styles,
+it's a good idea to remove
+
+  *= require_tree .
+
+in "app/assets/stylesheets/application.css" and require your stylesheets 
+individually.
+
+Don't plan on supporting all of Quorum's alogrithms? Override Quorum's views 
+and comment out any unwanted algorithms in "app/views/quorum/jobs/new.html.erb" 
+and "app/views/quorum/jobs/show.html.erb".
+
+For example:
+
+Remove Blastp in "app/views/quorum/jobs/new.html.erb"
+
+  <!-- Search Algorithms -->
+  <!-- Comment out an alorithm below to remove it from the form. -->
+
+  <!-- blastn -->
+  <%= render :partial => "blastn_form", :locals => { 
+    :f => f, :blast_dbs => @blast_dbs } %>
+
+  <!-- blastx -->
+  <%= render :partial => "blastx_form", :locals => { 
+    :f => f, :blast_dbs => @blast_dbs } %>
+
+  <!-- tblastn -->
+  <%= render :partial => "tblastn_form", :locals => { 
+    :f => f, :blast_dbs => @blast_dbs } %>
+
+  <!-- blastp -->
+  <% render :partial => "blastp_form", :locals => { 
+    :f => f, :blast_dbs => @blast_dbs } %>
+
+  <!-- End Search Algorithms -->
+
+Remove Blastp in "app/views/quorum/jobs/show.html.erb"
+
+  <div id="tabs">
+    <ul>
+      <li><a href="#tabs-1">Blastn</a></li>
+      <li><a href="#tabs-2">Blastx</a></li>
+      <li><a href="#tabs-3">Tblastn</a></li>
+      <!--
+      <li><a href="#tabs-4">Blastp</a></li>
+      -->
+    </ul>
+
+    <!-- Search results per algorithm -->
+    <div id="tabs-1">
+      <h2>Blastn</h2>
+      <div id="blastn-results">
+        Searching... <%= image_tag "quorum/knight_rider.gif" %> 
+      </div>
+    </div>
+
+    <div id="tabs-2">
+      <h2>Blastx</h2>
+      <div id="blastx-results">
+        Searching... <%= image_tag "quorum/knight_rider.gif" %> 
+      </div>
+    </div>
+
+    <div id="tabs-3">
+      <h2>Tblastn</h2>
+      <div id="tblastn-results">
+        Searching... <%= image_tag "quorum/knight_rider.gif" %> 
+      </div>
+    </div>
+
+    <!--
+    <div id="tabs-4">
+      <h2>Blastp</h2>
+      <div id="blastp-results">
+        Searching... <%= image_tag "quorum/knight_rider.gif" %> 
+      </div>
+    </div>
+    -->
+  </div>
+
+=== Redis
+
+For detailed Redis installation instructions, follow the links below.
+
+* Redis (http://redis.io/)
+* Resque (https://github.com/defunkt/resque)
+
+=== Resque
+
+Quorum provides a simple Rails enviornment rake task for spawning Resque 
+workers. To customize Resque workers by adding monitoring etc., follow 
+the link below.
+
+* Resque (https://github.com/defunkt/resque)
+
+*Resque Web Interface*
+
+Quorum mounts Resque's web interface by default via 
+
+  mount Resque::Server.new, :at => "/quorum/resque"
+
+in "config/routes.rb". The line above is fine for development, however, in
+production it's best to grant authenticated users access to "/quorum/resque".
+
+HTTP Basic Example:
+"config/initializers/resque_http_auth.rb"
+
+  Resque::Server.use(Rack::Auth::Basic) do |user, password|
+    user     == "resque"
+    password == "secret"
+  end
+
+Devise Example:
+"config/routes.rb"
+
+  authenticate :user do
+    mount Resque::Server.new, :at => "/quorum/resque"
+  end
+
+Devise plus Declarative Authorization Example:
+"config/routes.rb"
+
+  # Only superusers can access Resque's web interface.
+  resque_constraint = lambda do |request|
+    request.env["warden"].authenticate? && 
+    request.env["warden"].user.role_symbols.include?(:superuser)
+  end 
+
+  constraints resque_constraint do
+    mount Resque::Server.new, :at => "/quorum/resque"
+  end
+
 === I18n
 
-To customize Quorum flash messages, edit config/locales/quorum.en.yml.
+To customize Quorum flash messages, edit "config/locales/quorum.en.yml".
 
 == Additional Information
+
+=== Bugs?
+
+https://github.com/ncgr/quorum/issues
+
+=== Contributing
+
+* Fork Quorum
+* Create a topic branch +git checkout -b my_branch+
+* Push to your branch +git push origin my_branch+
+* Create a pull request from your branch
+* Find your name added to the README under Contributors
+
+=== TODO
+
+* Add GFF3 annotations to detailed Blast reports
+* Add link to download Blast hit sequence in detailed report
+* Support Hmmer3
 
 === Maintained By
 
 * Ken Seal (https://github.com/hunzinker)
 
+=== Contributors
+
+* John Crow (https://github.com/crowja)
+* Andrew Farmer
+
 == License
 
-MIT License. Copyright 2011 NCGR http://ncgr.org/
+MIT License. Copyright NCGR http://ncgr.org/

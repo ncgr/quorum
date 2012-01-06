@@ -14,7 +14,6 @@ module Quorum
       @job.build_blastx_job
       @job.build_tblastn_job
       @job.build_blastp_job
-      @job.build_hmmer_job
     end
 
     def create
@@ -35,7 +34,6 @@ module Quorum
         @job.build_blastx_job  if @job.blastx_job.nil?
         @job.build_tblastn_job if @job.tblastn_job.nil?
         @job.build_blastp_job  if @job.blastp_job.nil?
-        @job.build_hmmer_job   if @job.hmmer_job.nil?
         render :action => "new"
         return 
       end
@@ -55,7 +53,7 @@ module Quorum
     # Returns Resque worker results.
     #
     def get_quorum_search_results
-      valid = ["blastn", "blastx", "tblastn", "blastp", "hmmer"]
+      valid = ["blastn", "blastx", "tblastn", "blastp"]
       empty = [ {:results => false} ].to_json
 
       json = empty

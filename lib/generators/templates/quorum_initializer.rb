@@ -18,7 +18,6 @@ settings.keys.each do |k|
 end
 
 blast = settings['blast']
-hmmer = settings['hmmer']
 
 ## Quorum Blast Settings ##
 Quorum.blast_remote      = blast['remote']
@@ -34,15 +33,4 @@ Quorum.blastp            = blast['blastp']
 Quorum.blastn            = blast['blastn']
 Quorum.blastx            = blast['blastx']
 Quorum.blast_threads     = blast['blast_threads']
-
-## Quorum Hmmer Settings ##
-Quorum.hmmer_remote      = hmmer['remote']
-Quorum.hmmer_ssh_host    = hmmer['ssh_host']
-Quorum.hmmer_ssh_user    = hmmer['ssh_user']
-Quorum.hmmer_ssh_options = hmmer['ssh_options']
-Quorum.hmmer_script      = hmmer['script']
-Quorum.hmmer_log_dir     = hmmer['log_dir']
-Quorum.hmmer_tmp_dir     = hmmer['tmp_dir']
-Quorum.hmmer_db          = hmmer['hmmer_db']
-Quorum.hmmer_threads     = hmmer['hmmer_threads']
 

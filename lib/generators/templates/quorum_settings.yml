@@ -62,37 +62,6 @@
 #
 #   blast_threads: Number of Blast threads. >= 1
 #     Defaults to 1.
-#
-# ==> Hmmer3 Settings
-# hmmer:
-#   remote: true to execute script on remote machine via
-#     Net::SSH. false to execute locally via Kernel#system.
-#     See Net::SSH for more information.
-#     http://net-ssh.github.com/ssh/v2/api/index.html
-#
-#   ssh_host: Net::SSH.start() host.
-#
-#   ssh_user: Net::SSH.start() user.
-#
-#   ssh_options: Net::SSH.start() optional params.
-#     See http://net-ssh.github.com/ssh/v2/api/classes/Net/SSH.html#M000002
-#     for a complete list of options.
-#     Example Usage:
-#     ssh_options:
-#       password: "secret password"
-#       port: 8888
-#
-#   script: Absolute path to search script.
-#
-#   log_dir: Absolute path to log file directory.
-#
-#   tmp_dir: Absolute path to tmp file directory.
-#
-#   hmmer_db: Absolute path to Hmmer3 Superfamily database directory.
-#
-#   hmmer_threads: Number of HMMER threads. >= 1
-#     Defaults to 1.
-
 
 development:
   blast:
@@ -124,19 +93,6 @@ development:
       # "Display name": blastp_database_name
       # "A really cool genome": really_cool_genome
     blast_threads:
-  hmmer:
-    remote: false
-    ssh_host:
-    ssh_user:
-    ssh_options:
-      # Example:
-      # password: "secret password"
-      # port: 8888
-    script: "%{RAILS_ROOT}/quorum/bin/search"
-    log_dir: "%{RAILS_ROOT}/quorum/log"
-    tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
-    hmmer_db: "%{RAILS_ROOT}/quorum/hmmerdb"
-    hmmer_threads:
 
 test:
   blast:
@@ -168,19 +124,6 @@ test:
       # "Display name": blastp_database_name
       # "A really cool genome": really_cool_genome
     blast_threads:
-  hmmer:
-    remote: false
-    ssh_host:
-    ssh_user:
-    ssh_options:
-      # Example:
-      # password: "secret password"
-      # port: 8888
-    script: "%{RAILS_ROOT}/quorum/bin/search"
-    log_dir: "%{RAILS_ROOT}/quorum/log"
-    tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
-    hmmer_db: "%{RAILS_ROOT}/quorum/hmmerdb"
-    hmmer_threads:
 
 production:
   blast:
@@ -212,16 +155,3 @@ production:
       # "Display name": blastp_database_name
       # "A really cool genome": really_cool_genome
     blast_threads:
-  hmmer:
-    remote: true
-    ssh_host:
-    ssh_user:
-    ssh_options:
-      # Example:
-      # password: "secret password"
-      # port: 8888
-    script:
-    log_dir:
-    tmp_dir:
-    hmmer_db:
-    hmmer_threads:

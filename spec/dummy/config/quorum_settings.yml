@@ -3,7 +3,7 @@
 # ==> General
 # Quorum initializer safely substitutes %{RAILS_ROOT} with ::Rails.root.to_s.
 # 
-# ==> NCBI BLAST Plus Settings
+# ==> NCBI BLAST+ Settings
 # blast:
 #   remote: true to execute script on remote machine via
 #     Net::SSH. false to execute locally via Kernel#system.

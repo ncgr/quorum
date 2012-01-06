@@ -51,7 +51,7 @@ Build your NCBI Blast+ database(s) using the rake task below.
 
 Arguments:
 
-* DIR= - path to {.tgz, .tar.gz, .tbz, .tar.bz2} files containg raw data.
+* DIR= - path to {.tgz, .tar.gz, .tbz, .tar.bz2} files containing raw data.
   Separate multiple directories with a colon (:).
 
   DIR=/path/to/dir:/path/to/another/dir
@@ -124,8 +124,8 @@ Net::SSH.start() optional params (http://net-ssh.github.com/ssh/v2/api/index.htm
 
   tar -xzvf quorum.tar.gz
 
-* Ensure quorum script dependencies are added to the remote machine's PATH. 
-  If the remote machine doens't have a .bashrc file, create one
+* Ensure Quorum script dependencies are added to the remote machine's PATH. 
+  If the remote machine doesn't have a .bashrc file, create one.
 
   touch /path/to/.bashrc
 
@@ -237,13 +237,13 @@ For detailed Redis installation instructions, follow the links below.
 
 === Resque
 
-Quorum provides a simple Rails enviornment rake task for spawning Resque 
+Quorum provides a simple Rails environment rake task for spawning Resque 
 workers. To customize Resque workers by adding monitoring etc., follow 
 the link below.
 
 * Resque (https://github.com/defunkt/resque)
 
-*Resque Web Interface*
+<b>Resque Web Interface</b>
 
 Quorum mounts Resque's web interface by default via 
 
@@ -293,8 +293,8 @@ https://github.com/ncgr/quorum/issues
 === Contributing
 
 * Fork Quorum
-* Create a topic branch +git checkout -b my_branch+
-* Push to your branch +git push origin my_branch+
+* Create a topic branch <code>git checkout -b my_branch</code>
+* Push to your branch <code>git push origin my_branch</code>
 * Create a pull request from your branch
 * Find your name added to the README under Contributors
 

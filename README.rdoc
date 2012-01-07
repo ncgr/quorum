@@ -164,7 +164,7 @@ For example:
 Remove Blastp in "app/views/quorum/jobs/new.html.erb"
 
   <!-- Search Algorithms -->
-  <!-- Comment out an alorithm below to remove it from the form. -->
+  <!-- Comment out an algorithm below to remove it from the form. -->
 
   <!-- blastn -->
   <%= render :partial => "blastn_form", :locals => { 

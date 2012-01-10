@@ -101,7 +101,7 @@
 	        <td class="right">{{= v.query_len }}</td>
 	        <td class="right">{{= v.hit_len }}</td>
           <td>{{= formatStrand(qstrand, hstrand) }}</td>
-          <td>{{= v.hit_id }}</td>
+          <td>{{= v.hit_display_id }}</td>
           <td>{{= v.hit_def.trunc(20) }}</td>
 	        <td class="right">{{= v.align_len }}</td>
 	        <td class="right">{{= v.bit_score }}</td>
@@ -139,7 +139,7 @@
     {{ var hsp_group = v.hsp_group }}
     <div id="{{= id }}">
       <p class="small">{{= displayHspLinks(id, hsp_group, data) }}</p>
-      <p class="small">Hit Accession: {{= v.hit_id }}</p>
+      <p class="small">Hit Accession: {{= v.hit_display_id }}</p>
       <p class="small">Hit Description: {{= v.hit_def }}</p>
 	    <table class="report_details">
 	      <tr>

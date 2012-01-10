@@ -180,7 +180,7 @@ var pollResults = function(id, interval, algos) {
               data: data,
               algo: a
             }
-            );
+          );
           $('#' + a + '-results').html(temp);
           return;
         }
@@ -249,7 +249,7 @@ var addBaseTitleIndex = function(bases, from, to, algo, type) {
     forward = false;
   }
 
-  // Only set value to 3 if hseq is true and algo is tblastn.
+  // Set value to 3 for the below.
   if ((type === "hit" && algo === "tblastn") ||
       (type === "query" && algo === "blastx")) {
     value = 3;

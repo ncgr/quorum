@@ -8,7 +8,7 @@ module Quorum
 
       DEPENDENCIES = ["makeblastdb", "seqret"]
 
-      def copy_initializer
+      def copy_quorum
         template "quorum_initializer.rb", 
           "config/initializers/quorum_initializer.rb"
         template "quorum_settings.yml", "config/quorum_settings.yml"
@@ -35,12 +35,30 @@ module Quorum
         Dir.mkdir("quorum/log") unless File.directory?("quorum/log")
       end
 
+      def set_mount_engines
+        @quorum = %Q(mount Quorum::Engine => "/quorum")
+        @resque = %Q(mount Resque::Server.new, :at => "/quorum/resque")
+      end
+      
+      def read_routes_file
+        @routes = File.open(File.join("config", "routes.rb"), "r")
+        @routes = @routes.read
+      end
+
+      def mount_engine_exists?
+        @routes.include?(@quorum)
+      end
+
       def add_mount_engine
-        route %Q(mount Quorum::Engine => "/quorum")
+        route @quorum unless mount_engine_exists? 
+      end
+
+      def resque_mount_engine_exists?
+        @routes.include?(@resque)
       end
 
       def add_resque_mount_engine
-        route %Q(mount Resque::Server.new, :at => "/quorum/resque")
+        route @resque unless resque_mount_engine_exists?
       end
 
       def check_dependencies

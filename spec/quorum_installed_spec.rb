@@ -61,4 +61,9 @@ describe "Quorum" do
     f = File.open(File.join(@dummy_path, "config", "routes.rb"), "r")
     f.read.include?("mount Quorum::Engine => \"/quorum\"").should be_true
   end
+
+  it "ensures Resque::Server is mounted in dummy/config/routes.rb" do
+    f = File.open(File.join(@dummy_path, "config", "routes.rb"), "r")
+    f.read.include?("mount Resque::Server.new, :at => \"/quorum/resque\"").should be_true
+  end
 end

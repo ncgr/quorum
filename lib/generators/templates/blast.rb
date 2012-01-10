@@ -11,6 +11,8 @@ module Quorum
     class Blast
 
       class QuorumJob < ActiveRecord::Base
+        set_table_name "quorum_jobs"
+
         has_one :quorum_blastn_job, 
           :foreign_key => "job_id"
         has_many :quorum_blastn_job_reports, 
@@ -33,38 +35,46 @@ module Quorum
       end
 
       class QuorumBlastnJob < ActiveRecord::Base
+        set_table_name "quorum_blastn_jobs"
         belongs_to :quorum_job
         has_many :quorum_blastn_job_reports
       end
 
       class QuorumBlastnJobReport < ActiveRecord::Base
+        set_table_name "quorum_blastn_job_reports"
         belongs_to :quorum_blastn_job
       end
 
       class QuorumBlastxJob < ActiveRecord::Base
+        set_table_name "quorum_blastx_jobs"
         belongs_to :quorum_job
         has_many :quorum_blastx_job_reports
       end
 
       class QuorumBlastxJobReport < ActiveRecord::Base
+        set_table_name "quorum_blastx_job_reports"
         belongs_to :quorum_blastx_job
       end
 
       class QuorumTblastnJob < ActiveRecord::Base
+        set_table_name "quorum_tblastn_jobs"
         belongs_to :quorum_job
         has_many :quorum_tblastn_job_reports
       end
 
       class QuorumTblastnJobReport < ActiveRecord::Base
+        set_table_name "quorum_tblastn_job_reports"
         belongs_to :quorum_tblastn_job
       end
 
       class QuorumBlastpJob < ActiveRecord::Base
+        set_table_name "quorum_blastp_jobs"
         belongs_to :quorum_job
         has_many :quorum_blastp_job_reports
       end
 
       class QuorumBlastpJobReport < ActiveRecord::Base
+        set_table_name "quorum_blastp_job_reports"
         belongs_to :quorum_blastp_job
       end
 
@@ -235,26 +245,26 @@ module Quorum
       end
 
       #
-      # Format Blast report hit_id and hit_def.
+      # Format Blast report hit_display_id and hit_def.
       #
       # For added flexibility, Quorum doesn't parse seqids or deflines.
       # Instead, format_hit splits the hit_def on whitespace and
-      # reports hit_id as the first element and hit_def as the second.
+      # reports hit_display_id as the first element and hit_def as the second.
       #
       def format_hit(str)
-        hit_id  = ""
+        hit_display_id  = ""
         hit_def = ""
 
         hit = str.split(" ", 2)
         if hit.length < 2
-          hit_id  = hit.first
+          hit_display_id  = hit.first
           hit_def = "None"
         else
-          hit_id  = hit.first
+          hit_display_id  = hit.first
           hit_def = hit.last
         end
 
-        return hit_id, hit_def
+        return hit_display_id, hit_def
       end
 
       #
@@ -275,8 +285,9 @@ module Quorum
             @data[:query_len] = iteration.query_len
 
             iteration.each do |hit|
-              @data[:hit_id], @data[:hit_def] = format_hit(hit.hit_def)
+              @data[:hit_display_id], @data[:hit_def] = format_hit(hit.hit_def)
 
+              @data[:hit_id]        = hit.hit_id
               @data[:hit_accession] = hit.accession
               @data[:hit_len]       = hit.len
 

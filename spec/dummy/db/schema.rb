@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111227224920) do
+ActiveRecord::Schema.define(:version => 20120109232902) do
 
   create_table "quorum_blastn_job_reports", :force => true do |t|
     t.string   "query"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20111227224920) do
     t.integer  "blastn_job_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "hit_display_id"
   end
 
   create_table "quorum_blastn_jobs", :force => true do |t|
@@ -86,6 +87,7 @@ ActiveRecord::Schema.define(:version => 20111227224920) do
     t.integer  "blastp_job_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "hit_display_id"
   end
 
   create_table "quorum_blastp_jobs", :force => true do |t|
@@ -131,6 +133,7 @@ ActiveRecord::Schema.define(:version => 20111227224920) do
     t.integer  "blastx_job_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "hit_display_id"
   end
 
   create_table "quorum_blastx_jobs", :force => true do |t|
@@ -194,6 +197,7 @@ ActiveRecord::Schema.define(:version => 20111227224920) do
     t.integer  "tblastn_job_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "hit_display_id"
   end
 
   create_table "quorum_tblastn_jobs", :force => true do |t|

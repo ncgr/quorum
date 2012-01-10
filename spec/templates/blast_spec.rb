@@ -1,7 +1,7 @@
 require 'spec_helper'
 require File.expand_path("../../dummy/quorum/lib/search_tools/blast", __FILE__)
 
-describe "Quorum::SearchTools::Blast", :focus do
+describe "Quorum::SearchTools::Blast" do
   describe "#execute_blast" do
     before(:each) do
       # Set args as though we executed bin/search.

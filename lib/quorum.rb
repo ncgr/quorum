@@ -1,10 +1,11 @@
 require "quorum/engine"
 require "quorum/helpers"
 require "quorum/sequence"
-require "workers/quorum"
 require "resque"
 require "resque/server"
+require "resque-result"
 require "net/ssh"
+require "workers/quorum"
 
 module Quorum
 
@@ -12,7 +13,7 @@ module Quorum
   BLAST_ALGORITHMS = ["blastn", "blastx", "blastp", "tblastn"]
 
   mattr_accessor :blast_remote, :blast_ssh_host, :blast_ssh_user, 
-    :blast_ssh_options, :blast_script, :blast_log_dir, :blast_tmp_dir,
+    :blast_ssh_options, :blast_bin, :blast_log_dir, :blast_tmp_dir,
     :blast_db, :tblastn, :blastp, :blastn, :blastx, :blast_threads
 
   class << self
@@ -39,9 +40,9 @@ module Quorum
       @@blast_ssh_options || {}
     end
 
-    # Blast script path.
-    def blast_script
-      @@blast_script || nil
+    # Blast bin path.
+    def blast_bin
+      @@blast_bin || nil
     end
 
     # Blast log dir path.

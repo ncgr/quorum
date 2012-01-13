@@ -1,11 +1,13 @@
 module Workers 
   class System
+    extend Resque::Plugins::Result
+
     @queue = :system_queue
 
     #
     # Resque worker method.
     #
-    def self.perform(cmd, remote, ssh_host, ssh_user, ssh_options = {})
+    def self.perform(meta_id, cmd, remote, ssh_host, ssh_user, ssh_options = {}, stdout = false)
       unless ssh_options.empty?
         # Convert each key in ssh_options to a symbol.
         ssh_options = ssh_options.inject({}) do |memo, (k, v)|
@@ -24,6 +26,12 @@ module Workers
               unless success 
                 Rails.logger.warn "Channel Net::SSH exec() failed. :'("
               else
+                # Capture STDOUT from ch.exec()
+                if stdout
+                  ch.on_data do |ch, data|
+                    data = data
+                  end
+                end
                 # Read the exit status of the remote process.
                 ch.on_request("exit-status") do |ch, data|
                   exit_status = data.read_long
@@ -34,12 +42,13 @@ module Workers
           ssh.loop
         end
       else
-        system(cmd)
+        data = `#{cmd}`
         exit_status = $?.exitstatus
       end
       if exit_status > 0
         raise "Worker failed :'(. See quorum/log/quorum.log for more information."
       end
+      data if stdout
     end
   end
 end

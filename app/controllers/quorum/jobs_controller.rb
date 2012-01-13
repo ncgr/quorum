@@ -53,12 +53,11 @@ module Quorum
     # Returns Resque worker results.
     #
     def get_quorum_search_results
-      valid = ["blastn", "blastx", "tblastn", "blastp"]
       empty = [{ :results => false }].to_json
 
       json = empty
 
-      if valid.include? params[:algo]
+      if Quorum::BLAST_ALGORITHMS.include?(params[:algo])
         queued = "#{params[:algo]}_job".to_sym
         report = "#{params[:algo]}_job_reports".to_sym
 
@@ -82,6 +81,40 @@ module Quorum
       end
 
       respond_with json
+    end
+
+    #
+    # Send blast hit sequence as an attached file.
+    #
+    def get_quorum_blast_hit_sequence
+      json = []
+
+      if Quorum::BLAST_ALGORITHMS.include?(params[:algo])
+        begin
+          job = Job.find(params[:id])
+        rescue ActiveRecord::RecordNotFound => e
+          logger.error e.message
+        else
+          data = job.fetch_quorum_blast_sequence(
+            params[:algo], params[:algo_id]
+          )
+          json = [{ :meta_id => data.meta_id }]
+        end
+      end   
+
+      respond_with json
+    end
+
+    def send_quorum_blast_hit_sequence
+      data = Workers::System.get_meta(params[:meta_id])
+      if data.succeeded?
+        send_data data.result, 
+          :filename    => "#{params[:meta_id]}.fa", 
+          :type        => "text/plain",
+          :disposition => "attachment"
+        return
+      end
+      render :text => ""
     end
 
     private

@@ -3,8 +3,8 @@ module Quorum
     class InstallGenerator < Rails::Generators::Base
       source_root File.expand_path("../../templates", __FILE__)
 
-      desc "Creates Quorum initializer, settings and " <<
-           "search tool files."
+      desc "Creates Quorum initializer, settings and search " <<
+           "/ fetch tool files."
 
       DEPENDENCIES = ["makeblastdb", "seqret"]
 
@@ -13,9 +13,11 @@ module Quorum
           "config/initializers/quorum_initializer.rb"
         template "quorum_settings.yml", "config/quorum_settings.yml"
         template "search", "quorum/bin/search"
+        template "fetch", "quorum/bin/fetch"
         template "trollop.rb", "quorum/lib/trollop.rb"
         template "logger.rb", "quorum/lib/logger.rb"
         template "blast.rb", "quorum/lib/search_tools/blast.rb"
+        template "blast_db.rb", "quorum/lib/fetch_tools/blast_db.rb"
       end
 
       def copy_locale
@@ -23,8 +25,9 @@ module Quorum
       end
 
       def change_file_permissions
-        f = File.new("quorum/bin/search", "r")
-        f.chmod(0755)
+        Dir.glob(File.join("quorum", "bin", "*")).each do |f|
+          File.new(f, "r").chmod(0755)
+        end
       end
 
       def create_quorum_tmp_dir

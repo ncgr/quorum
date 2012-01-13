@@ -163,6 +163,11 @@
 	        <td>Hit To: {{= v.hit_to }}</td>
 	      </tr>
 	    </table>
+      <p class="small">
+        <a onclick="downloadSequence(<%= @jobs.id %>, {{= id }}, '{{= algo }}')">
+          Download Sequence
+        </a>
+      </p>
 	    {{= formatSequenceReport(qseq, midline, hseq, q_from, q_to, h_from, h_to, algo) }}
     </div>
     <hr />

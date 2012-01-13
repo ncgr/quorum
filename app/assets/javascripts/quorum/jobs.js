@@ -351,6 +351,35 @@ var displayHspLinks = function(focus, group, data) {
 }
 
 //
+// Download Blast hit sequence.
+//
+var downloadSequence = function(id, algo_id, algo) {
+  $.getJSON(
+    "/quorum/jobs/" + id + "/get_quorum_blast_hit_sequence.json?algo_id=" +
+    algo_id + "&algo=" + algo,
+    function(data) {
+      getSequenceFile(id, data[0].meta_id);
+    }
+  );
+}
+
+var getSequenceFile = function(id, meta_id) {
+  var url = "/quorum/jobs/" + id + 
+    "/send_quorum_blast_hit_sequence?meta_id=" + meta_id;
+  $.get(
+    url,
+    function(data) {
+      if (data.length === 0) {
+        setTimeout(function() { getSequenceFile(id, meta_id) }, 2500);
+      } else {
+        $('body').append('<iframe class="download"></iframe>');
+        $('.download').attr('src', url).hide();
+      }
+    } 
+  );
+}
+
+//
 // Autoscroll to given div id.
 //
 var autoScroll = function(id, highlight) {

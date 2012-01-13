@@ -22,7 +22,7 @@
 #       password: "secret password"
 #       port: 8888
 #
-#   script: Absolute path to search script.
+#   bin: Absolute path to quorum/bin.
 #
 #   log_dir: Absolute path to log file directory.
 #
@@ -72,7 +72,7 @@ development:
       # Example:
       # password: "secret password"
       # port: 8888
-    script: "%{RAILS_ROOT}/quorum/bin/search"
+    bin: "%{RAILS_ROOT}/quorum/bin"
     log_dir: "%{RAILS_ROOT}/quorum/log"
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
@@ -99,7 +99,7 @@ test:
       # Example:
       # password: "secret password"
       # port: 8888
-    script: "%{RAILS_ROOT}/quorum/bin/search"
+    bin: "%{RAILS_ROOT}/quorum/bin"
     log_dir: "%{RAILS_ROOT}/quorum/log"
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
@@ -122,7 +122,7 @@ production:
       # Example:
       # password: "secret password"
       # port: 8888
-    script:
+    bin:
     log_dir:
     tmp_dir:
     blast_db:

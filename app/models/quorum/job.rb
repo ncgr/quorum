@@ -33,6 +33,30 @@ module Quorum
 
     validate :filter_input_sequences, :algorithm_selected
 
+    def fetch_quorum_blast_sequence(algo, algo_id)
+      job    = "#{algo}_job".to_sym
+      report = "#{algo}_job_reports".to_sym
+
+      blast_dbs = self.method(job).call.blast_dbs
+
+      job_report = self.method(report).call.where(
+        "quorum_#{algo}_job_reports.id = ?", algo_id
+      ).first
+
+      hit_id          = job_report.hit_id
+      hit_display_id  = job_report.hit_display_id
+
+      cmd = create_blast_fetch_command(blast_dbs, hit_id, hit_display_id, algo)
+
+      data = Workers::System.enqueue(
+        cmd, Quorum.blast_remote, 
+        Quorum.blast_ssh_host, Quorum.blast_ssh_user, 
+        Quorum.blast_ssh_options, true
+      )
+
+      Workers::System.get_meta(data.meta_id)
+    end
+
     private
 
     #
@@ -114,16 +138,16 @@ module Quorum
     def queue_workers
       jobs = []
       if self.blastn_job && self.blastn_job.queue
-        jobs << create_system_command("blastn")
+        jobs << create_search_command("blastn")
       end
       if self.blastx_job && self.blastx_job.queue
-        jobs << create_system_command("blastx")
+        jobs << create_search_command("blastx")
       end
       if self.tblastn_job && self.tblastn_job.queue
-        jobs << create_system_command("tblastn")
+        jobs << create_search_command("tblastn")
       end
       if self.blastp_job && self.blastp_job.queue
-        jobs << create_system_command("blastp")
+        jobs << create_search_command("blastp")
       end
      
       unless jobs.blank?
@@ -137,15 +161,27 @@ module Quorum
       end
     end
 
+    def create_blast_fetch_command(db_names, hit_id, hit_display_id, algo)
+      # System command
+      cmd = ""
+
+      fetch = File.join(Quorum.blast_bin, "fetch")
+      cmd << "#{fetch} -f blastdbcmd -l #{Quorum.blast_log_dir} " <<
+        "-m #{Quorum.blast_tmp_dir} -d #{Quorum.blast_db} " <<
+        "-n '#{db_names}' -b '#{hit_id}' -s '#{hit_display_id}' " <<
+        "-a #{algo}"
+    end
+
     #
-    # Create system commands based on config/quorum_settings.yml
+    # Create search command based on config/quorum_settings.yml
     #
-    def create_system_command(algorithm)
+    def create_search_command(algorithm)
       # System command
       cmd = ""
 
       if Quorum::BLAST_ALGORITHMS.include?(algorithm)
-        cmd << "#{Quorum.blast_script} -l #{Quorum.blast_log_dir} " <<
+        search = File.join(Quorum.blast_bin, "search")
+        cmd << "#{search} -l #{Quorum.blast_log_dir} " <<
           "-m #{Quorum.blast_tmp_dir} -b #{Quorum.blast_db} " <<
           "-t #{Quorum.blast_threads} "
       else

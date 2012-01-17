@@ -12,8 +12,8 @@ module Quorum
       # blastdbcmd -dbtype
       DB_TYPE = {
         "blastn"  => "nucl",
-        "blastx"  => "nucl",
-        "tblastn" => "prot",
+        "blastx"  => "prot",
+        "tblastn" => "nucl",
         "blastp"  => "prot"
       }
 

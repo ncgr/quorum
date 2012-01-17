@@ -198,7 +198,7 @@ var viewDetailedReport = function(id, focus_id, query, algo) {
   // Create the modal box.
   $('#detailed_report_dialog').html(
     "<p class='center'>" + 
-    "Loading... <img src='/assets/quorum/knight_rider.gif' alt='Loading'>" +
+    "Loading... <img src='/assets/quorum/loading.gif' alt='Loading'>" +
     "</p>"
   ).dialog({
     modal:    true,
@@ -363,6 +363,9 @@ var downloadSequence = function(id, algo_id, algo) {
   );
 }
 
+//
+// Poll application for Blast hit sequence.
+//
 var getSequenceFile = function(id, meta_id) {
   var url = "/quorum/jobs/" + id + 
     "/send_quorum_blast_hit_sequence?meta_id=" + meta_id;
@@ -372,8 +375,9 @@ var getSequenceFile = function(id, meta_id) {
       if (data.length === 0) {
         setTimeout(function() { getSequenceFile(id, meta_id) }, 2500);
       } else {
-        $('body').append('<iframe class="download"></iframe>');
-        $('.download').attr('src', url).hide();
+        $('.quorum_sequence_download').remove();
+        $('body').append('<iframe class="quorum_sequence_download"></iframe>');
+        $('.quorum_sequence_download').attr('src', url).hide();
       }
     } 
   );

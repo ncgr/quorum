@@ -64,11 +64,11 @@ module Quorum
             "Quorum::FetchTools::BlastDb#parse_and_send_results",
             "blastdbcmd returned #{seqs.length} sequence(s). Please ensure " <<
             "your Blast database source FASTA headers are unique across ALL " <<
-            "databases. See the entry above for details.",
-            1
+            "databases. See the entry above for details."
           )
+          "An error occurred while processing your request."
         else
-          $stdout.print ">" << seqs.first
+          ">" << seqs.first
         end
       end
 
@@ -97,7 +97,8 @@ module Quorum
         @seqs = ""
         @cmds.each { |c| @seqs << `#{c} 2> /dev/null` }
         
-        parse_and_send_results
+        seq = parse_and_send_results
+        $stdout.print seq
       end
 
     end

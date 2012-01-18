@@ -164,11 +164,12 @@
 	      </tr>
 	    </table>
       <p class="small">
-        <a onclick="downloadSequence(<%= @jobs.id %>, {{= id }}, '{{= algo }}')">
+        <a id="download_sequence_{{= id }}" 
+          onclick="downloadSequence(<%= @jobs.id %>, {{= id }}, '{{= algo }}', this)">
           Download Sequence
         </a>
       </p>
-	    {{= formatSequenceReport(qseq, midline, hseq, q_from, q_to, h_from, h_to, algo) }}
+      {{= formatSequenceReport(qseq, midline, hseq, q_from, q_to, h_from, h_to, algo) }}
     </div>
     <hr />
   {{ }); }}

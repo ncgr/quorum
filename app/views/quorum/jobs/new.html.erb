@@ -4,7 +4,8 @@
     <%= render "shared/error_messages", :target => @job %>
     <div>
       <%= f.text_area :sequence, 
-        :title => "Paste nucleic and amino acid FASTA sequence(s) here or upload a file below.",
+        :title => "Paste nucleic and amino acid FASTA sequence(s) here " << 
+          "or upload a file below.",
         :class => "auto-hint" %>
     </div>
     <div>

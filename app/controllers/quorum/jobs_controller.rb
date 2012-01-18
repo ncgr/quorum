@@ -84,7 +84,8 @@ module Quorum
     end
 
     #
-    # Send blast hit sequence as an attached file.
+    # Find hit sequence, queue worker and return worker meta_id
+    # for lookup.
     #
     def get_quorum_blast_hit_sequence
       json = []
@@ -105,14 +106,25 @@ module Quorum
       respond_with json
     end
 
+    #
+    # Send Blast hit sequence as attached file or render
+    # error message as text.
+    #
+    # See lib/generators/templates/blast_db.rb for more info.
+    #
     def send_quorum_blast_hit_sequence
       data = Workers::System.get_meta(params[:meta_id])
       if data.succeeded?
-        send_data data.result, 
-          :filename    => "#{params[:meta_id]}.fa", 
-          :type        => "text/plain",
-          :disposition => "attachment"
-        return
+        unless data.result.downcase.include?("error")
+          send_data data.result, 
+            :filename    => "#{params[:meta_id]}.fa", 
+            :type        => "text/plain",
+            :disposition => "attachment"
+          return
+        else
+          render :text => data.result
+          return
+        end
       end
       render :text => ""
     end

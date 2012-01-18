@@ -17,6 +17,7 @@ module Workers
       end
 
       exit_status = 1
+      out         = ""
 
       if remote
         # Execute command on remote machine.
@@ -29,7 +30,7 @@ module Workers
                 # Capture STDOUT from ch.exec()
                 if stdout
                   ch.on_data do |ch, data|
-                    data = data
+                    out = data
                   end
                 end
                 # Read the exit status of the remote process.
@@ -42,13 +43,13 @@ module Workers
           ssh.loop
         end
       else
-        data = `#{cmd}`
+        out         = `#{cmd}`
         exit_status = $?.exitstatus
       end
       if exit_status > 0
         raise "Worker failed :'(. See quorum/log/quorum.log for more information."
       end
-      data if stdout
+      out if stdout
     end
   end
 end

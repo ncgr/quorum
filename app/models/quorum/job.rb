@@ -33,6 +33,10 @@ module Quorum
 
     validate :filter_input_sequences, :algorithm_selected
 
+    #
+    # Fetch Blast hit_id, hit_display_id, queue Resque worker and 
+    # return worker's meta_id.
+    #
     def fetch_quorum_blast_sequence(algo, algo_id)
       job    = "#{algo}_job".to_sym
       report = "#{algo}_job_reports".to_sym
@@ -152,8 +156,8 @@ module Quorum
      
       unless jobs.blank?
         jobs.each do |j|
-          Resque.enqueue(
-            Workers::System, j, Quorum.blast_remote, 
+          Workers::System.enqueue(
+            j, Quorum.blast_remote, 
             Quorum.blast_ssh_host, Quorum.blast_ssh_user, 
             Quorum.blast_ssh_options
           )
@@ -161,6 +165,9 @@ module Quorum
       end
     end
 
+    #
+    # Create fetch command based on config/quorum_settings.yml
+    #
     def create_blast_fetch_command(db_names, hit_id, hit_display_id, algo)
       # System command
       cmd = ""

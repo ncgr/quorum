@@ -353,12 +353,14 @@ var displayHspLinks = function(focus, group, data) {
 //
 // Download Blast hit sequence.
 //
-var downloadSequence = function(id, algo_id, algo) {
+var downloadSequence = function(id, algo_id, algo, el) {
+  $(el).html('Fetching sequence...');
+
   $.getJSON(
     "/quorum/jobs/" + id + "/get_quorum_blast_hit_sequence.json?algo_id=" +
     algo_id + "&algo=" + algo,
     function(data) {
-      getSequenceFile(id, data[0].meta_id);
+      getSequenceFile(id, data[0].meta_id, el);
     }
   );
 }
@@ -366,18 +368,25 @@ var downloadSequence = function(id, algo_id, algo) {
 //
 // Poll application for Blast hit sequence.
 //
-var getSequenceFile = function(id, meta_id) {
+var getSequenceFile = function(id, meta_id, el) {
   var url = "/quorum/jobs/" + id + 
     "/send_quorum_blast_hit_sequence?meta_id=" + meta_id;
   $.get(
     url,
     function(data) {
       if (data.length === 0) {
-        setTimeout(function() { getSequenceFile(id, meta_id) }, 2500);
+        setTimeout(function() { getSequenceFile(id, meta_id, el) }, 2500);
       } else {
-        $('.quorum_sequence_download').remove();
-        $('body').append('<iframe class="quorum_sequence_download"></iframe>');
-        $('.quorum_sequence_download').attr('src', url).hide();
+        if (data.indexOf("error") !== -1) {
+          // Print error message.
+          $(el).addClass('ui-state-error').html(data);  
+        } else {
+          // Force browser to download file via iframe.
+          $(el).addClass('ui-state-highlight').html('Sequence Downloaded Successfully');  
+          $('.quorum_sequence_download').remove();
+          $('body').append('<iframe class="quorum_sequence_download"></iframe>');
+          $('.quorum_sequence_download').attr('src', url).hide();
+        }
       }
     } 
   );

@@ -4,6 +4,7 @@ describe Quorum::Job do
   
   before(:each) do
     @job = Quorum::Job.new()
+    ResqueSpec.reset!
   end
 
   it "fails validation without params (using error_on)" do
@@ -22,9 +23,6 @@ describe Quorum::Job do
   end
 
   it "queues workers after save" do
-    resque = double("Resque")
-    resque.stub(:enqueue)
-  
     @job.sequence = File.open(
       File.expand_path("../../data/nucl_prot_seqs.txt", __FILE__)
     ).read
@@ -33,8 +31,9 @@ describe Quorum::Job do
     @job.blastn_job.queue     = true
     @job.blastn_job.blast_dbs = ["tmp"]
 
-    @job.should_receive(:queue_workers)
     @job.save!
+
+    Workers::System.should have_queue_size_of(1)
   end
 
 end

@@ -52,7 +52,7 @@ describe "Jobs" do
       Capybara.current_driver = :selenium
     end
     describe "submit sequences in attached file" do
-	    it "check Blast algorithms, fill in default values and view query results" do
+	    it "check algorithms, fill in values, view results and download hit sequence" do
 	      visit new_job_path
 	      current_path.should eq(new_job_path)
 	
@@ -114,12 +114,14 @@ describe "Jobs" do
         page.should have_content("Quorum Report Details")
         page.should have_content("qseq")
         page.should have_content("hseq")
+        find("p.small a.download_sequence").click
 
         click_link "Blastp"
 	      find("#blastp-results").find("td a").click
         page.should have_content("Quorum Report Details")
         page.should have_content("qseq")
         page.should have_content("hseq")
+        find("p.small a.download_sequence").click
 	    end
     end
     after(:all) do

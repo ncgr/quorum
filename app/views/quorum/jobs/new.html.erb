@@ -15,19 +15,19 @@
     <!-- Comment out an algorithm below to remove it from the form. -->
 
     <!-- blastn -->
-    <%= render :partial => "blastn_form", :locals => { 
+    <%= render :partial => "quorum/jobs/form/blastn_form", :locals => { 
       :f => f, :blast_dbs => @blast_dbs } %>
 
     <!-- blastx -->
-    <%= render :partial => "blastx_form", :locals => { 
+    <%= render :partial => "quorum/jobs/form/blastx_form", :locals => { 
       :f => f, :blast_dbs => @blast_dbs } %>
 
     <!-- tblastn -->
-    <%= render :partial => "tblastn_form", :locals => { 
+    <%= render :partial => "quorum/jobs/form/tblastn_form", :locals => { 
       :f => f, :blast_dbs => @blast_dbs } %>
 
     <!-- blastp -->
-    <%= render :partial => "blastp_form", :locals => { 
+    <%= render :partial => "quorum/jobs/form/blastp_form", :locals => { 
       :f => f, :blast_dbs => @blast_dbs } %>
 
     <!-- End Search Algorithms -->

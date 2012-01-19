@@ -51,6 +51,10 @@ describe "Jobs" do
     before(:all) do
       Capybara.current_driver = :selenium
     end
+    before(:each) do
+      ResqueSpec.reset!
+      ResqueSpec.inline = true
+    end
     describe "submit sequences in attached file" do
 	    it "check algorithms, fill in values, view results and download hit sequence" do
 	      visit new_job_path
@@ -109,19 +113,26 @@ describe "Jobs" do
         click_link "Tblastn"
 	      page.should have_content("Your search returned 0 hits.") 
 
+        ## Interact with the Blast results. ##
         click_link "Blastn"
+
+        # Render modal box.
 	      find("#blastn-results").find("td a").click
         page.should have_content("Quorum Report Details")
         page.should have_content("qseq")
         page.should have_content("hseq")
-        find("p.small a.download_sequence").click
+        # Download sequence
+        find("p.small a#download_sequence_1").click
+        page.should have_content("Fetching sequence...")
+        page.should have_content("Sequence Downloaded Successfully")
 
         click_link "Blastp"
+
+        # Render modal box.
 	      find("#blastp-results").find("td a").click
         page.should have_content("Quorum Report Details")
         page.should have_content("qseq")
         page.should have_content("hseq")
-        find("p.small a.download_sequence").click
 	    end
     end
     after(:all) do

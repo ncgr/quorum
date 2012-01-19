@@ -1,0 +1,71 @@
+<%= f.fields_for :blastp_job do |n| %>
+  <p>
+    <strong>blastp</strong> 
+    <%= n.check_box :queue %>
+  </p>
+  <div id="blastp" class="toggle">
+	  <table class="options">
+	    <tr>
+	      <td>
+	        <label>Database(s)</label>
+	      </td>
+	      <td>
+          <%= n.select :blast_dbs, @blast_dbs[:blastp], {}, { :multiple => true } %> 
+	      </td>
+	      <td>
+	        <%= n.label :filter, "SEG" %>
+	      </td>
+	      <td>
+	        <%= n.check_box :filter %>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+	        <%= n.label :expectation %>
+	      </td>
+	      <td>
+	        <%= n.text_field :expectation, :size => 15, :title => "5e-20", 
+	          :class => "auto-hint" %>
+	      </td>
+	      <td>
+	        <%= n.label :min_bit_score %>
+	      </td>
+	      <td>
+	        <%= n.text_field :min_bit_score, :size => 15, :title => "0", 
+	          :class => "auto-hint" %>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+	        <%= n.label :max_score %>
+	      </td>
+	      <td>
+	        <%= n.text_field :max_score, :size => 15, :title => "25", 
+	          :class => "auto-hint" %>
+	      </td>
+	      <td>
+	        <%= n.label :gapped_alignments %>
+	      </td>
+	      <td>
+	        <%= n.select :gapped_alignments, [['No', false], ['Yes', true]] %>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+	        <%= n.label :gap_opening_extension %>
+	      </td>
+	      <td>
+	        <%= 
+	          n.select :gap_opening_extension, 
+	            options_for_select(
+	              @job.blastn_job.gap_opening_extension_values,
+	              @job.blastn_job.gap_opening_extension
+	            )
+	        %>
+	      </td>
+	      <td></td>
+	      <td></td>
+	    </tr>
+	  </table>
+  </div>
+<% end %>

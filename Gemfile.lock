@@ -185,8 +185,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  capybara
-  database_cleaner
+  capybara (~> 1.1.1)
+  database_cleaner (~> 0.6.7)
   factory_girl_rails (~> 1.2.0)
   mysql2
   quorum!

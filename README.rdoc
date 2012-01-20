@@ -162,9 +162,9 @@ Follow the steps below to execute Quorum remotely via Net::SSH.
 * Ensure you have supplied the necessary information in 
   "config/quorum_settings.yml" to execute Quorum remotely.
 
-  <tt>remote: true
-  ssh_host: remote.machine.org
-  ssh_user: remote_user</tt>
+  <tt>remote: true</tt>
+  <tt>ssh_host: remote.machine.org</tt>
+  <tt>ssh_user: remote_user</tt>
   
 Net::SSH.start() optional params (http://net-ssh.github.com/ssh/v2/api/index.html)
 

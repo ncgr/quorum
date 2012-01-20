@@ -1,6 +1,9 @@
 module Quorum
   module Generators
     class InstallGenerator < Rails::Generators::Base
+
+      include Quorum::Helpers::Colors
+
       source_root File.expand_path("../../templates", __FILE__)
 
       desc "Creates Quorum initializer, settings and search " <<
@@ -70,14 +73,18 @@ module Quorum
         messages = []
         DEPENDENCIES.each do |b|
           system("which #{b} > /dev/null 2>&1")
-          if $?.exitstatus > 0
-            messages << "Please add `#{b}` to your PATH."
-          end
+          messages << b if $?.exitstatus > 0
         end
         unless messages.empty?
-          puts "*** Warning: Quorum system dependencies not found ***"
-          messages.each { |m| puts m }
-          puts ""
+          puts bold(
+            red("*** Warning: Quorum system dependencies not found ***")
+          )
+          puts bold(
+            red("Please add the below to your PATH.")
+          )
+          messages.each { |m| puts bold(red(m)) }
+        else
+          puts "All good! Yay!!"
         end
       end
 

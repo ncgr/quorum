@@ -47,25 +47,25 @@ Follow these steps to safely upgrade Quorum.
 
 * Make a copy of "config/quorum_settings.yml".
 
-  cp config/quorum_settings.yml config/quorum_settings.yml.old
+  <tt>cp config/quorum_settings.yml config/quorum_settings.yml.old</tt>
 
 * If you overrode Quorum's styles and / or views, make a copy of the 
   existing directories before upgrading.
 
-  cp -R app/assets/stylesheets/quorum app/assets/stylesheets/quorum_old
-  cp -R app/views/quorum/jobs app/views/quorum/jobs_old
+  <tt>cp -R app/assets/stylesheets/quorum app/assets/stylesheets/quorum_old
+  cp -R app/views/quorum/jobs app/views/quorum/jobs_old</tt>
 
 * Run the install generator and answer "Yes" to all conflicts.
 
-  rails generate quorum:install
+  <tt>rails generate quorum:install</tt>
 
 * Copy the old Search Database(s) to the newly generated
   "config/quorum_settings.yml" file.
 
 * Update the database migrations.
 
-  rake quorum:install:migrations
-  rake db:migrate
+  <tt>rake quorum:install:migrations
+  rake db:migrate</tt>
 
 * If applicable, override Quorum's views, styles and images.
 
@@ -143,14 +143,12 @@ steps below.
 * Comment out or remove the lines below in 
   "app/views/quorum/jobs/templates/_blast_detailed_report_template.html.erb" 
 
-  <!--
   <p class="small">
     <a id="download_sequence_{{= id }}" 
      onclick="downloadSequence(<%= @jobs.id %>, {{= id }}, '{{= algo }}', this)">
      Download Sequence
     </a>
   </p>
-  -->
 
 === Remote Machine Setup -- Recommended for Production Use
 
@@ -164,9 +162,9 @@ Follow the steps below to execute Quorum remotely via Net::SSH.
 * Ensure you have supplied the necessary information in 
   "config/quorum_settings.yml" to execute Quorum remotely.
 
-  remote: true
+  <tt>remote: true
   ssh_host: remote.machine.org
-  ssh_user: remote_user
+  ssh_user: remote_user</tt>
   
 Net::SSH.start() optional params (http://net-ssh.github.com/ssh/v2/api/index.html)
 
@@ -176,22 +174,22 @@ Net::SSH.start() optional params (http://net-ssh.github.com/ssh/v2/api/index.htm
 
 * Tar and compress quorum.
 
-  tar -czvf quorum.tar.gz quorum/
+  <tt>tar -czvf quorum.tar.gz quorum/</tt>
 
 * Copy the newly created tarball to the remote machine.
 
-  scp quorum.tar.gz <username>@<host>:/path/to/install
+  <tt>scp quorum.tar.gz <username>@<host>:/path/to/install</tt>
 
 * Expand the tarball on the remote machine.
 
-  ssh <username>@<host>        
+  <tt>ssh <username>@<host></tt>
 
-  tar -xzvf quorum.tar.gz
+  <tt>tar -xzvf quorum.tar.gz</tt>
 
 * Ensure Quorum script dependencies are added to the remote machine's PATH. 
   If the remote machine doesn't have a .bashrc file, create one.
 
-  touch /path/to/.bashrc
+  <tt>touch /path/to/.bashrc</tt>
 
 and add script dependencies to PATH.
 

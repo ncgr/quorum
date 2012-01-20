@@ -52,8 +52,8 @@ Follow these steps to safely upgrade Quorum.
 * If you overrode Quorum's styles and / or views, make a copy of the 
   existing directories before upgrading.
 
-  <tt>cp -R app/assets/stylesheets/quorum app/assets/stylesheets/quorum_old
-  cp -R app/views/quorum/jobs app/views/quorum/jobs_old</tt>
+  <tt>cp -R app/assets/stylesheets/quorum app/assets/stylesheets/quorum_old</tt>
+  <tt>cp -R app/views/quorum/jobs app/views/quorum/jobs_old</tt>
 
 * Run the install generator and answer "Yes" to all conflicts.
 
@@ -143,12 +143,12 @@ steps below.
 * Comment out or remove the lines below in 
   "app/views/quorum/jobs/templates/_blast_detailed_report_template.html.erb" 
 
-  <p class="small">
+  \<p class="small">
     <a id="download_sequence_{{= id }}" 
      onclick="downloadSequence(<%= @jobs.id %>, {{= id }}, '{{= algo }}', this)">
      Download Sequence
     </a>
-  </p>
+  \</p>
 
 === Remote Machine Setup -- Recommended for Production Use
 

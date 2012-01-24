@@ -81,7 +81,7 @@ module Quorum
 
     def set_blast_dbs
       if self.blast_dbs.present?
-        self.blast_dbs = self.blast_dbs.join(';')
+        self.blast_dbs = self.blast_dbs.delete_if { |b| b.empty? }.join(';')
       end
     end
 

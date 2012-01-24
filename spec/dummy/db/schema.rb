@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120110181717) do
+ActiveRecord::Schema.define(:version => 20120119000561) do
 
   create_table "quorum_blastn_job_reports", :force => true do |t|
     t.string   "query"
@@ -145,18 +145,6 @@ ActiveRecord::Schema.define(:version => 20120110181717) do
     t.integer  "gap_opening_penalty"
     t.integer  "gap_extension_penalty"
     t.text     "blast_dbs"
-    t.boolean  "queue"
-    t.integer  "job_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "quorum_hmmer_job_reports", :force => true do |t|
-  end
-
-  create_table "quorum_hmmer_jobs", :force => true do |t|
-    t.string   "expectation"
-    t.integer  "min_score"
     t.boolean  "queue"
     t.integer  "job_id"
     t.datetime "created_at"

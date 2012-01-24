@@ -100,4 +100,19 @@ describe Quorum::BlastpJob do
     )
   end
 
+  it "joins blast_dbs on semicolon after save" do
+    @blastp_job.blast_dbs = ["test_1", "test_2"]
+    @blastp_job.save
+    @blastp_job.blast_dbs.should eq("test_1;test_2")
+  end
+
+  it "sets optional params to default values if empty after save" do
+    @blastp_job.save
+    @blastp_job.expectation.should eq("5e-20")
+    @blastp_job.max_score.should eq(25)
+    @blastp_job.min_bit_score.should eq(0)
+    @blastp_job.gap_opening_penalty.should eq(0)
+    @blastp_job.gap_extension_penalty.should eq(0)
+  end
+
 end

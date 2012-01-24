@@ -15,17 +15,17 @@ Gem::Specification.new do |s|
 
   s.files = `git ls-files`.split(/\n/) 
 
-  s.add_dependency "rails", "~> 3.1.0"
+  s.add_dependency "rails", "~> 3.1"
   s.add_dependency "jquery-rails"
-  s.add_dependency "net-ssh", "~> 2.2.1"
+  s.add_dependency "net-ssh", "~> 2.3.0"
   s.add_dependency "resque", "~> 1.19.0"
   s.add_dependency "resque-result", "~> 1.0.1"
   s.add_dependency "bio-blastxmlparser", "~> 1.0.1"
 
-  s.add_development_dependency "mysql2"
+  s.add_development_dependency "mysql2", "~> 0.3.11"
   s.add_development_dependency "rspec-rails", "~> 2.6"
-  s.add_development_dependency "resque_spec", "~> 0.8.1"
-  s.add_development_dependency "capybara", "~> 1.1.1"
-  s.add_development_dependency "database_cleaner", "~> 0.6.7"
-  s.add_development_dependency "factory_girl_rails", "~> 1.2.0"
+  s.add_development_dependency "resque_spec", "~> 0.8"
+  s.add_development_dependency "capybara", "~> 1.1"
+  s.add_development_dependency "database_cleaner", "~> 0.6"
+  s.add_development_dependency "factory_girl_rails", "~> 1.2"
 end

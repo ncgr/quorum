@@ -143,12 +143,12 @@ steps below.
 * Comment out or remove the lines below in 
   "app/views/quorum/jobs/templates/_blast_detailed_report_template.html.erb" 
 
-  \<p class="small">
-    <a id="download_sequence_{{= id }}" 
-     onclick="downloadSequence(<%= @jobs.id %>, {{= id }}, '{{= algo }}', this)">
-     Download Sequence
-    </a>
-  \</p>
+    <p class="small">
+      <a id="download_sequence_{{= id }}" 
+       onclick="downloadSequence(<%= @jobs.id %>, {{= id }}, '{{= algo }}', this)">
+       Download Sequence
+      </a>
+    </p>
 
 === Remote Machine Setup -- Recommended for Production Use
 

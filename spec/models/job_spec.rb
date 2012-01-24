@@ -29,7 +29,7 @@ describe Quorum::Job do
 
     @job.build_blastn_job
     @job.blastn_job.queue     = true
-    @job.blastn_job.blast_dbs = ["tmp"]
+    @job.blastn_job.blast_dbs = ["test_1", "test_2"]
 
     @job.save!
 

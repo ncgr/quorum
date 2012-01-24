@@ -11,7 +11,7 @@ module Quorum
     class Blast
 
       class QuorumJob < ActiveRecord::Base
-        set_table_name "quorum_jobs"
+        self.table_name = "quorum_jobs"
 
         has_one :quorum_blastn_job, 
           :foreign_key => "job_id"
@@ -35,46 +35,46 @@ module Quorum
       end
 
       class QuorumBlastnJob < ActiveRecord::Base
-        set_table_name "quorum_blastn_jobs"
+        self.table_name = "quorum_blastn_jobs"
         belongs_to :quorum_job
         has_many :quorum_blastn_job_reports
       end
 
       class QuorumBlastnJobReport < ActiveRecord::Base
-        set_table_name "quorum_blastn_job_reports"
+        self.table_name = "quorum_blastn_job_reports"
         belongs_to :quorum_blastn_job
       end
 
       class QuorumBlastxJob < ActiveRecord::Base
-        set_table_name "quorum_blastx_jobs"
+        self.table_name = "quorum_blastx_jobs"
         belongs_to :quorum_job
         has_many :quorum_blastx_job_reports
       end
 
       class QuorumBlastxJobReport < ActiveRecord::Base
-        set_table_name "quorum_blastx_job_reports"
+        self.table_name = "quorum_blastx_job_reports"
         belongs_to :quorum_blastx_job
       end
 
       class QuorumTblastnJob < ActiveRecord::Base
-        set_table_name "quorum_tblastn_jobs"
+        self.table_name = "quorum_tblastn_jobs"
         belongs_to :quorum_job
         has_many :quorum_tblastn_job_reports
       end
 
       class QuorumTblastnJobReport < ActiveRecord::Base
-        set_table_name "quorum_tblastn_job_reports"
+        self.table_name = "quorum_tblastn_job_reports"
         belongs_to :quorum_tblastn_job
       end
 
       class QuorumBlastpJob < ActiveRecord::Base
-        set_table_name "quorum_blastp_jobs"
+        self.table_name = "quorum_blastp_jobs"
         belongs_to :quorum_job
         has_many :quorum_blastp_job_reports
       end
 
       class QuorumBlastpJobReport < ActiveRecord::Base
-        set_table_name "quorum_blastp_job_reports"
+        self.table_name = "quorum_blastp_job_reports"
         belongs_to :quorum_blastp_job
       end
 

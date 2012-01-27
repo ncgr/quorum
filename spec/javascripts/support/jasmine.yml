@@ -11,12 +11,16 @@
 #   - dist/**/*.js
 #
 src_files:
-  - public/javascripts/prototype.js
-  - public/javascripts/effects.js
-  - public/javascripts/controls.js
-  - public/javascripts/dragdrop.js
-  - public/javascripts/application.js
-  - public/javascripts/**/*.js
+  - spec/javascripts/jquery/jquery.min.js
+  - spec/javascripts/jquery/jquery-ui.min.js
+  - spec/javascripts/jquery/jquery_ujs.js
+  - vendor/assets/javascripts/underscore-min.js
+  - app/assets/javascripts/quorum/jobs.js
+  - app/assets/javascripts/quorum/quorum.js
+  - app/assets/javascripts/quorum/utilities.js
+  - app/assets/javascripts/quorum/template_settings.js
+  - vendor/assets/javascripts/jquery.autohint.js
+  - vendor/assets/javascripts/jquery.tipsy.js
 
 # stylesheets
 #
@@ -30,7 +34,6 @@ src_files:
 #   - stylesheets/*.css
 #
 stylesheets:
-  - stylesheets/**/*.css
 
 # helpers
 #

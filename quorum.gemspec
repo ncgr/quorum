@@ -28,4 +28,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "capybara", "~> 1.1"
   s.add_development_dependency "database_cleaner", "~> 0.6"
   s.add_development_dependency "factory_girl_rails", "~> 1.2"
+  s.add_development_dependency "jasmine", "~> 1.1"
 end

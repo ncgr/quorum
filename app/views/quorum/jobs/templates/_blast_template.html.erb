@@ -14,7 +14,7 @@
 	      <th>Alignment Length</th>
         <th>
           <a class="bit-score"
-            onclick="openWindow(
+            onclick="QUORUM.openWindow(
               'http://www.ncbi.nlm.nih.gov/books/NBK21106/def-item/app8/',
               'Bit Score',
               800,
@@ -25,7 +25,7 @@
         </th>
         <th>
           <a class="e-value"
-            onclick="openWindow(
+            onclick="QUORUM.openWindow(
               'http://www.ncbi.nlm.nih.gov/books/NBK21106/def-item/app42/',
               'E-value',
               800,
@@ -44,14 +44,14 @@
 	        <td>{{= v.query }}</td>
 	        <td class="right">{{= v.query_len }}</td>
 	        <td class="right">{{= v.hit_len }}</td>
-          <td>{{= formatStrand(qstrand, hstrand) }}</td>
+          <td>{{= QUORUM.formatStrand(qstrand, hstrand) }}</td>
           <td>{{= v.hit_display_id }}</td>
           <td>{{= v.hit_def.trunc(20) }}</td>
 	        <td class="right">{{= v.align_len }}</td>
 	        <td class="right">{{= v.bit_score }}</td>
           <td class="right">
             <a class="detailed_report" 
-              onclick="viewDetailedReport(
+              onclick="QUORUM.viewDetailedReport(
                 <%= @jobs.id %>, 
                 {{= v.id }}, 
                 '{{= v.query }}', 

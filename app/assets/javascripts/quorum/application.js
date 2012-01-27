@@ -9,5 +9,6 @@
 //= require jquery-ui
 //= require underscore-min
 //= require jquery.tipsy
+//= require jquery.autohint
 //= require_tree .
 

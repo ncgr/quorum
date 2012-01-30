@@ -1,7 +1,7 @@
 //
 // jQuery autoHint
 //
-// v0.1.0
+// v0.2.0
 // Ken Seal hunzinker@gmail.com
 // License: MIT
 
@@ -60,8 +60,8 @@
       });     
     },
     
-    // Remove hints on submit.
-    removeHintsOnSubmit: function() {
+    // Remove hints.
+    removeHints: function() {
       return this.each(function() {
         var $this = $(this);
         if ($this.val() === $this.attr('title')) { 

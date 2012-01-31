@@ -17,28 +17,28 @@
       <p class="small">{{= QUORUM.displayHspLinks(id, hsp_group, data) }}</p>
       <p class="small">Hit Accession: {{= v.hit_display_id }}</p>
       <p class="small">Hit Description: {{= v.hit_def }}</p>
-	    <table class="report_details">
-	      <tr>
-	        <td>E-value: {{= v.evalue }}</td>
-	        <td>Bit Score: {{= v.bit_score }}</td>
+      <table class="report_details">
+        <tr>
+          <td>E-value: {{= v.evalue }}</td>
+          <td>Bit Score: {{= v.bit_score }}</td>
           <td></td>
-	      </tr>
-	      <tr>
-	        <td>Alignment Length: {{= v.align_len }}</td>
-	        <td>Qstrand / Hstrand: {{= QUORUM.formatStrand(qstrand, hstrand) }}</td>
+        </tr>
+        <tr>
+          <td>Alignment Length: {{= v.align_len }}</td>
+          <td>Qstrand / Hstrand: {{= QUORUM.formatStrand(qstrand, hstrand) }}</td>
           <td></td>
-	      </tr>
-	      <tr>
+        </tr>
+        <tr>
           <td>Query Length: {{= v.query_len }}</td>
-	        <td>Query From: {{= v.query_from }}</td>
-	        <td>Query To: {{= v.query_to }}</td>
-	      </tr>
-	      <tr>
+          <td>Query From: {{= v.query_from }}</td>
+          <td>Query To: {{= v.query_to }}</td>
+        </tr>
+        <tr>
           <td>Hit Length: {{= v.hit_len }}</td>
-	        <td>Hit From: {{= v.hit_from }}</td>
-	        <td>Hit To: {{= v.hit_to }}</td>
-	      </tr>
-	    </table>
+          <td>Hit From: {{= v.hit_from }}</td>
+          <td>Hit To: {{= v.hit_to }}</td>
+        </tr>
+      </table>
       <p class="small">
         <a id="download_sequence_{{= id }}" 
           onclick="QUORUM.downloadSequence(<%= @jobs.id %>, {{= id }}, '{{= algo }}', this)">
@@ -48,6 +48,6 @@
       {{= QUORUM.formatSequenceReport(qseq, midline, hseq, q_from, q_to, h_from, h_to, algo) }}
     </div>
     <hr />
-  {{ }); }}
+    {{ }); }}
 </script>
 

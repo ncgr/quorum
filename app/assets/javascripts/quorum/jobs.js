@@ -64,7 +64,7 @@ $(function() {
     $('textarea').val('');
     $('input:text').val('');
     $('input:file').val('');
-    $('input:checkbox').attr('checked', false);
+    $('input:checkbox').prop('checked', false);
     $('select').val('');
 
     $('.toggle').each(function() {

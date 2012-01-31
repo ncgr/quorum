@@ -1,3 +1,7 @@
+## 0.3.0 (2012-01-31)
+
+* Created QUORUM JS object and added properties.
+
 ## 0.2.1 (2012-01-24)
 
 * Rails 3.2 compatible.

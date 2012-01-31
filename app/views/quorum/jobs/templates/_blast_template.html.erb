@@ -3,15 +3,15 @@
   {{ if (data[0].results === false) { }}
     <p><strong>Your search returned 0 hits.</strong></p>
   {{ } else { }}
-	  <table class="results">
-	    <tr>
-	      <th>Query Accession</th>
-	      <th>Query Length</th>
-	      <th>Hit Length</th>
-	      <th>Qstrand / Hstrand</th>
-	      <th>Hit Accession</th>
-	      <th>Hit Description</th>
-	      <th>Alignment Length</th>
+    <table class="results">
+      <tr>
+        <th>Query Accession</th>
+        <th>Query Length</th>
+        <th>Hit Length</th>
+        <th>Qstrand / Hstrand</th>
+        <th>Hit Accession</th>
+        <th>Hit Description</th>
+        <th>Alignment Length</th>
         <th>
           <a class="bit-score"
             onclick="QUORUM.openWindow(
@@ -34,21 +34,21 @@
             E-value
           </a>
         </th>
-	    </tr>
-	    {{ var i = 1; var style = "" }}
-	    {{ _.each(data, function(v) { }}
-	      {{ i % 2 == 0 ? style = "even" : style = "odd" }}
+      </tr>
+      {{ var i = 1; var style = "" }}
+      {{ _.each(data, function(v) { }}
+        {{ i % 2 == 0 ? style = "even" : style = "odd" }}
         {{ var qstrand = v.query_frame }}
         {{ var hstrand = v.hit_frame }}
-	      <tr class="{{= style }}">
-	        <td>{{= v.query }}</td>
-	        <td class="right">{{= v.query_len }}</td>
-	        <td class="right">{{= v.hit_len }}</td>
+        <tr class="{{= style }}">
+          <td>{{= v.query }}</td>
+          <td class="right">{{= v.query_len }}</td>
+          <td class="right">{{= v.hit_len }}</td>
           <td>{{= QUORUM.formatStrand(qstrand, hstrand) }}</td>
           <td>{{= v.hit_display_id }}</td>
           <td>{{= v.hit_def.trunc(20) }}</td>
-	        <td class="right">{{= v.align_len }}</td>
-	        <td class="right">{{= v.bit_score }}</td>
+          <td class="right">{{= v.align_len }}</td>
+          <td class="right">{{= v.bit_score }}</td>
           <td class="right">
             <a class="detailed_report" 
               onclick="QUORUM.viewDetailedReport(
@@ -56,13 +56,13 @@
                 {{= v.id }}, 
                 '{{= v.query }}', 
                 '{{= algo }}')">
-              {{= v.evalue }}
+                {{= v.evalue }}
             </a>
           </td>
-	      </tr>
-	      {{ i++ }}
-	    {{ }); }}
-	  </table>
-  {{ } }}
+        </tr>
+        {{ i++ }}
+        {{ }); }}
+    </table>
+    {{ } }}
 </script>
 

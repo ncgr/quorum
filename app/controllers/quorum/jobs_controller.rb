@@ -61,13 +61,13 @@ module Quorum
         queued = "#{params[:algo]}_job".to_sym
         report = "#{params[:algo]}_job_reports".to_sym
 
-	      begin
-	        job = Job.find(params[:id])
-	      rescue ActiveRecord::RecordNotFound => e
-	        json = empty
-	      else
-	        if job.method(queued).call.present?
-	          if job.method(report).call.present?
+        begin
+          job = Job.find(params[:id])
+        rescue ActiveRecord::RecordNotFound => e
+          json = empty
+        else
+          if job.method(queued).call.present?
+            if job.method(report).call.present?
               if params[:query]
                 json = job.method(report).call.by_query(params[:query]).default_order
               else
@@ -76,8 +76,8 @@ module Quorum
             else
               json = []
             end
-	        end
-	      end
+          end
+        end
       end
 
       respond_with json

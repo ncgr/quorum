@@ -3,13 +3,9 @@
 //
 String.prototype.trunc = function(n) {
   var longStr = this.length > n;
-  var str     = longStr ? this.substr(0, n-1) : this;
+  var str     = longStr ? this.slice(0, n) : this;
 
-  if (longStr) {
-    str.substr(0, str.lastIndexOf(' '));
-  } else {
-    str;
-  }
+  longStr ? str = str.slice(0, str.lastIndexOf(' ')) : str;
 
   return longStr ? str + '...' : str;
 }

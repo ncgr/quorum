@@ -1,16 +1,17 @@
 module Quorum
   module Generators
     class ViewsGenerator < Rails::Generators::Base
-      source_root File.expand_path("../../../../app/views/quorum", __FILE__)
+      source_root File.expand_path("../../../../app/views", __FILE__)
       desc "Copy quorum views to your application."
 
-      VIEW_DIRECTORIES = [
-        "jobs"
+      DIRECTORIES = [
+        "quorum/jobs",
+        "layouts/quorum"
       ]
 
-      def copy_views
-        VIEW_DIRECTORIES.each do |d|
-          directory d.to_s, "app/views/quorum/#{d.to_s}"
+      def copy_directories
+        DIRECTORIES.each do |d|
+          directory d.to_s, "app/views/#{d.to_s}"
         end
       end
     end

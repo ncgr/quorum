@@ -49,7 +49,8 @@ describe "Jobs" do
 
   context "javascript", @javascript do
     before(:all) do
-      Capybara.current_driver = :selenium
+      Capybara.current_driver    = :selenium
+      Capybara.default_wait_time = 5
     end
     before(:each) do
       ResqueSpec.reset!

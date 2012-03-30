@@ -12,7 +12,7 @@ module Quorum
       DEPENDENCIES = ["makeblastdb", "seqret"]
 
       def copy_quorum
-        template "quorum_initializer.rb", 
+        template "quorum_initializer.rb",
           "config/initializers/quorum_initializer.rb"
         template "quorum_settings.yml", "config/quorum_settings.yml"
         template "search", "quorum/bin/search"
@@ -45,7 +45,7 @@ module Quorum
         @quorum = %Q(mount Quorum::Engine => "/quorum")
         @resque = %Q(mount Resque::Server.new, :at => "/quorum/resque")
       end
-      
+
       def read_routes_file
         @routes = File.open(File.join("config", "routes.rb"), "r")
         @routes = @routes.read
@@ -56,7 +56,7 @@ module Quorum
       end
 
       def add_mount_engine
-        route @quorum unless mount_engine_exists? 
+        route @quorum unless mount_engine_exists?
       end
 
       def resque_mount_engine_exists?

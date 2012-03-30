@@ -77,10 +77,10 @@ module Quorum
       #
       # Execute the blastdbcmd(s) and return the matching sequence.
       #
-      # To make Blast execute as quickly as possible, each selected 
-      # algorithm blasts against all supplied databases at once. 
-      # 
-      # See quorum/lib/search_tools/blast.rb for more information. 
+      # To make Blast execute as quickly as possible, each selected
+      # algorithm blasts against all supplied databases at once.
+      #
+      # See quorum/lib/search_tools/blast.rb for more information.
       #
       # One consequence of this is not knowing which Blast database to use
       # when retrieving a hit sequence via blastdbcmd.
@@ -93,10 +93,10 @@ module Quorum
       def execute_blast_db_cmd
         generate_blast_db_cmds
         @logger.log("NCBI Blast", @cmds.join('; '))
-        
+
         @seqs = ""
         @cmds.each { |c| @seqs << `#{c} 2> /dev/null` }
-        
+
         seq = parse_and_send_results
         $stdout.print seq
       end

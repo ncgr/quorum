@@ -12,7 +12,7 @@ VERSION = "1.16.2"
 ## Thrown by Parser in the event of a commandline error. Not needed if
 ## you're using the Trollop::options entry.
 class CommandlineError < StandardError; end
-  
+
 ## Thrown by Parser if the user passes in '-h' or '--help'. Handled
 ## automatically by Trollop#options.
 class HelpNeeded < StandardError; end
@@ -250,7 +250,7 @@ class Parser
     syms.each { |sym| raise ArgumentError, "unknown option '#{sym}'" unless @specs[sym] }
     @constraints << [:depends, syms]
   end
-  
+
   ## Marks two (or more!) options as conflicting.
   def conflicts *syms
     syms.each { |sym| raise ArgumentError, "unknown option '#{sym}'" unless @specs[sym] }
@@ -426,7 +426,7 @@ class Parser
           # call this unless the cursor's at the beginning of a line.
 
     left = {}
-    @specs.each do |name, spec| 
+    @specs.each do |name, spec|
       left[name] = "--#{spec[:long]}" +
         (spec[:short] && spec[:short] != :none ? ", -#{spec[:short]}" : "") +
         case spec[:type]
@@ -647,7 +647,7 @@ private
     start = 0
     ret = []
     until start > str.length
-      nextt = 
+      nextt =
         if start + width >= str.length
           str.length
         else

@@ -9,7 +9,7 @@ describe "Quorum::Sequence" do
       sequence = File.open(
         File.expand_path("../../data/nucl_prot_seqs.txt", __FILE__)
       ).read
-      create_hash(sequence).should_not be_nil 
+      create_hash(sequence).should_not be_nil
     end
   end
 

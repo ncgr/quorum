@@ -76,9 +76,9 @@ $(function() {
 
   // End Form //
 
-  
+
   // Views //
-  
+
   // Tabs
   $('#tabs').tabs();
 

@@ -4,7 +4,7 @@ module Quorum
     before_save :set_optional_params, :set_blast_dbs
 
     belongs_to :job
-    has_many :blastn_job_reports, 
+    has_many :blastn_job_reports,
       :dependent   => :destroy,
       :foreign_key => :blastn_job_id,
       :primary_key => :job_id

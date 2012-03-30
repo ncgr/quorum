@@ -35,7 +35,7 @@ module Quorum
         @job.build_tblastn_job if @job.tblastn_job.nil?
         @job.build_blastp_job  if @job.blastp_job.nil?
         render :action => "new"
-        return 
+        return
       end
       redirect_to job_path(@job.id)
     end
@@ -46,7 +46,7 @@ module Quorum
       rescue ActiveRecord::RecordNotFound => e
         set_flash_message(:notice, :data_not_found)
         redirect_to :action => "new"
-      end        
+      end
     end
 
     #
@@ -101,7 +101,7 @@ module Quorum
           )
           json = [{ :meta_id => data.meta_id }]
         end
-      end   
+      end
 
       respond_with json
     end
@@ -116,8 +116,8 @@ module Quorum
       data = Workers::System.get_meta(params[:meta_id])
       if data.succeeded?
         unless data.result.downcase.include?("error")
-          send_data data.result, 
-            :filename    => "#{params[:meta_id]}.fa", 
+          send_data data.result,
+            :filename    => "#{params[:meta_id]}.fa",
             :type        => "text/plain",
             :disposition => "attachment"
           return
@@ -137,8 +137,8 @@ module Quorum
     def set_blast_dbs
       @blast_dbs = {
         :blastn  => Quorum.blastn,
-        :blastx  => Quorum.blastx, 
-        :tblastn => Quorum.tblastn, 
+        :blastx  => Quorum.blastx,
+        :tblastn => Quorum.tblastn,
         :blastp  => Quorum.blastp
       }
     end

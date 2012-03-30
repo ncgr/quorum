@@ -50,11 +50,11 @@
           <td class="right">{{= v.align_len }}</td>
           <td class="right">{{= v.bit_score }}</td>
           <td class="right">
-            <a class="detailed_report" 
+            <a class="detailed_report"
               onclick="QUORUM.viewDetailedReport(
-                <%= @jobs.id %>, 
-                {{= v.id }}, 
-                '{{= v.query }}', 
+                <%= @jobs.id %>,
+                {{= v.id }},
+                '{{= v.query }}',
                 '{{= algo }}')">
                 {{= v.evalue }}
             </a>

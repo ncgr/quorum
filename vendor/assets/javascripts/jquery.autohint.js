@@ -8,7 +8,7 @@
 (function($) {
 
   var methods = {
-  
+
     init: function() {
       return this.each(function() {
         var $this = $(this);
@@ -22,20 +22,20 @@
     addHints: function() {
       return this.each(function() {
         var $this = $(this);
-        if ($this.attr('title') === '') { 
-          return; 
+        if ($this.attr('title') === '') {
+          return;
         }
 
-        if ($this.val() === '') { 
-          $this.val($this.attr('title')); 
+        if ($this.val() === '') {
+          $this.val($this.attr('title'));
 
           if (!$this.hasClass('auto-hint')) {
             $this.addClass('auto-hint');
           }
-        } else { 
-          $this.removeClass('auto-hint'); 
+        } else {
+          $this.removeClass('auto-hint');
         }
-      });          
+      });
     },
 
     // Remove hint and class on focus.
@@ -46,7 +46,7 @@
           $this.val('');
           $this.removeClass('auto-hint');
         }
-      });               
+      });
     },
 
     // Retain value or add hint.
@@ -57,17 +57,17 @@
           $this.val($this.attr('title'));
           $this.addClass('auto-hint');
         }
-      });     
+      });
     },
-    
+
     // Remove hints.
     removeHints: function() {
       return this.each(function() {
         var $this = $(this);
-        if ($this.val() === $this.attr('title')) { 
-          $this.val(''); 
-        }     
-      });                      
+        if ($this.val() === $this.attr('title')) {
+          $this.val('');
+        }
+      });
     }
 
   };
@@ -80,7 +80,7 @@
       return methods.init.apply(this, arguments);
     } else {
       $.error('Method ' +  method + ' does not exist for jQuery autoHint.');
-    }      
+    }
 
   };
 

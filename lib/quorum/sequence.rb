@@ -13,7 +13,7 @@ module Quorum
     # to ensure FASTA format.
     #
     def write_input_sequence_to_file(tmp_dir, hash, sequence)
-      seq = File.join(tmp_dir, hash + ".seq") 
+      seq = File.join(tmp_dir, hash + ".seq")
       File.open(seq, "w") do |f|
         f << sequence
       end
@@ -35,19 +35,19 @@ module Quorum
     #
     # Subtracting all AA single letter chars from NA single letter chars
     # (including ALL ambiguity codes for each!) leaves us with
-    # EQILFP. If a sequence contains EQILFP, it's safe to call it an AA. 
+    # EQILFP. If a sequence contains EQILFP, it's safe to call it an AA.
     #
     # See single letter char tables for more information:
     # http://en.wikipedia.org/wiki/Proteinogenic_amino_acid
     # http://www.chick.manchester.ac.uk/SiteSeer/IUPAC_codes.html
     #
-    # If a sequence doesn't contain EQILFP, it could be either an AA 
+    # If a sequence doesn't contain EQILFP, it could be either an AA
     # or NA. To distinguish the two, count the number of As Ts Gs Cs
     # and Ns, divide by the the length of the sequence and * 100.
     #
     # If the percentage of A, T, U, G, C or N is >= 15.0, call it a NA.
-    # 15% was choosen based on the data in the table 
-    # "Relative proportions (%) of bases in DNA" 
+    # 15% was choosen based on the data in the table
+    # "Relative proportions (%) of bases in DNA"
     # (http://en.wikipedia.org/wiki/Chargaff's_rules) and the
     # precentage of AAs found in peptides
     # (http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2590925/).
@@ -75,7 +75,7 @@ module Quorum
 
         n = (seq.count("N").to_f / len) * 100
 
-        if (a >= na_percent) || (t >= na_percent) || (u >= na_percent) || 
+        if (a >= na_percent) || (t >= na_percent) || (u >= na_percent) ||
           (g >= na_percent) || (c >= na_percent) || (n >= na_percent)
           type = "nucleic_acid"
         else

@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "Flexible bioinformatics search tool."
   s.description = "Flexible bioinformatics search tool."
 
-  s.files = `git ls-files`.split(/\n/) 
+  s.files = `git ls-files`.split(/\n/)
 
   s.add_dependency "rails", "~> 3.1"
   s.add_dependency "jquery-rails"

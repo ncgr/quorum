@@ -72,5 +72,5 @@ RSpec.configure do |config|
       cat #{REDIS_PID} | xargs kill -QUIT
       rm -f #{REDIS_CACHE_PATH}dump.rdb
     }
-  end 
+  end
 end

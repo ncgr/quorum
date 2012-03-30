@@ -16,7 +16,7 @@ describe "Jobs" do
       fill_in "job_sequence", :with => ""
       click_button "Submit"
 
-      page.should have_content("Please enter your sequence(s) in Plain Text " << 
+      page.should have_content("Please enter your sequence(s) in Plain Text " <<
                                "as FASTA.")
     end
   end
@@ -29,7 +29,7 @@ describe "Jobs" do
       word_file = File.expand_path("../../data/seqs.docx", __FILE__)
       attach_file "job_sequence_file", word_file
       click_button "Submit"
-      page.should have_content("Please enter your sequence(s) in Plain Text " << 
+      page.should have_content("Please enter your sequence(s) in Plain Text " <<
                                "as FASTA.")
     end
   end
@@ -42,7 +42,7 @@ describe "Jobs" do
       file = File.expand_path("../../data/seqs_not_fa.txt", __FILE__)
       attach_file "job_sequence_file", file
       click_button "Submit"
-      page.should have_content("Please enter your sequence(s) in Plain Text " << 
+      page.should have_content("Please enter your sequence(s) in Plain Text " <<
                                "as FASTA.")
     end
   end
@@ -65,7 +65,7 @@ describe "Jobs" do
 
         # Blastn
         check "job_blastn_job_attributes_queue"
-        select "tmp", :from => "job_blastn_job_attributes_blast_dbs" 
+        select "tmp", :from => "job_blastn_job_attributes_blast_dbs"
         check "job_blastn_job_attributes_filter"
         fill_in "job_blastn_job_attributes_expectation", :with => "5e-20"
         fill_in "job_blastn_job_attributes_min_bit_score", :with => "0"
@@ -75,7 +75,7 @@ describe "Jobs" do
 
         # Blastx
         check "job_blastx_job_attributes_queue"
-        select "tmp", :from => "job_blastx_job_attributes_blast_dbs" 
+        select "tmp", :from => "job_blastx_job_attributes_blast_dbs"
         check "job_blastx_job_attributes_filter"
         fill_in "job_blastx_job_attributes_expectation", :with => "5e-20"
         fill_in "job_blastx_job_attributes_min_bit_score", :with => "0"
@@ -85,7 +85,7 @@ describe "Jobs" do
 
         # Tblastn
         check "job_tblastn_job_attributes_queue"
-        select "tmp", :from => "job_tblastn_job_attributes_blast_dbs" 
+        select "tmp", :from => "job_tblastn_job_attributes_blast_dbs"
         check "job_tblastn_job_attributes_filter"
         fill_in "job_tblastn_job_attributes_expectation", :with => "5e-20"
         fill_in "job_tblastn_job_attributes_min_bit_score", :with => "0"
@@ -95,7 +95,7 @@ describe "Jobs" do
 
         # Blastp
         check "job_blastp_job_attributes_queue"
-        select "tmp", :from => "job_blastp_job_attributes_blast_dbs" 
+        select "tmp", :from => "job_blastp_job_attributes_blast_dbs"
         check "job_blastp_job_attributes_filter"
         fill_in "job_blastp_job_attributes_expectation", :with => "5e-20"
         fill_in "job_blastp_job_attributes_min_bit_score", :with => "0"
@@ -105,13 +105,13 @@ describe "Jobs" do
 
         click_button "Submit"
 
-        page.should have_content("Search Results") 
+        page.should have_content("Search Results")
 
         click_link "Blastx"
-        page.should have_content("Your search returned 0 hits.") 
+        page.should have_content("Your search returned 0 hits.")
 
         click_link "Tblastn"
-        page.should have_content("Your search returned 0 hits.") 
+        page.should have_content("Your search returned 0 hits.")
 
         ## Interact with the Blast results. ##
         click_link "Blastn"

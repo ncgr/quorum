@@ -56,14 +56,14 @@ module Quorum
         Dir.mkdir(@log_dir) unless File.directory?(@log_dir)
       rescue SystemCallError => e
         @output.puts e.message
-        raise "Unable to make directory. " << 
+        raise "Unable to make directory. " <<
           "Perhaps you forgot to execute the quorum initializer. \n\n" <<
           "rails generate quorum:install"
       end
     end
 
     #
-    # Create directories per tarball and return tarball file name 
+    # Create directories per tarball and return tarball file name
     # minus the file extension.
     #
     def create_file_name(file, base_dir)
@@ -120,7 +120,7 @@ module Quorum
           contigs  = File.join(d, "contigs.fa")
           peptides = File.join(d, "peptides.fa")
 
-          found = false 
+          found = false
 
           if File.exists?(contigs) && File.readable?(contigs)
             execute_makeblastdb("nucl", d, contigs)
@@ -164,7 +164,7 @@ module Quorum
       end
 
       unless VALID_TYPES.include?(@type)
-        raise "Unknown type: #{@type}. " << 
+        raise "Unknown type: #{@type}. " <<
           "Please provide one: both, nucl or prot."
       end
 
@@ -174,7 +174,7 @@ module Quorum
 
       begin
         @dir.split(':').each do |d|
-          unless File.directory?(d)    
+          unless File.directory?(d)
             raise "Directory not found: #{d}"
           end
 
@@ -187,11 +187,11 @@ module Quorum
 
           @data.each do |s|
             if s =~ GZIP
-              files = `tar -tzf #{s}` 
+              files = `tar -tzf #{s}`
               flag  = "z"
             elsif s =~ BZIP
               files = `tar -tjf #{s}`
-              flag  = "j"       
+              flag  = "j"
             end
             files = files.split(/\n/)
             files.each do |f|

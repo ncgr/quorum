@@ -13,9 +13,9 @@ module Quorum
       class QuorumJob < ActiveRecord::Base
         self.table_name = "quorum_jobs"
 
-        has_one :quorum_blastn_job, 
+        has_one :quorum_blastn_job,
           :foreign_key => "job_id"
-        has_many :quorum_blastn_job_reports, 
+        has_many :quorum_blastn_job_reports,
           :foreign_key => "blastn_job_id"
 
         has_one :quorum_blastx_job,
@@ -217,7 +217,7 @@ module Quorum
         File.open(@na_fasta, "w") { |f| f << @na_sequence }
         File.open(@aa_fasta, "w") { |f| f << @aa_sequence }
 
-        @out = File.join(@tmp, @hash + ".out.xml") 
+        @out = File.join(@tmp, @hash + ".out.xml")
         File.new(@out, "w")
 
         case @algorithm
@@ -241,7 +241,7 @@ module Quorum
         unless e.nil?
           e = " x 10<sup>" << e.sub(/e/, '') << "</sup>"
         end
-        evalue.to_f.round(1).to_s << e.to_s 
+        evalue.to_f.round(1).to_s << e.to_s
       end
 
       #
@@ -269,7 +269,7 @@ module Quorum
 
       #
       # Parse and save Blast results using bio-blastxmlparser.
-      # Only save Blast results if results.bit_score > @min_score. 
+      # Only save Blast results if results.bit_score > @min_score.
       #
       def parse_and_save_results
         # Helper to avoid having to perform a query.
@@ -311,7 +311,7 @@ module Quorum
 
                 # Hsps are only reported if a query hit against the Blast db.
                 # Only save the @data if bit_score exists.
-                if @data[:bit_score] && 
+                if @data[:bit_score] &&
                   (@data[:bit_score].to_i > @min_score.to_i)
                   @data[:results] = true
                   @data["#{@algorithm}_job_id".to_sym] = @job.method(@job_association).call.job_id
@@ -410,7 +410,7 @@ module Quorum
       # Execute Blast on a given dataset.
       #
       def execute_blast
-        generate_blast_cmd 
+        generate_blast_cmd
         @logger.log("NCBI Blast", @cmd)
         system(@cmd)
         parse_and_save_results

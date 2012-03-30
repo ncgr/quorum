@@ -1,4 +1,4 @@
-module Workers 
+module Workers
   class System
     extend Resque::Plugins::Result
 
@@ -24,7 +24,7 @@ module Workers
         Net::SSH.start(ssh_host, ssh_user, ssh_options) do |ssh|
           ssh.open_channel do |ch|
             ch.exec(cmd) do |ch, success|
-              unless success 
+              unless success
                 Rails.logger.warn "Channel Net::SSH exec() failed. :'("
               else
                 # Capture STDOUT from ch.exec()

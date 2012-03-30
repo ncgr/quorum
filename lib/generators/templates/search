@@ -33,8 +33,8 @@ Options:
         HEAD
 
         # Search tool
-        opt :search_tool, "Search tool to execute. Available tools: " << 
-        "#{SEARCH_TOOLS.keys.join(', ')}", :type => :string, 
+        opt :search_tool, "Search tool to execute. Available tools: " <<
+        "#{SEARCH_TOOLS.keys.join(', ')}", :type => :string,
           :required => true, :short => "-s"
 
         # General settings
@@ -48,19 +48,19 @@ Options:
           :short => "-i"
         opt :database, "Database name", :type => :string, :required => true,
           :short => "-d"
-        opt :database_adapter, "ActiveRecord database adapter", 
+        opt :database_adapter, "ActiveRecord database adapter",
           :type => :string, :required => true, :short => "-a"
-        opt :database_host, "Database host", :type => :string, 
+        opt :database_host, "Database host", :type => :string,
           :required => true, :short => "-k"
-        opt :database_user, "Database username", :type => :string, 
+        opt :database_user, "Database username", :type => :string,
           :required => true, :short => "-u"
         opt :database_password, "Database password", :type => :string,
           :required => true, :short => "-p"
-       
+
         # Global settings
         opt :search_database, "Path to search tool database", :type => :string,
           :short => "-b"
-        opt :threads, "Number of threads to spawn for search tool", 
+        opt :threads, "Number of threads to spawn for search tool",
           :type => :int, :short => "-t"
       end
 
@@ -136,6 +136,6 @@ Options:
 end
 
 if __FILE__ == $0
-  Quorum::Search.new  
+  Quorum::Search.new
 end
 

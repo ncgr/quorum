@@ -12,7 +12,7 @@ module Quorum
   ## Supported Algorithms ##
   BLAST_ALGORITHMS = ["blastn", "blastx", "blastp", "tblastn"]
 
-  mattr_accessor :blast_remote, :blast_ssh_host, :blast_ssh_user, 
+  mattr_accessor :blast_remote, :blast_ssh_host, :blast_ssh_user,
     :blast_ssh_options, :blast_bin, :blast_log_dir, :blast_tmp_dir,
     :blast_db, :tblastn, :blastp, :blastn, :blastx, :blast_threads
 

@@ -6,8 +6,8 @@ Thanks for installing Quorum!!
 Quorum Manual Setup:
 
 1. Ensure you have defined root_url in your config/routes.rb.
-   If you are deploying Quorum as a standalone application, 
-   add the below after the engine is mounted. 
+   If you are deploying Quorum as a standalone application,
+   add the below after the engine is mounted.
 
      mount Quorum::Engine => "/quorum"
 
@@ -19,7 +19,7 @@ Quorum Manual Setup:
 
    For all available quorum:blastdb:build options
 
-     rake -D 
+     rake -D
 
 ==============================================================================
 

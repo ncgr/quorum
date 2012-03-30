@@ -3,8 +3,8 @@
   <%= form_for @job, :html => {:id => "quorum_job"} do |f| %>
     <%= render "shared/error_messages", :target => @job %>
     <div>
-      <%= f.text_area :sequence, 
-        :title => "Paste nucleic and amino acid FASTA sequence(s) here " << 
+      <%= f.text_area :sequence,
+        :title => "Paste nucleic and amino acid FASTA sequence(s) here " <<
           "or upload a file below.",
         :class => "auto-hint" %>
     </div>
@@ -15,32 +15,32 @@
     <!-- Comment out an algorithm below to remove it from the form. -->
 
     <!-- blastn -->
-    <%= render :partial => "quorum/jobs/form/blastn_form", :locals => { 
+    <%= render :partial => "quorum/jobs/form/blastn_form", :locals => {
       :f => f, :blast_dbs => @blast_dbs } %>
 
     <!-- blastx -->
-    <%= render :partial => "quorum/jobs/form/blastx_form", :locals => { 
+    <%= render :partial => "quorum/jobs/form/blastx_form", :locals => {
       :f => f, :blast_dbs => @blast_dbs } %>
 
     <!-- tblastn -->
-    <%= render :partial => "quorum/jobs/form/tblastn_form", :locals => { 
+    <%= render :partial => "quorum/jobs/form/tblastn_form", :locals => {
       :f => f, :blast_dbs => @blast_dbs } %>
 
     <!-- blastp -->
-    <%= render :partial => "quorum/jobs/form/blastp_form", :locals => { 
+    <%= render :partial => "quorum/jobs/form/blastp_form", :locals => {
       :f => f, :blast_dbs => @blast_dbs } %>
 
     <!-- End Search Algorithms -->
     <div>
       <%= f.submit "Submit" %>&nbsp;&nbsp;
-      <%= submit_tag "Reset", :name => "reset", 
+      <%= submit_tag "Reset", :name => "reset",
         :type => "button", :id => "quorum_job_reset" %>
     </div>
   <% end %>
 </div>
-<div id="quorum">              
+<div id="quorum">
   <hr class="big" />
-  <p> 
+  <p>
     Powered by <%= link_to "Quorum", "https://github.com/ncgr/quorum" %>
   </p>
 </div>

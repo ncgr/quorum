@@ -2,7 +2,7 @@
 
 A flexible bioinformatics search tool.
 
-Quorum is a Rails 3.1 mountable engine that supports the following 
+Quorum is a Rails 3.1 mountable engine that supports the following
 bioinformatics search tools.
 
 * NCBI Blast+ (http://blast.ncbi.nlm.nih.gov)
@@ -30,7 +30,7 @@ After you install Quorum and add it to your Gemfile, run the generator.
 
 The generator will create a directory in your application's root path
 
-  quorum/  
+  quorum/
 
 as well as the necessary config files to run and customize Quorum. You
 MUST customize "config/quorum_settings.yml" before using Quorum. See Remote
@@ -49,7 +49,7 @@ Follow these steps to safely upgrade Quorum.
 
   <tt>cp config/quorum_settings.yml config/quorum_settings.yml.old</tt>
 
-* If you overrode Quorum's styles and / or views, make a copy of the 
+* If you overrode Quorum's styles and / or views, make a copy of the
   existing directories before upgrading.
 
   <tt>cp -R app/assets/stylesheets/quorum app/assets/stylesheets/quorum_old</tt>
@@ -96,7 +96,7 @@ Arguments:
   to contigs.fa.
 
 * REBUILD_DB= - removes existing blast database(s) before building {true or
-  false}. Defaults to false. 
+  false}. Defaults to false.
 
 * EMPTY= - skip makeblastdb and create necessary directories {true or false}.
   Defaults to false. Set this argument to true if you wish to create your own
@@ -115,13 +115,13 @@ For a full list of supported arguments.
 
   rake -D
 
-Don't forget to update "config/quorum_settings.yml" with your newly created 
+Don't forget to update "config/quorum_settings.yml" with your newly created
 database(s).
 
 ==== Download Blast Hit Sequence
 
 Quorum provides a link to download a Blast hit sequence in the detailed report.
-For this process to work smoothly, the sequence identifier MUST be unique 
+For this process to work smoothly, the sequence identifier MUST be unique
 across ALL Blast databases.
 
 Example:
@@ -140,11 +140,11 @@ you wish to remove the link to download a Blast hit sequence, follow the
 steps below.
 
 * Override Quorum's views (see Customize Quorum below)
-* Comment out or remove the lines below in 
-  "app/views/quorum/jobs/templates/_blast_detailed_report_template.html.erb" 
+* Comment out or remove the lines below in
+  "app/views/quorum/jobs/templates/_blast_detailed_report_template.html.erb"
 
     <p class="small">
-      <a id="download_sequence_{{= id }}" 
+      <a id="download_sequence_{{= id }}"
        onclick="downloadSequence(<%= @jobs.id %>, {{= id }}, '{{= algo }}', this)">
        Download Sequence
       </a>
@@ -154,18 +154,18 @@ steps below.
 
 Follow the steps below to execute Quorum remotely via Net::SSH.
 
-* Ensure your ActiveRecord Database adapter in "config/database.yml" is set to 
+* Ensure your ActiveRecord Database adapter in "config/database.yml" is set to
   *any* supported adapter other than sqlite3.
 
 * Ensure your database host is set and accessible via the remote machine(s).
 
-* Ensure you have supplied the necessary information in 
+* Ensure you have supplied the necessary information in
   "config/quorum_settings.yml" to execute Quorum remotely.
 
   <tt>remote: true</tt>
   <tt>ssh_host: remote.machine.org</tt>
   <tt>ssh_user: remote_user</tt>
-  
+
 Net::SSH.start() optional params (http://net-ssh.github.com/ssh/v2/api/index.html)
 
   ssh_options:
@@ -186,7 +186,7 @@ Net::SSH.start() optional params (http://net-ssh.github.com/ssh/v2/api/index.htm
 
   <tt>tar -xzvf quorum.tar.gz</tt>
 
-* Ensure Quorum script dependencies are added to the remote machine's PATH. 
+* Ensure Quorum script dependencies are added to the remote machine's PATH.
   If the remote machine doesn't have a .bashrc file, create one.
 
   <tt>touch /path/to/.bashrc</tt>
@@ -201,8 +201,8 @@ To override Quorum's default views, run the generator.
 
   rails generate quorum:views
 
-A copy of Quorum's views can be found in your application under 
-"app/views/quorum/". 
+A copy of Quorum's views can be found in your application under
+"app/views/quorum/".
 
 To override Quorum's default styles, run the generator.
 
@@ -214,7 +214,7 @@ it's a good idea to remove
 
   *= require_tree .
 
-in "app/assets/stylesheets/application.css" and require your stylesheets 
+in "app/assets/stylesheets/application.css" and require your stylesheets
 individually.
 
 To override Quorum's default images, run the generator.
@@ -233,8 +233,8 @@ Don't like Quorum's jQuery UI theme? Override it!
 * Replace Quorum's theme in "app/assets/{stylesheets:images}/quorum" with
   your own.
 
-Don't plan on supporting all of Quorum's alogrithms? Override Quorum's views 
-and comment out any unwanted algorithms in "app/views/quorum/jobs/new.html.erb" 
+Don't plan on supporting all of Quorum's alogrithms? Override Quorum's views
+and comment out any unwanted algorithms in "app/views/quorum/jobs/new.html.erb"
 and "app/views/quorum/jobs/show.html.erb".
 
 For example:
@@ -245,19 +245,19 @@ Remove Blastp in "app/views/quorum/jobs/new.html.erb"
   <!-- Comment out an algorithm below to remove it from the form. -->
 
   <!-- blastn -->
-  <%= render :partial => "quorum/jobs/form/blastn_form", :locals => { 
+  <%= render :partial => "quorum/jobs/form/blastn_form", :locals => {
     :f => f, :blast_dbs => @blast_dbs } %>
 
   <!-- blastx -->
-  <%= render :partial => "quorum/jobs/form/blastx_form", :locals => { 
+  <%= render :partial => "quorum/jobs/form/blastx_form", :locals => {
     :f => f, :blast_dbs => @blast_dbs } %>
 
   <!-- tblastn -->
-  <%= render :partial => "quorum/jobs/form/tblastn_form", :locals => { 
+  <%= render :partial => "quorum/jobs/form/tblastn_form", :locals => {
     :f => f, :blast_dbs => @blast_dbs } %>
 
   <!-- blastp -->
-  <% render :partial => "quorum/jobs/form/blastp_form", :locals => { 
+  <% render :partial => "quorum/jobs/form/blastp_form", :locals => {
     :f => f, :blast_dbs => @blast_dbs } %>
 
   <!-- End Search Algorithms -->
@@ -278,21 +278,21 @@ Remove Blastp in "app/views/quorum/jobs/show.html.erb"
     <div id="tabs-1">
       <h2>Blastn</h2>
       <div id="blastn-results">
-        Searching... <%= image_tag "quorum/loading.gif" %> 
+        Searching... <%= image_tag "quorum/loading.gif" %>
       </div>
     </div>
 
     <div id="tabs-2">
       <h2>Blastx</h2>
       <div id="blastx-results">
-        Searching... <%= image_tag "quorum/loading.gif" %> 
+        Searching... <%= image_tag "quorum/loading.gif" %>
       </div>
     </div>
 
     <div id="tabs-3">
       <h2>Tblastn</h2>
       <div id="tblastn-results">
-        Searching... <%= image_tag "quorum/loading.gif" %> 
+        Searching... <%= image_tag "quorum/loading.gif" %>
       </div>
     </div>
 
@@ -300,7 +300,7 @@ Remove Blastp in "app/views/quorum/jobs/show.html.erb"
     <div id="tabs-4">
       <h2>Blastp</h2>
       <div id="blastp-results">
-        Searching... <%= image_tag "quorum/loading.gif" %> 
+        Searching... <%= image_tag "quorum/loading.gif" %>
       </div>
     </div>
     -->
@@ -315,15 +315,15 @@ For detailed Redis installation instructions, follow the links below.
 
 === Resque
 
-Quorum provides a simple Rails environment rake task for spawning Resque 
-workers. To customize Resque workers by adding monitoring etc., follow 
+Quorum provides a simple Rails environment rake task for spawning Resque
+workers. To customize Resque workers by adding monitoring etc., follow
 the link below.
 
 * Resque (https://github.com/defunkt/resque)
 
 <b>Resque Web Interface</b>
 
-Quorum mounts Resque's web interface by default via 
+Quorum mounts Resque's web interface by default via
 
   mount Resque::Server.new, :at => "/quorum/resque"
 
@@ -350,9 +350,9 @@ Devise plus Declarative Authorization Example:
 
   # Only superusers can access Resque's web interface.
   resque_constraint = lambda do |request|
-    request.env["warden"].authenticate? && 
+    request.env["warden"].authenticate? &&
     request.env["warden"].user.role_symbols.include?(:superuser)
-  end 
+  end
 
   constraints resque_constraint do
     mount Resque::Server.new, :at => "/quorum/resque"

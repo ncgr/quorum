@@ -3,14 +3,14 @@
  * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
- *= require_tree . 
+ *= require_tree .
 */
 
 /*** Content Styles ***/
 
 html {
     color: #222222;
-    font-family: Lucida Grande, Helvetica, Arial, sans-serif;	
+    font-family: Lucida Grande, Helvetica, Arial, sans-serif;
     background: #b8b8b8 url("bg.png") repeat-x top;
 }
 
@@ -30,18 +30,18 @@ img {
 }
 
 hr.big {
-    height: 3px; 
-    border: 0; 
-    background-color: #8C8C8C; 
-    margin: 5px 0 5px 0; 
+    height: 3px;
+    border: 0;
+    background-color: #8C8C8C;
+    margin: 5px 0 5px 0;
 	width: 100%;
 	overflow: hidden;
 }
 
 hr {
-    height: 1px; 
-    border: 0; 
-    background-color: #8C8C8C; 
+    height: 1px;
+    border: 0;
+    background-color: #8C8C8C;
     margin: 5px 0 5px 0;
     width: 100%;
 }
@@ -77,22 +77,22 @@ hr {
 }
 
 .right {
-    text-align: right;	
+    text-align: right;
     font-style: italic;
 }
 
 .left {
-    text-align: left;	
+    text-align: left;
 }
 
 .center {
-    margin-left: auto;   
-    margin-right: auto;   
-    text-align: center;	
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 .indent {
-    margin: 0 0 0 5px;   
+    margin: 0 0 0 5px;
     padding: 0;
 }
 
@@ -104,17 +104,17 @@ hr {
 }
 
 div.center {
-    margin-left: auto;   
-    margin-right: auto;   
-    text-align: center;	
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 img.right {
 	float: right;
 }
 
-img.center {   
-    text-align: center;	
+img.center {
+    text-align: center;
 }
 
 img.left {
@@ -151,14 +151,14 @@ img.left {
 #error_explanation ul li {
 	margin: 0;
     padding: 0 0 0 5px;
-    font-size: 14px;	
+    font-size: 14px;
     line-height: 18px;
 }
 
 #notice, #alert, #error {
 	margin: 10px 0 15px 0;
 	padding: 0;
-	
+
 	color: #0065de;
 	font-size: 18px;
 	font-weight: bold;
@@ -207,7 +207,7 @@ form label {
   font-size: 12px;
 }
 
-#quorum p, #quorum p a { 
+#quorum p, #quorum p a {
   text-decoration: none;
   color: #f8f8ff;
 }

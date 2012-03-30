@@ -42,7 +42,7 @@ describe "Quorum::SearchTools::Blast" do
       @job.blastp_job.queue     = true
       @job.blastp_job.blast_dbs = ["test"]
     end
-  
+
     it "executes blastn on a given dataset" do
       @job.stub(:queue_workers)
       @job.save!
@@ -57,7 +57,7 @@ describe "Quorum::SearchTools::Blast" do
       Dir.glob(
         File.join(@args[:tmp_directory], "*")
       ).length.should be == 0
-    end 
+    end
 
     it "executes blastx on a given dataset" do
       @job.stub(:queue_workers)
@@ -74,7 +74,7 @@ describe "Quorum::SearchTools::Blast" do
       Dir.glob(
         File.join(@args[:tmp_directory], "*")
       ).length.should be == 0
-    end 
+    end
 
     it "executes tblastn on a given dataset" do
       @job.stub(:queue_workers)
@@ -91,7 +91,7 @@ describe "Quorum::SearchTools::Blast" do
       Dir.glob(
         File.join(@args[:tmp_directory], "*")
       ).length.should be == 0
-    end 
+    end
 
     it "executes blastp on a given dataset" do
       @job.stub(:queue_workers)
@@ -108,7 +108,7 @@ describe "Quorum::SearchTools::Blast" do
       Dir.glob(
         File.join(@args[:tmp_directory], "*")
       ).length.should be == 0
-    end 
+    end
 
   end
 end

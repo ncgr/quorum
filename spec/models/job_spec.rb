@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Quorum::Job do
-  
+
   before(:each) do
     @job = Quorum::Job.new()
     ResqueSpec.reset!

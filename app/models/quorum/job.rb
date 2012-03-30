@@ -1,31 +1,31 @@
 module Quorum
   class Job < ActiveRecord::Base
-  
+
     include Quorum::Sequence
 
     after_save :queue_workers
 
     has_one :blastn_job, :dependent => :destroy
-    has_many :blastn_job_reports, :through => :blastn_job, 
+    has_many :blastn_job_reports, :through => :blastn_job,
       :dependent => :destroy
 
     has_one :blastx_job, :dependent => :destroy
-    has_many :blastx_job_reports, :through => :blastx_job, 
+    has_many :blastx_job_reports, :through => :blastx_job,
       :dependent => :destroy
 
     has_one :tblastn_job, :dependent => :destroy
-    has_many :tblastn_job_reports, :through => :tblastn_job, 
+    has_many :tblastn_job_reports, :through => :tblastn_job,
       :dependent => :destroy
 
     has_one :blastp_job, :dependent => :destroy
-    has_many :blastp_job_reports, :through => :blastp_job, 
+    has_many :blastp_job_reports, :through => :blastp_job,
       :dependent => :destroy
 
     accepts_nested_attributes_for :blastn_job, :blastx_job, :tblastn_job,
       :blastp_job,
       :reject_if => proc { |attributes| attributes['queue'] == '0' }
 
-    attr_accessible :sequence, :na_sequence, :aa_sequence, 
+    attr_accessible :sequence, :na_sequence, :aa_sequence,
       :blastn_job_attributes, :blastx_job_attributes, :tblastn_job_attributes,
       :blastp_job_attributes
 
@@ -34,7 +34,7 @@ module Quorum
     validate :filter_input_sequences, :algorithm_selected
 
     #
-    # Fetch Blast hit_id, hit_display_id, queue Resque worker and 
+    # Fetch Blast hit_id, hit_display_id, queue Resque worker and
     # return worker's meta_id.
     #
     def fetch_quorum_blast_sequence(algo, algo_id)
@@ -53,8 +53,8 @@ module Quorum
       cmd = create_blast_fetch_command(blast_dbs, hit_id, hit_display_id, algo)
 
       data = Workers::System.enqueue(
-        cmd, Quorum.blast_remote, 
-        Quorum.blast_ssh_host, Quorum.blast_ssh_user, 
+        cmd, Quorum.blast_remote,
+        Quorum.blast_ssh_host, Quorum.blast_ssh_user,
         Quorum.blast_ssh_options, true
       )
 
@@ -74,7 +74,7 @@ module Quorum
       rescue ActiveSupport::Multibyte::EncodingError => e
         logger.error e.message
         errors.add(
-          :sequence, 
+          :sequence,
           "Please enter your sequence(s) in Plain Text as FASTA."
         )
         self.sequence = ""
@@ -100,7 +100,7 @@ module Quorum
       self.na_sequence = ""
       self.aa_sequence = ""
 
-      # Split the sequences on >, check the type (AA or NA) and separate. 
+      # Split the sequences on >, check the type (AA or NA) and separate.
       seqs = fasta.split('>')
       seqs.delete_if { |s| s.empty? }
       seqs.each do |s|
@@ -110,8 +110,8 @@ module Quorum
         end
         if type == "amino_acid"
           self.aa_sequence << ">" << s
-        end 
-      end   
+        end
+      end
 
       self.na_sequence = nil if self.na_sequence.empty?
       self.aa_sequence = nil if self.aa_sequence.empty?
@@ -122,15 +122,15 @@ module Quorum
     #
     def algorithm_selected
       in_queue = false
-      if (self.blastn_job && self.blastn_job.queue) || 
+      if (self.blastn_job && self.blastn_job.queue) ||
         (self.blastx_job && self.blastx_job.queue) ||
-        (self.tblastn_job && self.tblastn_job.queue) || 
+        (self.tblastn_job && self.tblastn_job.queue) ||
         (self.blastp_job && self.blastp_job.queue)
         in_queue = true
       end
       unless in_queue
         errors.add(
-          :algorithm, 
+          :algorithm,
           " - Please select at least one algorithm to continue."
         )
       end
@@ -153,12 +153,12 @@ module Quorum
       if self.blastp_job && self.blastp_job.queue
         jobs << create_search_command("blastp")
       end
-     
+
       unless jobs.blank?
         jobs.each do |j|
           Workers::System.enqueue(
-            j, Quorum.blast_remote, 
-            Quorum.blast_ssh_host, Quorum.blast_ssh_user, 
+            j, Quorum.blast_remote,
+            Quorum.blast_ssh_host, Quorum.blast_ssh_user,
             Quorum.blast_ssh_options
           )
         end

@@ -8,8 +8,8 @@
     {{ var hseq      = v.hseq }}
     {{ var q_from    = v.query_from }}
     {{ var q_to      = v.query_to }}
-    {{ var h_from    = v.hit_from }} 
-    {{ var h_to      = v.hit_to }} 
+    {{ var h_from    = v.hit_from }}
+    {{ var h_to      = v.hit_to }}
     {{ var qstrand   = v.query_frame }}
     {{ var hstrand   = v.hit_frame }}
     {{ var hsp_group = v.hsp_group }}
@@ -40,7 +40,7 @@
         </tr>
       </table>
       <p class="small">
-        <a id="download_sequence_{{= id }}" 
+        <a id="download_sequence_{{= id }}"
           onclick="QUORUM.downloadSequence(<%= @jobs.id %>, {{= id }}, '{{= algo }}', this)">
           Download Sequence
         </a>

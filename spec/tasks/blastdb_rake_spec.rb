@@ -23,12 +23,12 @@ describe "blastdb rake tasks" do
         )
       }
     end
-    
+
     it "raises exception without DIR argument" do
       expect {
         Quorum::BuildBlastDB.new({}).build_blast_db_data
       }.to raise_error(
-        RuntimeError, 
+        RuntimeError,
         'DIR must be set to continue. Execute `rake -D` for more information.'
       )
     end
@@ -38,7 +38,7 @@ describe "blastdb rake tasks" do
       expect {
         Quorum::BuildBlastDB.new(@args).build_blast_db_data
       }.to raise_error(
-        RuntimeError, 
+        RuntimeError,
         "Unknown type: #{@args[:type]}. Please provide one: both, nucl or prot."
       )
     end
@@ -80,7 +80,7 @@ describe "blastdb rake tasks" do
       @build = Quorum::BuildBlastDB.new(@args, output)
 
       expect {
-        @build.build_blast_db_data 
+        @build.build_blast_db_data
       }.to_not raise_error
 
       File.directory?(@args[:blastdb_dir]).should be_true
@@ -95,7 +95,7 @@ describe "blastdb rake tasks" do
 
       @args[:empty] = false
       @build = Quorum::BuildBlastDB.new(@args, output)
-      
+
       expect {
         @build.build_blast_db_data
       }.to_not raise_error

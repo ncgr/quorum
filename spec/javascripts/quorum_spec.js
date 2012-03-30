@@ -4,50 +4,50 @@
 
 describe("QUORUM", function() {
 
-  // 
+  //
   // Spec covers QUORUM.formatSequenceReport & QUORUM.addBaseTitleIndex.
   //
   // Blastn should increment qseq's title by 1 and hseq's title by 1.
   //
   it("formats blastn sequence report for Blast detailed report", function() {
     var report = QUORUM.formatSequenceReport(
-      "ACGT", "|| |", "ACCT", 6, 9, 2, 8, "blastn"  
+      "ACGT", "|| |", "ACCT", 6, 9, 2, 8, "blastn"
     );
     expect(report).toEqual("<p class='small'>Alignment (Mouse over for positions):</p><span class='small'><pre>\nqseq <a rel='quorum-tipsy' title=6>A</a><a rel='quorum-tipsy' title=7>C</a><a rel='quorum-tipsy' title=8>G</a><a rel='quorum-tipsy' title=9>T</a>\n     || |\nhseq <a rel='quorum-tipsy' title=2>A</a><a rel='quorum-tipsy' title=3>C</a><a rel='quorum-tipsy' title=4>C</a><a rel='quorum-tipsy' title=5>T</a>\n\n</pre></span>");
   });
 
-  // 
+  //
   // Spec covers QUORUM.formatSequenceReport & QUORUM.addBaseTitleIndex.
   //
   // Blastx should increment qseq's title by 3 and hseq's title by 1.
   //
   it("formats blastx sequence report for Blast detailed report", function() {
     var report = QUORUM.formatSequenceReport(
-      "ACGT", "|| |", "ACCT", 6, 9, 2, 8, "blastx"  
+      "ACGT", "|| |", "ACCT", 6, 9, 2, 8, "blastx"
     );
     expect(report).toEqual("<p class='small'>Alignment (Mouse over for positions):</p><span class='small'><pre>\nqseq <a rel='quorum-tipsy' title=6>A</a><a rel='quorum-tipsy' title=9>C</a><a rel='quorum-tipsy' title=12>G</a><a rel='quorum-tipsy' title=15>T</a>\n     || |\nhseq <a rel='quorum-tipsy' title=2>A</a><a rel='quorum-tipsy' title=3>C</a><a rel='quorum-tipsy' title=4>C</a><a rel='quorum-tipsy' title=5>T</a>\n\n</pre></span>");
   });
 
-  // 
+  //
   // Spec covers QUORUM.formatSequenceReport & QUORUM.addBaseTitleIndex.
   //
   // Tblastn should increment qseq's title by 1 and hseq's title by 3.
   //
   it("formats tblastn sequence report for Blast detailed report", function() {
     var report = QUORUM.formatSequenceReport(
-      "ELVIS", "ELVIS", "ELVIS", 10, 14, 121, 136, "tblastn"  
+      "ELVIS", "ELVIS", "ELVIS", 10, 14, 121, 136, "tblastn"
     );
     expect(report).toEqual("<p class='small'>Alignment (Mouse over for positions):</p><span class='small'><pre>\nqseq <a rel='quorum-tipsy' title=10>E</a><a rel='quorum-tipsy' title=11>L</a><a rel='quorum-tipsy' title=12>V</a><a rel='quorum-tipsy' title=13>I</a><a rel='quorum-tipsy' title=14>S</a>\n     ELVIS\nhseq <a rel='quorum-tipsy' title=121>E</a><a rel='quorum-tipsy' title=124>L</a><a rel='quorum-tipsy' title=127>V</a><a rel='quorum-tipsy' title=130>I</a><a rel='quorum-tipsy' title=133>S</a>\n\n</pre></span>");
   });
 
-  // 
+  //
   // Spec covers QUORUM.formatSequenceReport & QUORUM.addBaseTitleIndex.
   //
   // Blastp should increment qseq's title by 1 and hseq's title by 1.
   //
   it("formats blastx sequence report for Blast detailed report", function() {
     var report = QUORUM.formatSequenceReport(
-      "ELVIS", "ELVIS", "ELVIS", 10, 14, 121, 125, "blastp"  
+      "ELVIS", "ELVIS", "ELVIS", 10, 14, 121, 125, "blastp"
     );
     expect(report).toEqual("<p class='small'>Alignment (Mouse over for positions):</p><span class='small'><pre>\nqseq <a rel='quorum-tipsy' title=10>E</a><a rel='quorum-tipsy' title=11>L</a><a rel='quorum-tipsy' title=12>V</a><a rel='quorum-tipsy' title=13>I</a><a rel='quorum-tipsy' title=14>S</a>\n     ELVIS\nhseq <a rel='quorum-tipsy' title=121>E</a><a rel='quorum-tipsy' title=122>L</a><a rel='quorum-tipsy' title=123>V</a><a rel='quorum-tipsy' title=124>I</a><a rel='quorum-tipsy' title=125>S</a>\n\n</pre></span>");
   });
@@ -65,19 +65,19 @@ describe("QUORUM", function() {
 
   it("prints hit strand as forward / forward for + / + intergers", function() {
     expect(QUORUM.formatStrand(1, 1)).toEqual("forward / forward");
-  }); 
+  });
 
   it("prints hit strand as forward / reverse for + / - integers", function() {
     expect(QUORUM.formatStrand(1, -1)).toEqual("forward / reverse");
-  }); 
+  });
 
   it("prints hit strand as reverse / forward for - / + integers", function() {
     expect(QUORUM.formatStrand(-1, 1)).toEqual("reverse / forward");
-  }); 
+  });
 
   it("prints hit strand as reverse / reverse for - / - integers", function() {
     expect(QUORUM.formatStrand(-1, -1)).toEqual("reverse / reverse");
-  }); 
+  });
 
   //
   // Only print links to HSPs whers data id != focus.

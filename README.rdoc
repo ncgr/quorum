@@ -201,8 +201,8 @@ To override Quorum's default views, run the generator.
 
   rails generate quorum:views
 
-A copy of Quorum's views can be found in your application under
-"app/views/quorum/".
+A copy of Quorum's layouts and views can be found in your application under
+"app/views/layouts/quorum/" "app/views/quorum/".
 
 To override Quorum's default styles, run the generator.
 

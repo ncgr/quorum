@@ -1,3 +1,7 @@
+## 0.3.1 (2012-04-02)
+
+* Added quorum layouts to quorum:views generator.
+
 ## 0.3.0 (2012-01-31)
 
 * Created QUORUM JS object and added properties.

@@ -1,7 +1,6 @@
 script: "rake travis:spec"
 language: ruby
 rvm:
-  - 1.8.7
   - 1.9.2
   - 1.9.3
 gemfile:
@@ -16,6 +15,9 @@ before_script:
   - mysql -e 'create database quorum_test;'
   - bundle install
   - "rake travis:create_db_config"
+  - "rake app:db:schema:load"
+  - "rake travis:create_dirs"
+  - "rake app:db:schema:load"
 
 # Remove spec/dummy/config/database.yml
 after_script:

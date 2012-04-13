@@ -14,6 +14,7 @@ before_install:
 # Create MySQL database and spec/dummy/config/database.yml
 before_script:
   - mysql -e 'create database quorum_test;'
+  - bundle install
   - "rake travis:create_db_config"
 
 # Remove spec/dummy/config/database.yml

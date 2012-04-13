@@ -43,7 +43,7 @@ namespace :travis do
   task :create_db_config do
     config = File.expand_path("../spec/dummy/config", __FILE__)
     File.open(File.join(config, "database.yml"), "w+") do |file|
-      file.puts "mysql:\n  adapter: mysql2\n  database: quorum_test\n" <<
+      file.puts "test:\n  adapter: mysql2\n  database: quorum_test\n" <<
       "  username: root\n  password:\n  host: localhost\n  encoding: utf8"
     end
   end

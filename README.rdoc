@@ -2,7 +2,7 @@
 
 A flexible bioinformatics search tool.
 
-{<img src="https://secure.travis-ci.org/hunzinker/quorum.png"/>}[http://travis-ci.org/hunzinker/quorum]
+{<img src="https://secure.travis-ci.org/ncgr/quorum.png?branch=master"alt="Build Status" />}[http://travis-ci.org/ncgr/quorum]
 
 Quorum is a Rails 3.1 mountable engine that supports the following
 bioinformatics search tools.

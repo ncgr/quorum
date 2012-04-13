@@ -63,6 +63,7 @@ namespace :travis do
     app    = File.expand_path("../spec/dummy", __FILE__)
     quorum = File.expand_path("../spec/dummy/quorum", __FILE__)
 
+    Dir.mkdir(File.join(app, "tmp"))
     Dir.mkdir(File.join(app, "tmp", "pids"))
     Dir.mkdir(File.join(quorum, "log"))
     Dir.mkdir(File.join(quorum, "tmp"))

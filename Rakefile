@@ -29,6 +29,7 @@ task :default => :spec
 
 Bundler::GemHelper.install_tasks
 
+# Travis Tasks
 namespace :travis do
   # Specs
   task :spec do
@@ -52,5 +53,18 @@ namespace :travis do
   task :remove_db_config do
     config = File.expand_path("../spec/dummy/config", __FILE__)
     File.delete(File.join(config, "database.yml"))
+  end
+
+  # Create necessary directories for test. Mimic a real app install
+  # via rails g quorum:install.
+  #
+  # The directories below are not in the git repo.
+  task :create_dirs do
+    app    = File.expand_path("../spec/dummy", __FILE__)
+    quorum = File.expand_path("../spec/dummy/quorum", __FILE__)
+
+    Dir.mkdir(File.join(app, "tmp", "pids"))
+    Dir.mkdir(File.join(quorum, "log"))
+    Dir.mkdir(File.join(quorum, "tmp"))
   end
 end

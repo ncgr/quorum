@@ -179,5 +179,6 @@ DEPENDENCIES
   jasmine (~> 1.1)
   mysql2 (~> 0.3.11)
   quorum!
+  rake (~> 0.9.2)
   resque_spec (~> 0.8)
   rspec-rails (~> 2.6)

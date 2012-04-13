@@ -1,0 +1,25 @@
+script: "rake travis:spec"
+language: ruby
+rvm:
+  - 1.8.7
+  - 1.9.2
+  - 1.9.3
+gemfile:
+  - gemfiles/Gemfile.rails-3.1.x
+  - gemfiles/Gemfile.rails-3.2.x
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install ncbi-blast+ emboss
+
+# Create MySQL database and spec/dummy/config/database.yml
+before_script:
+  - mysql -e 'create database quorum_test;'
+  - "rake travis:create_db_config"
+
+# Remove spec/dummy/config/database.yml
+after_script:
+  - "rake travis:remove_db_config"
+
+notifications:
+  email:
+    - kas@ncgr.org

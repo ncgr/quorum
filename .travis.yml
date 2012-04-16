@@ -11,7 +11,7 @@ before_install:
 
 # Create MySQL database and spec/dummy/config/database.yml
 before_script:
-  - "export DISPLAY=:53331.0"
+  - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - bundle install
   - mysql -e 'create database quorum_test;'

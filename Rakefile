@@ -33,11 +33,14 @@ Bundler::GemHelper.install_tasks
 namespace :travis do
   # Specs
   task :spec do
+    Rake::Task["travis:create_dirs"].execute
+    Rake::Task["travis:create_db_config"].execute
     ["rake spec", "rake app:jasmine:ci"].each do |cmd|
       puts "Starting to run #{cmd}..."
-      system("export DISPLAY=:99.0 && bundle exec #{cmd}")
+      system("export DISPLAY=:53331.0 && bundle exec #{cmd}")
       raise "#{cmd} failed!" unless $?.exitstatus == 0
     end
+    Rake::Task[":travis:remove_db_config"].execute
   end
 
   # Create spec/dummy/config/database.yml for Travis.
@@ -65,6 +68,7 @@ namespace :travis do
 
     Dir.mkdir(File.join(app, "tmp"))
     Dir.mkdir(File.join(app, "tmp", "pids"))
+    Dir.mkdir(File.join(app, "tmp", "cache"))
     Dir.mkdir(File.join(quorum, "log"))
     Dir.mkdir(File.join(quorum, "tmp"))
   end

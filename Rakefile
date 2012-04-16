@@ -31,17 +31,15 @@ Bundler::GemHelper.install_tasks
 
 # Travis Tasks
 namespace :travis do
-  port = 53331
-
   # Specs
   task :spec do
-    Rake::Task["travis:create_dirs"].execute
-    ["rake spec", "rake app:jasmine:ci JASMINE_PORT=#{port}"].each do |cmd|
+    #Rake::Task["travis:create_dirs"].execute
+    ["rake spec", "rake app:jasmine:ci JASMINE_PORT=53331"].each do |cmd|
       puts "Starting to run #{cmd}..."
-      system("export DISPLAY=:#{port}.0 && bundle exec #{cmd}")
+      system("export DISPLAY=:99.0 && bundle exec #{cmd}")
       raise "#{cmd} failed!" unless $?.exitstatus == 0
     end
-    Rake::Task["travis:remove_db_config"].execute
+    #Rake::Task["travis:remove_db_config"].execute
   end
 
   # Create spec/dummy/config/database.yml for Travis.

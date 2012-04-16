@@ -65,10 +65,18 @@ namespace :travis do
     app    = File.expand_path("../spec/dummy", __FILE__)
     quorum = File.expand_path("../spec/dummy/quorum", __FILE__)
 
-    Dir.mkdir(File.join(app, "tmp"))
-    Dir.mkdir(File.join(app, "tmp", "pids"))
-    Dir.mkdir(File.join(app, "tmp", "cache"))
-    Dir.mkdir(File.join(quorum, "log"))
-    Dir.mkdir(File.join(quorum, "tmp"))
+    app_tmp   = File.join(app, "tmp")
+    app_pids  = File.join(app_tmp, "pids")
+    app_cache = File.join(app_tmp, "cache")
+
+    Dir.mkdir(app_tmp) unless File.directory?(app_tmp)
+    Dir.mkdir(app_pids) unless File.directory?(app_pids)
+    Dir.mkdir(app_cache) unless File.directory?(app_cache)
+
+    quorum_log = File.join(quorum, "log")
+    quorum_tmp = File.join(quorum, "tmp")
+
+    Dir.mkdir(quorum_log) unless File.directory?(quorum_log)
+    Dir.mkdir(quorum_tmp) unless File.directory?(quorum_tmp)
   end
 end

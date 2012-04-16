@@ -34,7 +34,6 @@ namespace :travis do
   # Specs
   task :spec do
     Rake::Task["travis:create_dirs"].execute
-    Rake::Task["travis:create_db_config"].execute
     ["rake spec", "rake app:jasmine:ci"].each do |cmd|
       puts "Starting to run #{cmd}..."
       system("export DISPLAY=:53331.0 && bundle exec #{cmd}")

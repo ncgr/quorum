@@ -40,7 +40,7 @@ namespace :travis do
       system("export DISPLAY=:53331.0 && bundle exec #{cmd}")
       raise "#{cmd} failed!" unless $?.exitstatus == 0
     end
-    Rake::Task[":travis:remove_db_config"].execute
+    Rake::Task["travis:remove_db_config"].execute
   end
 
   # Create spec/dummy/config/database.yml for Travis.

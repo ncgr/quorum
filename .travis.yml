@@ -9,10 +9,6 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install ncbi-blast+ emboss
 
-env:
-  - DB=mysql
-  - DB=redis
-
 # Create MySQL database and spec/dummy/config/database.yml
 before_script:
   - "export DISPLAY=:53331.0"

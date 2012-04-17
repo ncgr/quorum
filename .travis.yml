@@ -13,7 +13,7 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - bundle install
   - mysql -e 'create database quorum_test;'
-  - mysqladmin -u root -p password 'root'
+  - mysql -e 'update user set password=PASSWORD("root") where User="root"'
   - "rake travis:create_db_config"
   - "rake app:db:schema:load"
 script: "rake travis:spec"

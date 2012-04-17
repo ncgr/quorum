@@ -200,7 +200,7 @@ module Quorum
         "-a #{ActiveRecord::Base.configurations[::Rails.env.to_s]['adapter']} " <<
         "-k #{ActiveRecord::Base.configurations[::Rails.env.to_s]['host']} " <<
         "-u #{ActiveRecord::Base.configurations[::Rails.env.to_s]['username']} " <<
-        "-p #{ActiveRecord::Base.configurations[::Rails.env.to_s]['password']} "
+        "-p '#{ActiveRecord::Base.configurations[::Rails.env.to_s]['password']}' "
     end
 
   end

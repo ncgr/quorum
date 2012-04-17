@@ -12,8 +12,8 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - bundle install
-  - mysql -e 'create database quorum_test;'
-  - mysql -e 'update mysql.user set Password=PASSWORD("root") where User="root"'
+  - mysqladmin -u root -pNULL password root
+  - echo "create database quorum_test;" | mysql -u root -proot -h localhost
   - "rake travis:create_db_config"
   - "rake app:db:schema:load"
 script: "rake travis:spec"

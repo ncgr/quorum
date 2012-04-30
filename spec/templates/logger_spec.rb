@@ -4,7 +4,7 @@ require 'generators/templates/logger'
 describe "Quorum::Logger" do
   describe "#log" do
     before(:all) do
-      @args   = File.join(::Rails.root.to_s, "log") 
+      @args   = File.join(::Rails.root.to_s, "log")
       @logger = Quorum::Logger.new(@args)
     end
 
@@ -21,7 +21,7 @@ describe "Quorum::Logger" do
     it "records program, message, exits and removes files" do
       lambda {
         @logger.log(
-          "RSpec", "This is a test.", 1, 
+          "RSpec", "This is a test.", 1,
           File.join(@args, "quorum.log")
         )
       }.should raise_error(SystemExit)
@@ -31,5 +31,5 @@ describe "Quorum::Logger" do
       ).should be_false
 
     end
-  end  
+  end
 end

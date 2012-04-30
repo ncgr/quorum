@@ -24,9 +24,7 @@ module Workers
         Net::SSH.start(ssh_host, ssh_user, ssh_options) do |ssh|
           ssh.open_channel do |ch|
             ch.exec(cmd) do |ch, success|
-              unless success
-                Rails.logger.warn "Channel Net::SSH exec() failed. :'("
-              else
+              if success
                 # Capture STDOUT from ch.exec()
                 if stdout
                   ch.on_data do |ch, data|
@@ -37,6 +35,8 @@ module Workers
                 ch.on_request("exit-status") do |ch, data|
                   exit_status = data.read_long
                 end
+              else
+                Rails.logger.warn "Channel Net::SSH exec() failed. :'("
               end
             end
           end

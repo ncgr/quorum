@@ -29,13 +29,13 @@ module Quorum
     # Removes instance files.
     #
     def remove_files(files)
-      unless Dir.glob(files).empty?
-        `rm #{files}`
-      else
-        log(
+      if Dir.glob(files).empty?
+         log(
           "remove_files",
           "Unable to remove #{files}"
         )
+      else
+       `rm #{files}`
       end
     end
 

@@ -11,26 +11,26 @@
     <div>
       <%= f.file_field :sequence_file %>
     </div>
-    <!-- Search Algorithms -->
-    <!-- Comment out an algorithm below to remove it from the form. -->
+    <%# Search Algorithms %>
+    <%# Comment out an algorithm below to remove it from the form. %>
 
-    <!-- blastn -->
+    <%# blastn %>
     <%= render :partial => "quorum/jobs/form/blastn_form", :locals => {
       :f => f, :blast_dbs => @blast_dbs } %>
 
-    <!-- blastx -->
+    <%# blastx %>
     <%= render :partial => "quorum/jobs/form/blastx_form", :locals => {
       :f => f, :blast_dbs => @blast_dbs } %>
 
-    <!-- tblastn -->
+    <%# tblastn %>
     <%= render :partial => "quorum/jobs/form/tblastn_form", :locals => {
       :f => f, :blast_dbs => @blast_dbs } %>
 
-    <!-- blastp -->
+    <%# blastp %>
     <%= render :partial => "quorum/jobs/form/blastp_form", :locals => {
       :f => f, :blast_dbs => @blast_dbs } %>
 
-    <!-- End Search Algorithms -->
+    <%# End Search Algorithms %>
     <div>
       <%= f.submit "Submit" %>&nbsp;&nbsp;
       <%= submit_tag "Reset", :name => "reset",

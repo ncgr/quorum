@@ -1,9 +1,9 @@
 <div id="show">
   <h1>Search Results</h1>
   <p class="small right"><%= link_to raw("Search Again &raquo;"), :jobs %></p>
-  <!-- Tabs -->
-  <!-- To remove an algorithm from the view, simply comment out the -->
-  <!-- div#tabs ul li and corresponding div#tabs-(tab number) -->
+  <%# Tabs %>
+  <%# To remove an algorithm from the view, simply comment out the %>
+  <%# div#tabs ul li and corresponding div#tabs-(tab number) %>
   <div id="tabs">
     <ul>
       <li><a href="#tabs-1">Blastn</a></li>
@@ -12,7 +12,7 @@
       <li><a href="#tabs-4">Blastp</a></li>
     </ul>
 
-    <!-- Search results per algorithm -->
+    <%# Search results per algorithm %>
     <div id="tabs-1">
       <h2>Blastn</h2>
       <div id="blastn-results">
@@ -41,10 +41,10 @@
       </div>
     </div>
   </div>
-  <!-- End Tabs -->
+  <%# End Tabs %>
   <p class="small right"><%= link_to raw("Search Again &raquo;"), :jobs %></p>
 
-  <!-- Detailed report element -->
+  <%# Detailed report element %>
   <div id="detailed_report_dialog" title="Quorum Report Details"></div>
 </div>
 <div id="quorum">
@@ -54,7 +54,7 @@
   </p>
 </div>
 
-<!-- Templates -->
+<%# Templates %>
 <%= render :partial => "quorum/jobs/templates/blast_template" %>
 <%= render :partial => "quorum/jobs/templates/blast_detailed_report_template" %>
 
@@ -63,9 +63,23 @@
     //
     // Asynchronously poll Quorum for search results.
     //
-    //  pollResults(id, interval)
+    //  QUORUM.pollResults(id, callback, callback_obj, interval)
     //    id: Job.id
+    //    callback: Define your own callback function to override the default.
+    //      callback should expect the following params.
+    //        id: Job.id (Int),
+    //        data: JSON data (JSON),
+    //        algorithm: Supported algorithm (String).
+    //    callback_obj: Callback object.
     //    interval: poll interval in milliseconds. 5000 default.
+    //
+    //  Example:
+    //    QUORUM.pollResults(<%= @jobs.id %>, MYAPP.myCoolCallback, MYAPP, 5000);
+    //
+    //  Example callback:
+    //    MYAPP.myCoolCallback = function(id, data, algo) {
+    //      // awesome logic
+    //    };
     //
     QUORUM.pollResults(<%= @jobs.id %>);
   });

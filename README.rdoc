@@ -163,9 +163,10 @@ Follow the steps below to execute Quorum remotely via Net::SSH.
 * Ensure you have supplied the necessary information in
   "config/quorum_settings.yml" to execute Quorum remotely.
 
-  <tt>remote: true</tt>
-  <tt>ssh_host: remote.machine.org</tt>
-  <tt>ssh_user: remote_user</tt>
+  blast:
+    remote: true
+    ssh_host: remote.machine.org
+    ssh_user: remote_user
 
 Net::SSH.start() optional params (http://net-ssh.github.com/ssh/v2/api/index.html)
 
@@ -242,26 +243,26 @@ For example:
 
 Remove Blastp in "app/views/quorum/jobs/new.html.erb"
 
-  <!-- Search Algorithms -->
-  <!-- Comment out an algorithm below to remove it from the form. -->
+  <%# Search Algorithms %>
+  <%# Comment out an algorithm below to remove it from the form. %>
 
-  <!-- blastn -->
+  <%# blastn %>
   <%= render :partial => "quorum/jobs/form/blastn_form", :locals => {
     :f => f, :blast_dbs => @blast_dbs } %>
 
-  <!-- blastx -->
+  <%# blastx %>
   <%= render :partial => "quorum/jobs/form/blastx_form", :locals => {
     :f => f, :blast_dbs => @blast_dbs } %>
 
-  <!-- tblastn -->
+  <%# tblastn %>
   <%= render :partial => "quorum/jobs/form/tblastn_form", :locals => {
     :f => f, :blast_dbs => @blast_dbs } %>
 
-  <!-- blastp -->
+  <%# blastp %>
   <% render :partial => "quorum/jobs/form/blastp_form", :locals => {
     :f => f, :blast_dbs => @blast_dbs } %>
 
-  <!-- End Search Algorithms -->
+  <%# End Search Algorithms %>
 
 Remove Blastp in "app/views/quorum/jobs/show.html.erb"
 
@@ -270,12 +271,12 @@ Remove Blastp in "app/views/quorum/jobs/show.html.erb"
       <li><a href="#tabs-1">Blastn</a></li>
       <li><a href="#tabs-2">Blastx</a></li>
       <li><a href="#tabs-3">Tblastn</a></li>
-      <!--
+      <%#
       <li><a href="#tabs-4">Blastp</a></li>
-      -->
+      %>
     </ul>
 
-    <!-- Search results per algorithm -->
+    <%# Search results per algorithm %>
     <div id="tabs-1">
       <h2>Blastn</h2>
       <div id="blastn-results">

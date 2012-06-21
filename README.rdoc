@@ -226,7 +226,7 @@ To override Quorum's default images, run the generator.
 A copy of Quorum's images can be found in your application under
 "app/assets/images/quorum/".
 
-<b>jQuery UI</b>
+==== jQuery UI
 
 Don't like Quorum's jQuery UI theme? Override it!
 
@@ -235,9 +235,11 @@ Don't like Quorum's jQuery UI theme? Override it!
 * Replace Quorum's theme in "app/assets/{stylesheets:images}/quorum" with
   your own.
 
-Don't plan on supporting all of Quorum's alogrithms? Override Quorum's views
-and comment out any unwanted algorithms in "app/views/quorum/jobs/new.html.erb"
-and "app/views/quorum/jobs/show.html.erb".
+==== Don't plan on supporting all of Quorum's alogrithms?
+
+Override Quorum's views and comment out any unwanted algorithms in
+"app/views/quorum/jobs/new.html.erb" and
+"app/views/quorum/jobs/show.html.erb".
 
 For example:
 
@@ -308,6 +310,12 @@ Remove Blastp in "app/views/quorum/jobs/show.html.erb"
     -->
   </div>
 
+==== Don't like Quorum's default show template?
+
+Override Quorum's views and specify your own JavaScript callback function!
+
+See "app/views/quorum/show.html.erb" for more details.
+
 === Redis
 
 For detailed Redis installation instructions, follow the links below.
@@ -323,7 +331,7 @@ the link below.
 
 * Resque (https://github.com/defunkt/resque)
 
-<b>Resque Web Interface</b>
+==== Resque Web Interface
 
 Quorum mounts Resque's web interface by default via
 

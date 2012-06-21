@@ -38,6 +38,7 @@ QUORUM.pollResults = function(id, callback, callback_obj, interval, algos) {
       '/quorum/jobs/' + id + '/get_quorum_search_results.json?algo=' + a,
       function(data) {
         if (data.length === 0) {
+          // Continue to check until results are returned.
           setTimeout(function() {
             self.pollResults(id, callback, callback_obj, interval, [a]);
           }, interval);
@@ -198,6 +199,36 @@ QUORUM.formatStrand = function(qstrand, hstrand) {
   hstrand < 0 ? h = "reverse" : h = "forward";
 
   return q + " / " + h;
+
+};
+
+//
+// Format Blast E-value.
+//
+QUORUM.formatEvalue = function(evalue) {
+
+  var self = this,
+      index,
+      f,
+      e,
+      formatted;
+
+  if (_.isUndefined(evalue) || _.isNull(evalue) || evalue === "") {
+    return "";
+  }
+
+  index = evalue.indexOf('e');
+
+  if (index > -1) {
+    f = parseFloat(evalue.slice(0, index)).toPrecision(2);
+    e = evalue.slice(index).replace('e', '');
+
+    formatted = f + " x 10<sup>" + e + "</sup>";
+  } else {
+    formatted = parseFloat(evalue).toPrecision(2);
+  }
+
+  return formatted;
 
 };
 

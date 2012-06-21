@@ -233,18 +233,6 @@ module Quorum
       end
 
       #
-      # Make the E-value look pretty.
-      #
-      def format_evalue(evalue)
-        evalue = evalue.to_s
-        e      = evalue.slice!(/e.*/)
-        unless e.nil?
-          e = " x 10<sup>" << e.sub(/e/, '') << "</sup>"
-        end
-        evalue.to_f.round(1).to_s << e.to_s
-      end
-
-      #
       # Format Blast report hit_display_id and hit_def.
       #
       # For added flexibility, Quorum doesn't parse seqids or deflines.
@@ -295,7 +283,7 @@ module Quorum
                 @data[:hsp_num]     = hsp.hsp_num
                 @data[:bit_score]   = hsp.bit_score
                 @data[:score]       = hsp.score
-                @data[:evalue]      = format_evalue(hsp.evalue)
+                @data[:evalue]      = hsp.evalue
                 @data[:query_from]  = hsp.query_from
                 @data[:query_to]    = hsp.query_to
                 @data[:hit_from]    = hsp.hit_from

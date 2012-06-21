@@ -19,7 +19,7 @@
       <p class="small">Hit Description: {{= v.hit_def }}</p>
       <table class="report_details">
         <tr>
-          <td>E-value: {{= v.evalue }}</td>
+          <td>E-value: {{= QUORUM.formatEvalue(v.evalue) }}</td>
           <td>Bit Score: {{= v.bit_score }}</td>
           <td></td>
         </tr>

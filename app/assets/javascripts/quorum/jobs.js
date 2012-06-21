@@ -59,6 +59,10 @@ $(function() {
     form.autoHint('removeHints');
   });
 
+  $(window).unload(function() {
+    $('input[type=submit]', 'form').val('Submit').removeAttr('disabled');
+  });
+
   // Reset form.
   $('#quorum_job_reset').click(function() {
     $('textarea').val('');

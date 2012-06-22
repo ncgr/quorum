@@ -1,3 +1,12 @@
+## 0.3.2 (2012-06--22)
+
+* Added support for user defined callback in QUORUM.pollResults().
+  Useful if user chooses to define their own view template(s).
+  See app/assets/javascripts/quorum/quorum.js and
+  app/views/quorum/jobs/show.html.erb for more information.
+* JS bug fixes.
+* Added specs and updated gems.
+
 ## 0.3.1 (2012-04-02)
 
 * Added quorum layouts to quorum:views generator.

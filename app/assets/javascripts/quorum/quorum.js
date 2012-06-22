@@ -242,7 +242,7 @@ QUORUM.displayHspLinks = function(focus, group, data) {
       ids,
       selected;
 
-  if (group !== null) {
+  if (!_.isNull(group)) {
     str = "Related <a onclick=\"(QUORUM.openWindow(" +
       "'http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.HSP'," +
       "'HSP', 800, 300))\">HSPs</a>: ";

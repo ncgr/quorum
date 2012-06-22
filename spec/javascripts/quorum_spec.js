@@ -185,8 +185,23 @@ describe("QUORUM", function() {
           {"id":2,"hsp_group":"1,2","hsp_num":2}
         ];
 
-    var hsps  = QUORUM.displayHspLinks(focus, group, data);
+    var hsps = QUORUM.displayHspLinks(focus, group, data);
     expect(hsps).toEqual("Related <a onclick=\"(QUORUM.openWindow('http://www.ncbi.nlm.nih.gov/books/NBK62051/def-item/blast_glossary.HSP','HSP', 800, 300))\">HSPs</a>: 1 <a onclick='(QUORUM.autoScroll(2, true))'>2</a> ");
+  });
+
+  //
+  // QUORUM.displayHspLinks should return an empty string if group is not set.
+  //
+  it("prints HSP links", function() {
+    var focus = 1,
+        group = null,
+        data = [
+          {"id":1,"hsp_group":"1,2","hsp_num":1},
+          {"id":2,"hsp_group":"1,2","hsp_num":2}
+        ];
+
+    var hsps = QUORUM.displayHspLinks(focus, group, data);
+    expect(hsps).toEqual("");
   });
 
   //

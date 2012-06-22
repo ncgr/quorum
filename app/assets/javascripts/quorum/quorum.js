@@ -238,7 +238,7 @@ QUORUM.formatEvalue = function(evalue) {
 QUORUM.displayHspLinks = function(focus, group, data) {
 
   var self = this,
-      str,
+      str = "",
       ids,
       selected;
 
@@ -261,9 +261,9 @@ QUORUM.displayHspLinks = function(focus, group, data) {
         str += e.hsp_num + " ";
       }
     });
-
-    return str;
   }
+
+  return str;
 
 };
 

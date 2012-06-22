@@ -115,14 +115,14 @@ module Quorum
     def send_quorum_blast_hit_sequence
       data = Workers::System.get_meta(params[:meta_id])
       if data.succeeded?
-        unless data.result.downcase.include?("error")
+        if data.result.downcase.include?("error")
+          render :text => data.result
+          return
+        else
           send_data data.result,
             :filename    => "#{params[:meta_id]}.fa",
             :type        => "text/plain",
             :disposition => "attachment"
-          return
-        else
-          render :text => data.result
           return
         end
       end

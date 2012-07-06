@@ -15,7 +15,7 @@ module Quorum
       :blast_dbs
 
     validates_format_of :expectation,
-      :with        => /^[+-]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/,
+      :with        => /\A[+-]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\z/,
       :message     => " - Valid formats (12, 32.05, 43e-123)",
       :allow_blank => true
     validates_numericality_of :max_score,

@@ -40,7 +40,9 @@ namespace :quorum do
       args[:nucl_file] = "NULL" if args[:type] == "prot"
       args[:prot_file] = "NULL" if args[:type] == "nucl"
 
-      puts "Building your Blast database(s). This may take a while..."
+      unless args[:empty]
+        puts "Building your Blast database(s). This may take a while..."
+      end
 
       build = Quorum::BuildBlastDB.new(args)
       build.build_blast_db_data

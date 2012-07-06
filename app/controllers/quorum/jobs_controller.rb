@@ -1,7 +1,7 @@
 module Quorum
   class JobsController < ApplicationController
 
-    respond_to :html, :json
+    respond_to :html, :json, :gff, :txt
     before_filter :set_blast_dbs, :only => [:new, :create]
 
     def index
@@ -53,9 +53,8 @@ module Quorum
     # Returns Resque worker results.
     #
     def get_quorum_search_results
-      empty = [{ :results => false }].to_json
-
-      json = empty
+      empty = [{ :results => false }]
+      data  = empty
 
       if Quorum::BLAST_ALGORITHMS.include?(params[:algo])
         queued = "#{params[:algo]}_job".to_sym
@@ -64,23 +63,29 @@ module Quorum
         begin
           job = Job.find(params[:id])
         rescue ActiveRecord::RecordNotFound => e
-          json = empty
+          logger.error e.message
         else
           if job.method(queued).call.present?
             if job.method(report).call.present?
-              if params[:query]
-                json = job.method(report).call.by_query(params[:query]).default_order
-              else
-                json = job.method(report).call.default_order
-              end
+              data = job.method(report).call.search(params).default_order
             else
-              json = []
+              data = []
             end
           end
         end
       end
 
-      respond_with json
+      respond_with data do |format|
+        format.json {
+          render :json => data
+        }
+        format.gff {
+          render :text => data.respond_to?(:to_gff) ? data.to_gff : ""
+        }
+        format.txt {
+          render :text => data.respond_to?(:to_txt) ? data.to_txt : ""
+        }
+      end
     end
 
     #

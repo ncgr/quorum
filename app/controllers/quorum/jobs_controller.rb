@@ -50,40 +50,57 @@ module Quorum
     end
 
     #
-    # Returns Resque worker results.
+    # Returns Quorum's search results.
+    #
+    # This method should be used to gather Resque worker results, or user
+    # supplied query params.
     #
     def get_quorum_search_results
       empty = [{ :results => false }]
-      data  = empty
+      data  = []
 
-      if Quorum::BLAST_ALGORITHMS.include?(params[:algo])
-        queued = "#{params[:algo]}_job".to_sym
-        report = "#{params[:algo]}_job_reports".to_sym
+      # Allow for multiple algos and search params.
+      # Ex: /quorum/jobs/:id/get_quorum_search_results.json?algo=blastn,blastp
+      if params[:algo]
+        params[:algo].split(",").each do |a|
+          if Quorum::BLAST_ALGORITHMS.include?(a)
+            queued = "#{a}_job".to_sym
+            report = "#{a}_job_reports".to_sym
 
-        begin
-          job = Job.find(params[:id])
-        rescue ActiveRecord::RecordNotFound => e
-          logger.error e.message
-        else
-          if job.method(queued).call.present?
-            if job.method(report).call.present?
-              data = job.method(report).call.search(params).default_order
+            begin
+              job = Job.find(params[:id])
+            rescue ActiveRecord::RecordNotFound => e
+              logger.error e.message
             else
-              data = []
+              if job.method(queued).call.present?
+                if job.method(report).call.present?
+                  data << job.method(report).call.search(params).default_order
+                else
+                  data = []
+                end
+              else
+                data << empty
+              end
             end
           end
         end
+      else
+        data << empty
       end
 
+      # Flatten the array of arrays if necessary.
+      data.flatten!(1)
+
+      # Respond with :json, :txt (tab delimited Blast results), or GFF3.
       respond_with data do |format|
         format.json {
           render :json => data
         }
         format.gff {
-          render :text => data.respond_to?(:to_gff) ? data.to_gff : ""
+          render :text => to_gff(data)
         }
         format.txt {
-          render :text => data.respond_to?(:to_txt) ? data.to_txt : ""
+          render :text => to_txt(data)
         }
       end
     end

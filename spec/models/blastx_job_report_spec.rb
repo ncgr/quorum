@@ -7,13 +7,7 @@ describe Quorum::BlastxJobReport do
   end
 
   it "should respond to default_order" do
-    @blastx.methods.should include(:default_order)
     @blastx.respond_to?(:default_order).should be_true
-  end
-
-  it "should respond to to_txt and to_gff" do
-    @blastx.respond_to?(:to_txt).should be_true
-    @blastx.respond_to?(:to_gff).should be_true
   end
 
   before(:each) do
@@ -35,24 +29,19 @@ describe Quorum::BlastxJobReport do
   end
 
   it "should be searchable" do
-    p = { :algo_id => "1,2", :query => "test" }
+    p = { :blastx_id => "1,2", :query => "test" }
     @blastx.search(p).count.should eq(2)
 
-    p = { :algo_id => "2", :query => "test" }
+    p = { :blastx_id => "2", :query => "test" }
     @blastx.search(p).count.should eq(1)
 
-    p = { :algo_id => "1,2", :query => nil }
+    p = { :blastx_id => "1,2", :query => nil }
     @blastx.search(p).count.should eq(2)
 
-    p = { :algo_id => nil, :query => "test" }
+    p = { :blastx_id => nil, :query => "test" }
     @blastx.search(p).count.should eq(2)
 
     @blastx.search({}).count.should eq(2)
-  end
-
-  it "should be exportable as txt and gff" do
-    @blastx.to_txt.should match(/[a-zA-Z0-9\t\n]+/)
-    @blastx.to_gff.should match(/##gff-version 3\n\.*/)
   end
 
 end

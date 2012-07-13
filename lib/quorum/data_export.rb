@@ -4,7 +4,7 @@ module Quorum
     #
     # Convert search results to tab delimited output.
     #
-    def to_txt
+    def to_txt(data)
       txt = ""
       values = [
         "query",
@@ -19,7 +19,7 @@ module Quorum
         "bit_score"
       ]
 
-      all.each do |d|
+      data.each do |d|
         txt << d.attributes.values_at(*values).join("\t") << "\n"
       end
 
@@ -29,12 +29,12 @@ module Quorum
     #
     # Convert search results to GFF.
     #
-    def to_gff
+    def to_gff(data)
       txt    = "##gff-version 3\n"
       source = "."
       type   = "match"
       phase  = "."
-      all.each do |d|
+      data.each do |d|
         if d.results
           start, stop = d.hit_from, d.hit_to
 

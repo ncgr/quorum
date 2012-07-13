@@ -26,15 +26,15 @@ describe "Quorum::DataExport" do
 
   describe "#to_txt" do
     it "returns a tab delimited string of Blast results" do
-      @blastn.to_txt.match(/[\w\d\W\t\n]*/).should be_true
+      to_txt(@blastn.all).match(/[\w\d\W\t\n]*/).should be_true
     end
   end
 
   describe "#to_gff" do
     it "returns a gff string of Blast results" do
-      @blastn.to_gff.match(/##gff-version 3\n\.*/).should be_true
+      to_gff(@blastn.all).match(/##gff-version 3\n\.*/).should be_true
       # Strand should be +
-      @blastn.to_gff.include?("+").should be_true
+      to_gff(@blastn.all).include?("+").should be_true
     end
   end
 

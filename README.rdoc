@@ -1,4 +1,4 @@
-= Quorum {<img src="https://secure.travis-ci.org/ncgr/quorum.png?branch=master"alt="Build Status" />}[http://travis-ci.org/ncgr/quorum]
+= Quorum {<img src="https://secure.travis-ci.org/ncgr/quorum.png?branch=data_export"alt="Build Status" />}[http://travis-ci.org/ncgr/quorum]
 
 A flexible bioinformatics search tool.
 

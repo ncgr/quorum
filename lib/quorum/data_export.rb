@@ -54,8 +54,8 @@ module Quorum
             phase
           ]
 
-          txt << values.join("\t") << "\tTarget=#{d.hit_display_id} " <<
-            "#{d.query_from} #{d.query_to};Name=#{d.hit_display_id}\n"
+          txt << values.join("\t") << "\tTarget=#{d.query} " <<
+            "#{d.query_from} #{d.query_to};Name=#{d.query}\n"
         end
       end
       txt

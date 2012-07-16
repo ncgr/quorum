@@ -23,25 +23,29 @@ describe Quorum::BlastpJobReport do
         :hit_to => 1000,
         :evalue => "1e-100",
         :bit_score => 1000,
-        :results => true
+        :results => true,
+        :blastp_job_id => 1
       })
     end
   end
 
   it "should be searchable" do
-    p = { :blastp_id => "1,2", :query => "test" }
+    p = { :id => 1, :blastp_id => "1,2", :query => "test" }
     @blastp.search(p).count.should eq(2)
 
-    p = { :blastp_id => "2", :query => "test" }
+    p = { :id => 1, :blastp_id => "2", :query => "test" }
     @blastp.search(p).count.should eq(1)
 
-    p = { :blastp_id => "1,2", :query => nil }
+    p = { :id => 1, :blastp_id => "1,2", :query => nil }
     @blastp.search(p).count.should eq(2)
 
-    p = { :blastp_id => nil, :query => "test" }
+    p = { :id => 1, :blastp_id => nil, :query => "test" }
     @blastp.search(p).count.should eq(2)
 
-    @blastp.search({}).count.should eq(2)
+    p = { :id => 1 }
+    @blastp.search(p).count.should eq(2)
+
+    @blastp.search({}).count.should eq(0)
   end
 
 end

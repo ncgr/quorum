@@ -23,25 +23,29 @@ describe Quorum::BlastnJobReport do
         :hit_to => 1000,
         :evalue => "1e-100",
         :bit_score => 1000,
-        :results => true
+        :results => true,
+        :blastn_job_id => 1
       })
     end
   end
 
   it "should be searchable" do
-    p = { :blastn_id => "1,2", :query => "test" }
+    p = { :id => 1, :blastn_id => "1,2", :query => "test" }
     @blastn.search(p).count.should eq(2)
 
-    p = { :blastn_id => "2", :query => "test" }
+    p = { :id => 1, :blastn_id => "2", :query => "test" }
     @blastn.search(p).count.should eq(1)
 
-    p = { :blastn_id => "1,2", :query => nil }
+    p = { :id => 1, :blastn_id => "1,2", :query => nil }
     @blastn.search(p).count.should eq(2)
 
-    p = { :blastn_id => nil, :query => "test" }
+    p = { :id => 1, :blastn_id => nil, :query => "test" }
     @blastn.search(p).count.should eq(2)
 
-    @blastn.search({}).count.should eq(2)
+    p = { :id => 1 }
+    @blastn.search(p).count.should eq(2)
+
+    @blastn.search({}).count.should eq(0)
   end
 
 end

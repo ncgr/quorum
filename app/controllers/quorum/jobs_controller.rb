@@ -56,8 +56,9 @@ module Quorum
     # supplied query params.
     #
     def get_quorum_search_results
-      empty = [{ :results => false }]
-      data  = []
+      empty        = [{ :results => false }]
+      not_enqueued = { :enqueued => false }.merge(empty[0])
+      data         = []
 
       # Allow for multiple algos and search params.
       # Ex: /quorum/jobs/:id/get_quorum_search_results.json?algo=blastn,blastp
@@ -79,7 +80,7 @@ module Quorum
                   data = []
                 end
               else
-                data << empty
+                data << not_enqueued
               end
             end
           end

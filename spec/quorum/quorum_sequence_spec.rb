@@ -47,16 +47,44 @@ describe "Quorum::Sequence" do
   end
 
   describe "#discover_input_sequence_type" do
-    it "should return 'nucleic_acid' when fed nucleic acid sequences" do
+    it "should return 'nucleic_acid' when fed uppercase nucleic acid sequences" do
       sequence = File.open(
-        File.expand_path("../../data/nucl_seqs.txt", __FILE__)
+        File.expand_path("../../data/nucl_seqs_upper.txt", __FILE__)
       ).read
       discover_input_sequence_type(sequence).should eq("nucleic_acid")
     end
 
-    it "should return 'amino_acid' when fed amino acid sequences" do
+    it "should return 'nucleic_acid' when fed lowercase nucleic acid sequences" do
       sequence = File.open(
-        File.expand_path("../../data/prot_seqs.txt", __FILE__)
+        File.expand_path("../../data/nucl_seqs_lower.txt", __FILE__)
+      ).read
+      discover_input_sequence_type(sequence).should eq("nucleic_acid")
+    end
+
+    it "should return 'nucleic_acid' when fed mixed case nucleic acid sequences" do
+      sequence = File.open(
+        File.expand_path("../../data/nucl_seqs_mixed.txt", __FILE__)
+      ).read
+      discover_input_sequence_type(sequence).should eq("nucleic_acid")
+    end
+
+    it "should return 'amino_acid' when fed uppercase amino acid sequences" do
+      sequence = File.open(
+        File.expand_path("../../data/prot_seqs_upper.txt", __FILE__)
+      ).read
+      discover_input_sequence_type(sequence).should eq("amino_acid")
+    end
+
+    it "should return 'amino_acid' when fed lowercase amino acid sequences" do
+      sequence = File.open(
+        File.expand_path("../../data/prot_seqs_lower.txt", __FILE__)
+      ).read
+      discover_input_sequence_type(sequence).should eq("amino_acid")
+    end
+
+    it "should return 'amino_acid' when fed mixed case amino acid sequences" do
+      sequence = File.open(
+        File.expand_path("../../data/prot_seqs_mixed.txt", __FILE__)
       ).read
       discover_input_sequence_type(sequence).should eq("amino_acid")
     end

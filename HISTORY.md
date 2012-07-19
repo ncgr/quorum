@@ -1,4 +1,9 @@
-## 0.3.2 (2012-06--22)
+## 0.3.3 (2012-07-19)
+
+* Fixed discover input sequence type bug. Upper and lowercase
+  input sequences are typed correctly.
+
+## 0.3.2 (2012-06-22)
 
 * Added support for user defined callback in QUORUM.pollResults().
   Useful if user chooses to define their own view template(s).

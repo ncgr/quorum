@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    quorum (0.3.2)
+    quorum (0.3.3)
       bio-blastxmlparser (~> 1.0.1)
       jquery-rails
       net-ssh (~> 2.3.0)

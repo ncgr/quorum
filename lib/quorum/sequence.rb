@@ -58,25 +58,26 @@ module Quorum
       # Remove the sequence FASTA header.
       seq = sequence.slice(start..-1).gsub!(/\n/, '')
 
-      if seq =~ /[EQILFP]+/
+      if seq =~ /[EQILFPeqilfp]+/
         type = "amino_acid"
       else
         # Length of the sequence minus the FASTA header.
         len = seq.length.to_f
 
         na_percent = 15.0
+        counts     = []
 
-        a = (seq.count("A").to_f / len) * 100
-        t = (seq.count("T").to_f / len) * 100
-        u = (seq.count("U").to_f / len) * 100
+        counts << (seq.count("Aa").to_f / len) * 100
+        counts << (seq.count("Tt").to_f / len) * 100
+        counts << (seq.count("Uu").to_f / len) * 100
 
-        g = (seq.count("G").to_f / len) * 100
-        c = (seq.count("C").to_f / len) * 100
+        counts << (seq.count("Gg").to_f / len) * 100
+        counts << (seq.count("Cc").to_f / len) * 100
 
-        n = (seq.count("N").to_f / len) * 100
+        counts << (seq.count("Nn").to_f / len) * 100
 
-        if (a >= na_percent) || (t >= na_percent) || (u >= na_percent) ||
-          (g >= na_percent) || (c >= na_percent) || (n >= na_percent)
+        counts.reject! { |c| c < na_percent }
+        if (!counts.empty?)
           type = "nucleic_acid"
         else
           type = "amino_acid"

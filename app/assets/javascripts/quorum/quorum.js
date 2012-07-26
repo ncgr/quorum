@@ -90,8 +90,10 @@ QUORUM.viewDetailedReport = function(id, focus_id, query, algo) {
       // Insert the detailed report data.
       $('#detailed_report_dialog').empty().html(temp);
 
-      // Add tipsy to the sequence data.
-      $('a[rel=quorum-tipsy]').tipsy({ gravity: 's' });
+      // Add tipsy to sequence data on mouse enter.
+      $('#detailed_report_dialog .sequence').mouseenter(function() {
+        $(this).find('a[rel=quorum-tipsy]').tipsy({ gravity: 's' });
+      });
 
       // Highlight the selected id.
       $('#' + focus_id).addClass("ui-state-highlight");
@@ -115,7 +117,8 @@ QUORUM.addBaseTitleIndex = function(bases, from, to, algo, type) {
   var self = this,
       forward = true,
       value = 1,
-      index = from;
+      index = from,
+      str;
 
   if (from > to) {
     forward = false;
@@ -129,7 +132,7 @@ QUORUM.addBaseTitleIndex = function(bases, from, to, algo, type) {
 
   // Add tipsy to each base.
   return _.map(bases.split(''), function(c) {
-    var str = "<a rel='quorum-tipsy' title=" + index + ">" + c + "</a>";
+    str = "<a rel='quorum-tipsy' title=" + index + ">" + c + "</a>";
     forward ? index += value : index -= value;
     return str;
   }).join('');
@@ -180,7 +183,7 @@ QUORUM.formatSequenceReport = function(qseq, midline, hseq, q_from, q_to, h_from
     }
   }
   return "<p class='small'>Alignment (Mouse over for positions):</p>" +
-    "<span class='small'><pre>" + seq + "</pre></span>";
+    "<span class='small sequence'><pre>" + seq + "</pre></span>";
 
 };
 

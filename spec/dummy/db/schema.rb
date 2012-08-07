@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120119000561) do
+ActiveRecord::Schema.define(:version => 20120807211452) do
 
   create_table "quorum_blastn_job_reports", :force => true do |t|
     t.string   "query"
@@ -39,9 +39,10 @@ ActiveRecord::Schema.define(:version => 20120119000561) do
     t.text     "midline"
     t.boolean  "results"
     t.integer  "blastn_job_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.string   "hit_display_id"
+    t.integer  "gaps"
   end
 
   create_table "quorum_blastn_jobs", :force => true do |t|
@@ -55,8 +56,8 @@ ActiveRecord::Schema.define(:version => 20120119000561) do
     t.text     "blast_dbs"
     t.boolean  "queue"
     t.integer  "job_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
   end
 
   create_table "quorum_blastp_job_reports", :force => true do |t|
@@ -85,9 +86,10 @@ ActiveRecord::Schema.define(:version => 20120119000561) do
     t.text     "midline"
     t.boolean  "results"
     t.integer  "blastp_job_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.string   "hit_display_id"
+    t.integer  "gaps"
   end
 
   create_table "quorum_blastp_jobs", :force => true do |t|
@@ -101,8 +103,8 @@ ActiveRecord::Schema.define(:version => 20120119000561) do
     t.text     "blast_dbs"
     t.boolean  "queue"
     t.integer  "job_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
   end
 
   create_table "quorum_blastx_job_reports", :force => true do |t|
@@ -131,9 +133,10 @@ ActiveRecord::Schema.define(:version => 20120119000561) do
     t.text     "midline"
     t.boolean  "results"
     t.integer  "blastx_job_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.string   "hit_display_id"
+    t.integer  "gaps"
   end
 
   create_table "quorum_blastx_jobs", :force => true do |t|
@@ -147,8 +150,8 @@ ActiveRecord::Schema.define(:version => 20120119000561) do
     t.text     "blast_dbs"
     t.boolean  "queue"
     t.integer  "job_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
   end
 
   create_table "quorum_jobs", :force => true do |t|
@@ -156,8 +159,8 @@ ActiveRecord::Schema.define(:version => 20120119000561) do
     t.text     "na_sequence"
     t.text     "aa_sequence"
     t.string   "sequence_hash"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "quorum_tblastn_job_reports", :force => true do |t|
@@ -186,9 +189,10 @@ ActiveRecord::Schema.define(:version => 20120119000561) do
     t.text     "midline"
     t.boolean  "results"
     t.integer  "tblastn_job_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.string   "hit_display_id"
+    t.integer  "gaps"
   end
 
   create_table "quorum_tblastn_jobs", :force => true do |t|
@@ -202,8 +206,8 @@ ActiveRecord::Schema.define(:version => 20120119000561) do
     t.text     "blast_dbs"
     t.boolean  "queue"
     t.integer  "job_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
   end
 
 end

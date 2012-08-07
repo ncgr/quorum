@@ -69,7 +69,7 @@ describe "Quorum::SearchTools::Blast" do
       blast = Quorum::SearchTools::Blast.new(@args)
       expect {
         blast.execute_blast
-      }.to raise_error(SystemExit)
+      }.to_not raise_error
 
       Dir.glob(
         File.join(@args[:tmp_directory], "*")
@@ -86,7 +86,7 @@ describe "Quorum::SearchTools::Blast" do
       blast = Quorum::SearchTools::Blast.new(@args)
       expect {
         blast.execute_blast
-      }.to raise_error(SystemExit)
+      }.to_not raise_error
 
       Dir.glob(
         File.join(@args[:tmp_directory], "*")

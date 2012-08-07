@@ -292,6 +292,7 @@ module Quorum
                 @data[:hit_frame]   = hsp.hit_frame
                 @data[:identity]    = hsp.identity
                 @data[:positive]    = hsp.positive
+                @data[:gaps]        = hsp.gaps
                 @data[:align_len]   = hsp.align_len
                 @data[:qseq]        = hsp.qseq
                 @data[:hseq]        = hsp.hseq

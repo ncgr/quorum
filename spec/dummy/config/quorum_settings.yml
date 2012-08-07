@@ -2,7 +2,7 @@
 #
 # ==> General
 # Quorum initializer safely substitutes %{RAILS_ROOT} with ::Rails.root.to_s.
-# 
+#
 # ==> NCBI BLAST+ Settings
 # blast:
 #   remote: true to execute script on remote machine via
@@ -77,17 +77,13 @@ development:
     tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
     blast_db: "%{RAILS_ROOT}/quorum/blastdb"
     blastn:
-      "camptotheca_acuminata-20101112": camptotheca_acuminata-20101112
-      "colchicum_autumnale-20101112": colchicum_autumnale-20101112
+      "tmp": test
     blastx:
-      "camptotheca_acuminata-20101112": camptotheca_acuminata-20101112
-      "colchicum_autumnale-20101112": colchicum_autumnale-20101112
+      "tmp": test
     tblastn:
-      "camptotheca_acuminata-20101112": camptotheca_acuminata-20101112
-      "colchicum_autumnale-20101112": colchicum_autumnale-20101112
+      "tmp": test
     blastp:
-      "camptotheca_acuminata-20101112": camptotheca_acuminata-20101112
-      "colchicum_autumnale-20101112": colchicum_autumnale-20101112
+      "tmp": test
     blast_threads: 4
 
 test:

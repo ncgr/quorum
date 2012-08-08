@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "net-ssh", "~> 2.3.0"
   s.add_dependency "resque", "~> 1.19.0"
   s.add_dependency "resque-result", "~> 1.0.1"
-  #s.add_dependency "bio-blastxmlparser", "~> 1.0.1"
+  s.add_dependency "bio-blastxmlparser", "~> 1.1.0"
 
   s.add_development_dependency "mysql2", "~> 0.3.11"
   s.add_development_dependency "rspec-rails", "~> 2.6"

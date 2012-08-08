@@ -1,16 +1,8 @@
-GIT
-  remote: git://github.com/ncgr/blastxmlparser.git
-  revision: a3bfbe9ea9fd2b733b61b68cbbffe916687ed771
-  branch: hsp_gaps
-  specs:
-    bio-blastxmlparser (1.0.1)
-      bio-logger (>= 1.0.0)
-      nokogiri (>= 1.5.0)
-
 PATH
   remote: .
   specs:
     quorum (0.3.3)
+      bio-blastxmlparser (~> 1.1.0)
       jquery-rails
       net-ssh (~> 2.3.0)
       rails (~> 3.1)
@@ -49,6 +41,9 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.2)
     arel (3.0.2)
+    bio-blastxmlparser (1.1.0)
+      bio-logger (>= 1.0.0)
+      nokogiri (>= 1.5.0)
     bio-logger (1.0.1)
       log4r (>= 1.1.9)
     builder (3.0.0)
@@ -181,7 +176,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bio-blastxmlparser!
   capybara (~> 1.1)
   database_cleaner (~> 0.6)
   factory_girl_rails (~> 1.2)

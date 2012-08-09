@@ -46,6 +46,8 @@ ActiveRecord::Schema.define(:version => 20120809163112) do
     t.float    "pct_identity"
   end
 
+  end
+
   create_table "quorum_blastn_jobs", :force => true do |t|
     t.string   "expectation"
     t.integer  "max_score"

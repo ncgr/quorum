@@ -10,7 +10,7 @@ settings = YAML.load_file(
 
 ## Sub %{RAILS_ROOT} ##
 settings.keys.each do |k|
-  settings[k.to_s].each_value do |v| 
+  settings[k.to_s].each_value do |v|
     if v.kind_of?(String)
       v.to_s.gsub!('%{RAILS_ROOT}', ::Rails.root.to_s)
     end

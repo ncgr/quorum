@@ -13,6 +13,7 @@ describe "Quorum::DataExport" do
         :hit_display_id => "foo",
         :identity => 0,
         :align_len => 0,
+        :pct_identity => 100.0,
         :query_from => 10,
         :query_to => 100,
         :hit_from => 900,

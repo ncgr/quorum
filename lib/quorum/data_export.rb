@@ -16,7 +16,8 @@ module Quorum
         "hit_from",
         "hit_to",
         "evalue",
-        "bit_score"
+        "bit_score",
+        "pct_identity"
       ]
 
       data.each do |d|
@@ -30,12 +31,18 @@ module Quorum
     # Convert search results to GFF.
     #
     def to_gff(data)
-      txt    = "##gff-version 3\n"
+      pragma = "##gff-version 3\n"
       source = "."
       type   = "match"
       phase  = "."
+      txt    = ""
       data.each do |d|
         if d.results
+          # Add sequence-region.
+          unless pragma.include?(d.hit_display_id)
+            pragma << "##sequence-region #{d.hit_display_id} 1 #{d.hit_len}\n"
+          end
+
           start, stop = d.hit_from, d.hit_to
 
           # Set the strand based on the original start, stop.
@@ -55,10 +62,12 @@ module Quorum
           ]
 
           txt << values.join("\t") << "\tTarget=#{d.query} " <<
-            "#{d.query_from} #{d.query_to};Name=#{d.query}\n"
+            "#{d.query_from} #{d.query_to};Name=#{d.query};" <<
+            "identity=#{d.pct_identity};rawscore=#{d.score};" <<
+            "significance=#{d.evalue}\n"
         end
       end
-      txt
+      txt.insert(0, pragma)
     end
 
     #

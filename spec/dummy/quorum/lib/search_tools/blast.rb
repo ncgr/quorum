@@ -297,15 +297,29 @@ module Quorum
                 @data[:hseq]        = hsp.hseq
                 @data[:midline]     = hsp.midline
 
+                # Calculate percent identity
+                @data[:pct_identity] = (
+                  @data[:identity].to_f / @data[:align_len].to_f
+                ) * 100
+
                 # Hsps are only reported if a query hit against the Blast db.
                 # Only save the @data if bit_score exists.
                 if @data[:bit_score] &&
                   (@data[:bit_score].to_i > @min_score.to_i)
+
                   @data[:results] = true
-                  @data["#{@algorithm}_job_id".to_sym] = @job.method(@job_association).call.job_id
+
+                  @data["#{@algorithm}_job_id".to_sym] = @job.method(
+                    @job_association
+                  ).call.job_id
+
                   saved = true
+
                   # Build a new report for each Hsp.
-                  job_report = @job.method(@job_report_association).call.build(@data)
+                  job_report = @job.method(
+                    @job_report_association
+                  ).call.build(@data)
+
                   unless job_report.save!
                     @logger.log(
                       "ActiveRecord",
@@ -315,7 +329,6 @@ module Quorum
                     )
                   end
                 end
-
               end
             end
           end

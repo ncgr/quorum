@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     quorum (0.3.3)
-      bio-blastxmlparser (~> 1.0.1)
+      bio-blastxmlparser (~> 1.1.0)
       jquery-rails
       net-ssh (~> 2.3.0)
       rails (~> 3.1)
@@ -41,7 +41,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.2)
     arel (3.0.2)
-    bio-blastxmlparser (1.0.1)
+    bio-blastxmlparser (1.1.0)
       bio-logger (>= 1.0.0)
       nokogiri (>= 1.5.0)
     bio-logger (1.0.1)

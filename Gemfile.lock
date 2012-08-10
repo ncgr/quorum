@@ -181,6 +181,7 @@ PLATFORMS
 DEPENDENCIES
   capybara (~> 1.1)
   database_cleaner (~> 0.8)
+  debugger
   jasmine (~> 1.2)
   mysql2 (~> 0.3.11)
   quorum!

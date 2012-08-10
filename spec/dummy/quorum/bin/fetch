@@ -37,7 +37,7 @@ Options:
           :required => true, :short => "-l"
         opt :tmp_directory, "Path to tmp directory", :type => :string,
           :required => true, :short => "-m"
-        
+
         # Global settings
         opt :fetch_database, "Path to fetch tool database", :type => :string,
           :short => "-d"
@@ -46,7 +46,7 @@ Options:
 
         # Algorithm specific opts
         opt :blast_hit_id, "Blast hit id", :type => :string, :short => "-b"
-        opt :blast_hit_display_id, "Blast hit display id", :type => :string, 
+        opt :blast_hit_display_id, "Blast hit display id", :type => :string,
           :short => "-s"
         opt :blast_algo, "Blast algorithm", :type => :string, :short => "-a"
       end
@@ -110,6 +110,6 @@ Options:
 end
 
 if __FILE__ == $0
-  Quorum::Fetch.new  
+  Quorum::Fetch.new
 end
 

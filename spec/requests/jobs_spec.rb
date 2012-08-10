@@ -110,10 +110,20 @@ describe "Jobs" do
         page.should have_content("Search Results")
 
         click_link "Blastx"
-        page.should have_content("Your search returned 0 hits.")
+
+        # Render modal box.
+        find("#blastx-results").find("td a").click
+        page.should have_content("Quorum Report Details")
+        page.should have_content("qseq")
+        page.should have_content("hseq")
 
         click_link "Tblastn"
-        page.should have_content("Your search returned 0 hits.")
+
+        # Render modal box.
+        find("#tblastn-results").find("td a").click
+        page.should have_content("Quorum Report Details")
+        page.should have_content("qseq")
+        page.should have_content("hseq")
 
         ## Interact with the Blast results. ##
         click_link "Blastn"
@@ -125,7 +135,7 @@ describe "Jobs" do
         page.should have_content("hseq")
 
         # Download sequence
-        find("p.small a#download_sequence_1").click
+        find("p.small a#download_sequence_2").click
         page.should have_content("Fetching sequence...")
         page.should have_content("Sequence Downloaded Successfully")
 

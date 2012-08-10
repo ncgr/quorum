@@ -23,9 +23,9 @@ Gem::Specification.new do |s|
   s.add_dependency "bio-blastxmlparser", "~> 1.1.0"
 
   s.add_development_dependency "mysql2", "~> 0.3.11"
-  s.add_development_dependency "rspec-rails", "~> 2.6"
-  s.add_development_dependency "resque_spec", "~> 0.8"
+  s.add_development_dependency "rspec-rails", "~> 2.11"
+  s.add_development_dependency "resque_spec", "~> 0.12"
   s.add_development_dependency "capybara", "~> 1.1"
-  s.add_development_dependency "database_cleaner", "~> 0.6"
-  s.add_development_dependency "jasmine", "~> 1.1"
+  s.add_development_dependency "database_cleaner", "~> 0.8"
+  s.add_development_dependency "jasmine", "~> 1.2"
 end

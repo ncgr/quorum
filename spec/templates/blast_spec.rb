@@ -2,7 +2,7 @@ require 'spec_helper'
 require File.expand_path("../../dummy/quorum/lib/search_tools/blast", __FILE__)
 
 describe "Quorum::SearchTools::Blast" do
-  describe "#execute_blast" do
+  describe "#execute_blast non empty report" do
     before(:each) do
       # Set args as though we executed bin/search.
       @args = {
@@ -108,6 +108,56 @@ describe "Quorum::SearchTools::Blast" do
       Dir.glob(
         File.join(@args[:tmp_directory], "*")
       ).length.should be == 0
+    end
+  end
+
+  describe "#execute_blast empty report" do
+    before(:each) do
+      # Set args as though we executed bin/search.
+      @args = {
+        :search_tool     => "blastn",
+        :id              => nil,
+        :log_directory   => File.expand_path(
+          "../../dummy/quorum/log", __FILE__
+        ),
+        :tmp_directory   => File.expand_path(
+          "../../dummy/quorum/tmp", __FILE__
+        ),
+        :search_database => File.expand_path(
+          "../../dummy/quorum/blastdb", __FILE__
+        ),
+        :threads         => 1
+      }
+
+      @job = Quorum::Job.new()
+
+      @job.sequence = File.open(
+        File.expand_path("../../data/fake_seq.txt", __FILE__)
+      ).read
+
+      @job.build_blastn_job
+      @job.blastn_job.queue     = true
+      @job.blastn_job.blast_dbs = ["test"]
+    end
+
+    it "executes blastn on a given dataset and returns an empty report" do
+      @job.stub(:queue_workers)
+      @job.save!
+
+      @args[:id] = @job.id
+
+      blast = Quorum::SearchTools::Blast.new(@args)
+      expect {
+        blast.execute_blast
+      }.to raise_error
+
+      Dir.glob(
+        File.join(@args[:tmp_directory], "*")
+      ).length.should be == 0
+
+      log_file = File.join(@args[:log_directory], "quorum.log")
+
+      `tail -n 3 #{log_file}`.to_s.include?("blastn report empty").should be_true
     end
 
   end

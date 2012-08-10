@@ -126,6 +126,9 @@ module Quorum
         Digest::MD5.hexdigest(sequence).to_s + "-" + Time.now.to_f.to_s
       end
 
+      #
+      # Blastn command
+      #
       def generate_blastn_cmd
         blastn = "blastn " <<
         "-db \"#{@db}\" " <<
@@ -145,6 +148,9 @@ module Quorum
         blastn
       end
 
+      #
+      # Blastx command
+      #
       def generate_blastx_cmd
         blastx = "blastx " <<
         "-db \"#{@db}\" " <<
@@ -164,6 +170,9 @@ module Quorum
         blastx
       end
 
+      #
+      # Tblastn command
+      #
       def generate_tblastn_cmd
         tblastn = "tblastn " <<
         "-db \"#{@db}\" " <<
@@ -185,6 +194,9 @@ module Quorum
         tblastn
       end
 
+      #
+      # Blastp command
+      #
       def generate_blastp_cmd
         blastp = "blastp " <<
         "-db \"#{@db}\" " <<
@@ -256,12 +268,65 @@ module Quorum
       end
 
       #
-      # Parse and save Blast results using bio-blastxmlparser.
-      # Only save Blast results if results.bit_score > @min_score.
+      # Save Blast Job Report
+      #
+      # Hsps are only reported if a query hit against the Blast db.
+      # Only save the @data if bit_score exists and it's > the user
+      # defined minimum score.
+      #
+      # Set the attribute results to true for downstream processes.
+      #
+      def save_hsp_results
+        if @data[:bit_score] && (@data[:bit_score].to_i > @min_score.to_i)
+          @data[:results] = true
+          @data["#{@algorithm}_job_id".to_sym] = @job.method(@job_association).call.job_id
+
+          job_report = @job.method(@job_report_association).call.build(@data)
+
+          unless job_report.save!
+            @logger.log(
+              "ActiveRecord",
+              "Unable to save #{@algorithm} results to database.",
+              1,
+              @tmp_files
+            )
+          end
+        end
+      end
+
+      #
+      # Save empty Blast Job Report
+      #
+      # Set the attribute results to false for downstream processes.
+      #
+      def save_empty_results
+        job_report = @job.method(@job_report_association).call.build(
+          "#{@algorithm}_job_id" => @job.method(@job_association).call.job_id,
+          "results"              => false
+        )
+        unless job_report.save!
+          @logger.log(
+            "ActiveRecord",
+            "Unable to save #{@algorithm} results to database.",
+            1,
+            @tmp_files
+          )
+        end
+        @logger.log(
+          "NCBI Blast",
+          "#{@algorithm} report empty.",
+          0,
+          @tmp_files
+        )
+      end
+
+      #
+      # Parse and save Blast results.
+      #
+      # Parse the Blast XML output and save results.
       #
       def parse_and_save_results
-        # Helper to avoid having to perform a query.
-        saved = false
+        @results = false # Did the xml contain results?
 
         if File.size(@out) > 0
           report = Bio::Blast::XmlIterator.new(@out)
@@ -303,59 +368,17 @@ module Quorum
                   @data[:identity].to_f / @data[:align_len].to_f
                 ) * 100
 
-                # Hsps are only reported if a query hit against the Blast db.
-                # Only save the @data if bit_score exists.
                 if @data[:bit_score] &&
                   (@data[:bit_score].to_i > @min_score.to_i)
-
-                  @data[:results] = true
-
-                  @data["#{@algorithm}_job_id".to_sym] = @job.method(
-                    @job_association
-                  ).call.job_id
-
-                  saved = true
-
-                  # Build a new report for each Hsp.
-                  job_report = @job.method(
-                    @job_report_association
-                  ).call.build(@data)
-
-                  unless job_report.save!
-                    @logger.log(
-                      "ActiveRecord",
-                      "Unable to save #{@algorithm} results to database.",
-                      1,
-                      @tmp_files
-                    )
-                  end
+                  @results = true
+                  save_hsp_results
                 end
               end
             end
           end
         end
 
-        # Save the record and set results to false.
-        unless saved
-          job_report = @job.method(@job_report_association).call.build(
-            "#{@algorithm}_job_id" => @job.method(@job_association).call.job_id,
-            "results"              => false
-          )
-          unless job_report.save!
-            @logger.log(
-              "ActiveRecord",
-              "Unable to save #{@algorithm} results to database.",
-              1,
-              @tmp_files
-            )
-          end
-          @logger.log(
-            "NCBI Blast",
-            "#{@algorithm} report empty.",
-            0,
-            @tmp_files
-          )
-        end
+        save_empty_results unless @results
       end
 
       #
@@ -402,6 +425,9 @@ module Quorum
         end
       end
 
+      #
+      # Remove tmp files.
+      #
       def remove_tmp_files
         `rm #{@tmp_files}` if @tmp_files
       end

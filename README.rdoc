@@ -399,7 +399,7 @@ https://github.com/ncgr/quorum/issues
 === Contributors
 
 * John Crow (https://github.com/crowja)
-* Andrew Farmer
+* Andrew Farmer (https://github.com/adf-ncgr)
 
 == License
 

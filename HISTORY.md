@@ -1,3 +1,14 @@
+## 0.4.0 (2012-08-10)
+
+* Added Hsp gaps to Blast Job Reports.
+  To add gaps: `rake quorum:install:migrations` `rake db:migrate`
+* Upgraded bio-blastxmlparser to v1.1.0.
+  See https://github.com/pjotrp/blastxmlparser/pull/1
+* Fixed JavaScript RangeError: Max call stack size exceeded bug in views.
+  Bug was present in large datasets.
+* General refactoring.
+* Updated dependencies.
+
 ## 0.3.3 (2012-07-19)
 
 * Fixed discover input sequence type bug. Upper and lowercase

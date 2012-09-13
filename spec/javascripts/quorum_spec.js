@@ -23,21 +23,20 @@ describe("QUORUM", function() {
   // anonymous function buildTemplate().
   //
   it("fetches JSON and calls user defined callback function", function() {
-    spyOn($, 'getJSON');
+    spyOn($, 'ajax');
     spyOn(window, 'setTimeout');
-    var id = 1,
-        callback = jasmine.createSpy(),
+    var callback = jasmine.createSpy(),
         data = 'foo';
 
-    QUORUM.pollResults(id, callback, null, 5000, ['a']);
+    QUORUM.pollResults(callback, null, 5000, ['a']);
 
     // setTimeout()
-    $.getJSON.mostRecentCall.args[1]('');
+    $.ajax.mostRecentCall.args[1]('');
     expect(window.setTimeout).toHaveBeenCalled();
 
     // callback()
-    $.getJSON.mostRecentCall.args[1](data);
-    expect(callback).toHaveBeenCalledWith(id, data, 'a');
+    $.ajax.mostRecentCall.args[1](data);
+    expect(callback).toHaveBeenCalledWith(data, 'a');
   });
 
   //
@@ -48,20 +47,19 @@ describe("QUORUM", function() {
   it("renders modal box containing detailed report", function() {
     loadFixtures('quorum_tabs.html');
 
-    spyOn($, 'getJSON');
+    spyOn($, 'ajax');
     spyOn(QUORUM, 'autoScroll');
-    var id = 1,
-        focus_id = 1,
+    var focus_id = 1,
         query = 'foo',
         algo = 'a',
         data = 'bar';
 
-    QUORUM.viewDetailedReport(id, focus_id, query, algo);
+    QUORUM.viewDetailedReport(focus_id, query, algo);
 
     expect($("#detailed_report_dialog")).toBeVisible();
 
     // Fetch JSON to build the template and scroll to focus_id.
-    $.getJSON.mostRecentCall.args[1](data);
+    $.ajax.mostRecentCall.args[1](data);
     expect(QUORUM.autoScroll).toHaveBeenCalledWith(focus_id, false);
 
     // Close the dialog box.
@@ -214,20 +212,19 @@ describe("QUORUM", function() {
   it("sends request to server to extract Blast hit sequence", function() {
     loadFixtures("quorum_tabs.html");
 
-    spyOn($, 'getJSON');
+    spyOn($, 'ajax');
     spyOn(QUORUM, 'getSequenceFile');
-    var id = 1,
-        algo_id = 1,
+    var algo_id = 1,
         algo = 'a',
         el = $("#download_sequence"),
         data = [{meta_id:"foo"}];
 
-    QUORUM.downloadSequence(id, algo_id, algo, el);
+    QUORUM.downloadSequence(algo_id, algo, el);
 
     expect(el.html()).toEqual('Fetching sequence...');
 
-    $.getJSON.mostRecentCall.args[1](data);
-    expect(QUORUM.getSequenceFile).toHaveBeenCalledWith(id, data[0].meta_id, el);
+    $.ajax.mostRecentCall.args[1](data);
+    expect(QUORUM.getSequenceFile).toHaveBeenCalledWith(data[0].meta_id, el);
   });
 
   //
@@ -239,18 +236,17 @@ describe("QUORUM", function() {
   it("polls server to extract Blast hit sequence, once found, force browser to download via iframe", function() {
     loadFixtures("quorum_tabs.html");
 
-    spyOn($, 'get');
+    spyOn($, 'ajax');
     spyOn(window, 'setTimeout');
-    var id = 1,
-        meta_id = 'foo',
+    var meta_id = 'foo',
         el = $("#download_sequence"),
         data = 'bar',
         error = 'error';
 
-    QUORUM.getSequenceFile(id, meta_id, el);
+    QUORUM.getSequenceFile(meta_id, el);
 
     // setTimeout()
-    $.get.mostRecentCall.args[1]('');
+    $.ajax.mostRecentCall.args[1]('');
     expect(window.setTimeout).toHaveBeenCalled();
 
     // Print error message
@@ -258,7 +254,7 @@ describe("QUORUM", function() {
     expect(el.html()).toEqual(error);
 
     // Force browser to download file.
-    $.get.mostRecentCall.args[1](data);
+    $.ajax.mostRecentCall.args[1](data);
     expect(el.html()).toEqual('Sequence Downloaded Successfully');
     expect($('iframe.quorum_sequence_download')).toBeDefined();
     $('.quorum_sequence_download').remove();

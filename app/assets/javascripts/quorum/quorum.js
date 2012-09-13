@@ -13,13 +13,16 @@ QUORUM.algorithms = ["blastn", "blastx", "tblastn", "blastp"];
 // Poll search results asynchronously.
 //
 // Allow user to define callback / callback_obj. If callback is
-// undefined, render buildTemplate.
+// undefined, render default view.
 //
-QUORUM.pollResults = function(id, callback, callback_obj, interval, algos) {
+QUORUM.pollResults = function(callback, callback_obj, interval, algos) {
 
   var self = this,
-    interval = interval || 5000,
-    algos = algos || self.algorithms;
+      url = document.URL + '/get_quorum_search_results.json',
+      interval = interval || 5000,
+      algos = algos || self.algorithms,
+      error = false,
+      timeoutIds = {};
 
   // Render default view.
   function buildTemplate(data, a) {
@@ -33,24 +36,56 @@ QUORUM.pollResults = function(id, callback, callback_obj, interval, algos) {
     $('#' + a + '-results').html(temp);
   }
 
-  _.each(algos, function(a) {
-    $.getJSON(
-      '/quorum/jobs/' + id + '/get_quorum_search_results.json?algo=' + a,
-      function(data) {
-        if (data.length === 0) {
-          // Continue to check until results are returned.
-          setTimeout(function() {
-            self.pollResults(id, callback, callback_obj, interval, [a]);
-          }, interval);
-        } else {
-          if (typeof callback === "function") {
-            callback.call(callback_obj, id, data, a);
-          } else {
-            buildTemplate(data, a);
-          }
-        }
+  // Process returned data from ajax call. If data is present, render,
+  // otherwise call function via setTimeout().
+  function processData(data, a) {
+    if (data.length === 0) {
+      timeoutIds[a] = setTimeout(function() {
+        getData(a);
+      }, interval);
+    } else {
+      clearTimeout(timeoutIds[a]);
+      if (_.isFunction(callback)) {
+        callback.call(callback_obj, data, a);
+      } else {
+        buildTemplate(data, a);
       }
-    );
+    }
+  }
+
+  // Render jqXHR error message.
+  function renderError(jqXHR) {
+    var msg = "<div class='ui-state-error ui-corner-all' " +
+      "style='padding: 0 .7em;'><p class='text'>" +
+      "<span class='ui-icon ui-icon-alert' style='float: left; " +
+      "margin-right: .3em;';></span>Something went wrong. " +
+      "Error: " + jqXHR.status + " " + jqXHR.statusText + "</p></div>";
+    if (error === false) {
+      $('#show').append(msg);
+      error = true;
+    }
+  }
+
+  // Get Quorum results.
+  function getData(a) {
+    $.ajax({
+      url: url,
+      type: 'get',
+      dataType: 'json',
+      data: { 'algo': a },
+      cache: false,
+      timeout: 10000,
+      success: function(data) {
+        processData(data, a);
+      },
+      error: function(jqXHR) {
+        renderError(jqXHR);
+      }
+    });
+  }
+
+  _.each(algos, function(a) {
+    getData(a);
   });
 
 };
@@ -60,9 +95,10 @@ QUORUM.pollResults = function(id, callback, callback_obj, interval, algos) {
 // to the same query. After the modal box is inserted into the DOM,
 // automatically scroll to the highlighted hit.
 //
-QUORUM.viewDetailedReport = function(id, focus_id, query, algo) {
+QUORUM.viewDetailedReport = function(focus_id, query, algo) {
 
-  var self = this;
+  var self = this,
+      url = document.URL + '/get_quorum_search_results.json';
 
   // Create the modal box.
   $('#detailed_report_dialog').html(
@@ -75,33 +111,35 @@ QUORUM.viewDetailedReport = function(id, focus_id, query, algo) {
     position: 'top'
   });
 
-  $.getJSON(
-    '/quorum/jobs/' + id + '/get_quorum_search_results.json?algo=' + algo +
-    '&query=' + query,
-    function(data) {
-      var temp = _.template(
-        $('#detailed_report_template').html(), {
-          data:  data,
-          query: query,
-          algo:  algo
-        }
-      );
+  $.ajax({
+    url: url,
+    type: 'get',
+    dataType: 'json',
+    data: { 'algo': algo, 'query': query },
+    timeout: 10000
+  }).done(function(data) {
+    var temp = _.template(
+      $('#detailed_report_template').html(), {
+        data:  data,
+        query: query,
+        algo:  algo
+      }
+    );
 
-      // Insert the detailed report data.
-      $('#detailed_report_dialog').empty().html(temp);
+    // Insert the detailed report data.
+    $('#detailed_report_dialog').empty().html(temp);
 
-      // Add tipsy to sequence data on mouse enter.
-      $('#detailed_report_dialog .sequence').mouseenter(function() {
-        $(this).find('a[rel=quorum-tipsy]').tipsy({ gravity: 's' });
-      });
+    // Add tipsy to sequence data on mouse enter.
+    $('#detailed_report_dialog .sequence').mouseenter(function() {
+      $(this).find('a[rel=quorum-tipsy]').tipsy({ gravity: 's' });
+    });
 
-      // Highlight the selected id.
-      $('#' + focus_id).addClass("ui-state-highlight");
+    // Highlight the selected id.
+    $('#' + focus_id).addClass("ui-state-highlight");
 
-      // Automatically scroll to the selected id.
-      self.autoScroll(focus_id, false);
-    }
-  );
+    // Automatically scroll to the selected id.
+    self.autoScroll(focus_id, false);
+  });
 
 };
 
@@ -273,51 +311,55 @@ QUORUM.displayHspLinks = function(focus, group, data) {
 //
 // Download Blast hit sequence.
 //
-QUORUM.downloadSequence = function(id, algo_id, algo, el) {
+QUORUM.downloadSequence = function(algo_id, algo, el) {
 
-  var self = this;
+  var self = this,
+      url = document.URL + '/get_quorum_blast_hit_sequence.json';
 
   $(el).html('Fetching sequence...');
 
-  $.getJSON(
-    "/quorum/jobs/" + id + "/get_quorum_blast_hit_sequence.json?algo_id=" +
-    algo_id + "&algo=" + algo,
-    function(data) {
-      self.getSequenceFile(id, data[0].meta_id, el);
-    }
-  );
+  $.ajax({
+    url: url,
+    dataType: 'json',
+    data: { 'algo_id': algo_id, 'algo': algo },
+    timeout: 10000
+  }).done(function(data) {
+    self.getSequenceFile(data[0].meta_id, el);
+  });
 
 };
 
 //
 // Poll application for Blast hit sequence.
 //
-QUORUM.getSequenceFile = function(id, meta_id, el) {
+QUORUM.getSequenceFile = function(meta_id, el) {
 
   var self = this,
-      url;
+      url = document.URL + '/send_quorum_blast_hit_sequence',
+      timeoutId = 0;
 
-  url = "/quorum/jobs/" + id +
-    "/send_quorum_blast_hit_sequence?meta_id=" + meta_id;
-  $.get(
-    url,
-    function(data) {
-      if (data.length === 0) {
-        setTimeout(function() { self.getSequenceFile(id, meta_id, el) }, 2500);
+  $.ajax({
+    url: url,
+    data: { 'meta_id': meta_id }
+  }).done(function(data) {
+    if (data.length === 0) {
+      timeoutId = setTimeout(function() {
+        self.getSequenceFile(meta_id, el)
+      }, 2500);
+    } else {
+      clearTimeout(timeoutId);
+      if (data.indexOf("error") !== -1) {
+        // Print error message.
+        $(el).addClass('ui-state-error').html(data);
       } else {
-        if (data.indexOf("error") !== -1) {
-          // Print error message.
-          $(el).addClass('ui-state-error').html(data);
-        } else {
-          // Force browser to download file via iframe.
-          $(el).addClass('ui-state-highlight').html('Sequence Downloaded Successfully');
-          $('.quorum_sequence_download').remove();
-          $('body').append('<iframe class="quorum_sequence_download"></iframe>');
-          $('.quorum_sequence_download').attr('src', url).hide();
-        }
+        // Force browser to download file via iframe.
+        $(el).addClass('ui-state-highlight').html('Sequence Downloaded Successfully');
+        $('.quorum_sequence_download').remove();
+        $('body').append('<iframe class="quorum_sequence_download"></iframe>');
+        $('.quorum_sequence_download').attr('src', url).hide();
       }
     }
-  );
+  });
 
 };
 

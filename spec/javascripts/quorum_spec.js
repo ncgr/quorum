@@ -31,11 +31,11 @@ describe("QUORUM", function() {
     QUORUM.pollResults(callback, null, 5000, ['a']);
 
     // setTimeout()
-    $.ajax.mostRecentCall.args[1]('');
+    $.ajax.mostRecentCall.args[0].success([]);
     expect(window.setTimeout).toHaveBeenCalled();
 
     // callback()
-    $.ajax.mostRecentCall.args[1](data);
+    $.ajax.mostRecentCall.args[0].success(data);
     expect(callback).toHaveBeenCalledWith(data, 'a');
   });
 
@@ -59,7 +59,7 @@ describe("QUORUM", function() {
     expect($("#detailed_report_dialog")).toBeVisible();
 
     // Fetch JSON to build the template and scroll to focus_id.
-    $.ajax.mostRecentCall.args[1](data);
+    $.ajax.mostRecentCall.args[0].success(data);
     expect(QUORUM.autoScroll).toHaveBeenCalledWith(focus_id, false);
 
     // Close the dialog box.
@@ -223,7 +223,7 @@ describe("QUORUM", function() {
 
     expect(el.html()).toEqual('Fetching sequence...');
 
-    $.ajax.mostRecentCall.args[1](data);
+    $.ajax.mostRecentCall.args[0].success(data);
     expect(QUORUM.getSequenceFile).toHaveBeenCalledWith(data[0].meta_id, el);
   });
 
@@ -246,15 +246,15 @@ describe("QUORUM", function() {
     QUORUM.getSequenceFile(meta_id, el);
 
     // setTimeout()
-    $.ajax.mostRecentCall.args[1]('');
+    $.ajax.mostRecentCall.args[0].success([]);
     expect(window.setTimeout).toHaveBeenCalled();
 
     // Print error message
-    $.get.mostRecentCall.args[1](error);
+    $.ajax.mostRecentCall.args[0].success(error);
     expect(el.html()).toEqual(error);
 
     // Force browser to download file.
-    $.ajax.mostRecentCall.args[1](data);
+    $.ajax.mostRecentCall.args[0].success(data);
     expect(el.html()).toEqual('Sequence Downloaded Successfully');
     expect($('iframe.quorum_sequence_download')).toBeDefined();
     $('.quorum_sequence_download').remove();

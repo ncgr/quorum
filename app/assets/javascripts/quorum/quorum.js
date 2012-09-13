@@ -116,29 +116,27 @@ QUORUM.viewDetailedReport = function(focus_id, query, algo) {
     type: 'get',
     dataType: 'json',
     data: { 'algo': algo, 'query': query },
-    timeout: 10000
-  }).done(function(data) {
-    var temp = _.template(
-      $('#detailed_report_template').html(), {
-        data:  data,
-        query: query,
-        algo:  algo
-      }
-    );
+    timeout: 10000,
+    success: function(data) {
+      var temp = _.template(
+        $('#detailed_report_template').html(), {
+          data:  data,
+          query: query,
+          algo:  algo
+        }
+      );
 
-    // Insert the detailed report data.
-    $('#detailed_report_dialog').empty().html(temp);
-
-    // Add tipsy to sequence data on mouse enter.
-    $('#detailed_report_dialog .sequence').mouseenter(function() {
-      $(this).find('a[rel=quorum-tipsy]').tipsy({ gravity: 's' });
-    });
-
-    // Highlight the selected id.
-    $('#' + focus_id).addClass("ui-state-highlight");
-
-    // Automatically scroll to the selected id.
-    self.autoScroll(focus_id, false);
+      // Insert the detailed report data.
+      $('#detailed_report_dialog').empty().html(temp);
+      // Add tipsy to sequence data on mouse enter.
+      $('#detailed_report_dialog .sequence').mouseenter(function() {
+        $(this).find('a[rel=quorum-tipsy]').tipsy({ gravity: 's' });
+      });
+      // Highlight the selected id.
+      $('#' + focus_id).addClass("ui-state-highlight");
+      // Automatically scroll to the selected id.
+      self.autoScroll(focus_id, false);
+    }
   });
 
 };
@@ -322,9 +320,10 @@ QUORUM.downloadSequence = function(algo_id, algo, el) {
     url: url,
     dataType: 'json',
     data: { 'algo_id': algo_id, 'algo': algo },
-    timeout: 10000
-  }).done(function(data) {
-    self.getSequenceFile(data[0].meta_id, el);
+    timeout: 10000,
+    success: function(data) {
+      self.getSequenceFile(data[0].meta_id, el);
+    }
   });
 
 };
@@ -340,23 +339,24 @@ QUORUM.getSequenceFile = function(meta_id, el) {
 
   $.ajax({
     url: url,
-    data: { 'meta_id': meta_id }
-  }).done(function(data) {
-    if (data.length === 0) {
-      timeoutId = setTimeout(function() {
-        self.getSequenceFile(meta_id, el)
-      }, 2500);
-    } else {
-      clearTimeout(timeoutId);
-      if (data.indexOf("error") !== -1) {
-        // Print error message.
-        $(el).addClass('ui-state-error').html(data);
+    data: { 'meta_id': meta_id },
+    success: function(data) {
+      if (data.length === 0) {
+        timeoutId = setTimeout(function() {
+          self.getSequenceFile(meta_id, el)
+        }, 2500);
       } else {
-        // Force browser to download file via iframe.
-        $(el).addClass('ui-state-highlight').html('Sequence Downloaded Successfully');
-        $('.quorum_sequence_download').remove();
-        $('body').append('<iframe class="quorum_sequence_download"></iframe>');
-        $('.quorum_sequence_download').attr('src', url).hide();
+        clearTimeout(timeoutId);
+        if (data.indexOf("error") !== -1) {
+          // Print error message.
+          $(el).addClass('ui-state-error').html(data);
+        } else {
+          // Force browser to download file via iframe.
+          $(el).addClass('ui-state-highlight').html('Sequence Downloaded Successfully');
+          $('.quorum_sequence_download').remove();
+          $('body').append('<iframe class="quorum_sequence_download"></iframe>');
+          $('.quorum_sequence_download').attr('src', url).hide();
+        }
       }
     }
   });

@@ -23,21 +23,32 @@ describe("QUORUM", function() {
   // anonymous function buildTemplate().
   //
   it("fetches JSON and calls user defined callback function", function() {
-    spyOn($, 'getJSON');
-    spyOn(window, 'setTimeout');
-    var id = 1,
-        callback = jasmine.createSpy(),
-        data = 'foo';
+    loadFixtures('quorum_tabs.html');
 
-    QUORUM.pollResults(id, callback, null, 5000, ['a']);
+    spyOn($, 'ajax');
+    spyOn(window, 'setTimeout');
+    var callback = jasmine.createSpy(),
+        data = 'foo',
+        error = {
+          status: 400,
+          statusText: 'bad news'
+        };
+
+    QUORUM.pollResults(callback, null, 5000, ['a']);
 
     // setTimeout()
-    $.getJSON.mostRecentCall.args[1]('');
+    $.ajax.mostRecentCall.args[0].success([]);
     expect(window.setTimeout).toHaveBeenCalled();
 
+    // Print jqXHR error message.
+    $.ajax.mostRecentCall.args[0].error(error);
+    expect($(".ui-state-error")).toHaveText(
+      'Something went wrong. Error: 400 bad news'
+    );
+
     // callback()
-    $.getJSON.mostRecentCall.args[1](data);
-    expect(callback).toHaveBeenCalledWith(id, data, 'a');
+    $.ajax.mostRecentCall.args[0].success(data);
+    expect(callback).toHaveBeenCalledWith(data, 'a');
   });
 
   //
@@ -48,20 +59,29 @@ describe("QUORUM", function() {
   it("renders modal box containing detailed report", function() {
     loadFixtures('quorum_tabs.html');
 
-    spyOn($, 'getJSON');
+    spyOn($, 'ajax');
     spyOn(QUORUM, 'autoScroll');
-    var id = 1,
-        focus_id = 1,
+    var focus_id = 1,
         query = 'foo',
         algo = 'a',
-        data = 'bar';
+        data = 'bar',
+        error = {
+          status: 500,
+          statusText: 'bad news'
+        };
 
-    QUORUM.viewDetailedReport(id, focus_id, query, algo);
+    QUORUM.viewDetailedReport(focus_id, query, algo);
 
     expect($("#detailed_report_dialog")).toBeVisible();
 
+    // Print jqXHR error message.
+    $.ajax.mostRecentCall.args[0].error(error);
+    expect($("#detailed_report_dialog")).toHaveText(
+      'Something went wrong. Error: 500 bad news'
+    );
+
     // Fetch JSON to build the template and scroll to focus_id.
-    $.getJSON.mostRecentCall.args[1](data);
+    $.ajax.mostRecentCall.args[0].success(data);
     expect(QUORUM.autoScroll).toHaveBeenCalledWith(focus_id, false);
 
     // Close the dialog box.
@@ -214,20 +234,27 @@ describe("QUORUM", function() {
   it("sends request to server to extract Blast hit sequence", function() {
     loadFixtures("quorum_tabs.html");
 
-    spyOn($, 'getJSON');
+    spyOn($, 'ajax');
     spyOn(QUORUM, 'getSequenceFile');
-    var id = 1,
-        algo_id = 1,
+    var algo_id = 1,
         algo = 'a',
         el = $("#download_sequence"),
-        data = [{meta_id:"foo"}];
+        data = [{meta_id:"foo"}],
+        error = {
+          status: 505,
+          statusText: 'wut?'
+        };
 
-    QUORUM.downloadSequence(id, algo_id, algo, el);
+    QUORUM.downloadSequence(algo_id, algo, el);
 
     expect(el.html()).toEqual('Fetching sequence...');
 
-    $.getJSON.mostRecentCall.args[1](data);
-    expect(QUORUM.getSequenceFile).toHaveBeenCalledWith(id, data[0].meta_id, el);
+    // Print jqXHR error message.
+    $.ajax.mostRecentCall.args[0].error(error);
+    expect(el).toHaveText("Error: 505 wut?");
+
+    $.ajax.mostRecentCall.args[0].success(data);
+    expect(QUORUM.getSequenceFile).toHaveBeenCalledWith(data[0].meta_id, el);
   });
 
   //
@@ -241,19 +268,18 @@ describe("QUORUM", function() {
 
     spyOn($, 'get');
     spyOn(window, 'setTimeout');
-    var id = 1,
-        meta_id = 'foo',
+    var meta_id = 'foo',
         el = $("#download_sequence"),
         data = 'bar',
         error = 'error';
 
-    QUORUM.getSequenceFile(id, meta_id, el);
+    QUORUM.getSequenceFile(meta_id, el);
 
     // setTimeout()
-    $.get.mostRecentCall.args[1]('');
+    $.get.mostRecentCall.args[1]([]);
     expect(window.setTimeout).toHaveBeenCalled();
 
-    // Print error message
+    // Print error message.
     $.get.mostRecentCall.args[1](error);
     expect(el.html()).toEqual(error);
 

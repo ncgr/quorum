@@ -63,24 +63,22 @@
     //
     // Asynchronously poll Quorum for search results.
     //
-    //  QUORUM.pollResults(id, callback, callback_obj, interval)
-    //    id: Job.id
+    //  QUORUM.pollResults(callback, callback_obj, interval)
     //    callback: Define your own callback function to override the default.
     //      callback should expect the following params.
-    //        id: Job.id (Int),
     //        data: JSON data (JSON),
     //        algorithm: Supported algorithm (String).
     //    callback_obj: Callback object.
     //    interval: poll interval in milliseconds. 5000 default.
     //
     //  Example:
-    //    QUORUM.pollResults(<%= @jobs.id %>, MYAPP.myCoolCallback, MYAPP, 5000);
+    //    QUORUM.pollResults(MYAPP.myCoolCallback, MYAPP, 5000);
     //
     //  Example callback:
-    //    MYAPP.myCoolCallback = function(id, data, algo) {
+    //    MYAPP.myCoolCallback = function(data, algo) {
     //      // awesome logic
     //    };
     //
-    QUORUM.pollResults(<%= @jobs.id %>);
+    QUORUM.pollResults();
   });
 </script>

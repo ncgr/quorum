@@ -23,16 +23,28 @@ describe("QUORUM", function() {
   // anonymous function buildTemplate().
   //
   it("fetches JSON and calls user defined callback function", function() {
+    loadFixtures('quorum_tabs.html');
+
     spyOn($, 'ajax');
     spyOn(window, 'setTimeout');
     var callback = jasmine.createSpy(),
-        data = 'foo';
+        data = 'foo',
+        error = {
+          status: 400,
+          statusText: 'bad news'
+        };
 
     QUORUM.pollResults(callback, null, 5000, ['a']);
 
     // setTimeout()
     $.ajax.mostRecentCall.args[0].success([]);
     expect(window.setTimeout).toHaveBeenCalled();
+
+    // error
+    $.ajax.mostRecentCall.args[0].error(error);
+    expect($(".ui-state-error")).toHaveText(
+      'Something went wrong. Error: 400 bad news'
+    );
 
     // callback()
     $.ajax.mostRecentCall.args[0].success(data);
@@ -52,11 +64,21 @@ describe("QUORUM", function() {
     var focus_id = 1,
         query = 'foo',
         algo = 'a',
-        data = 'bar';
+        data = 'bar',
+        error = {
+          status: 500,
+          statusText: 'bad news'
+        };
 
     QUORUM.viewDetailedReport(focus_id, query, algo);
 
     expect($("#detailed_report_dialog")).toBeVisible();
+
+    // error
+    $.ajax.mostRecentCall.args[0].error(error);
+    expect($("#detailed_report_dialog")).toHaveText(
+      'Something went wrong. Error: 500 bad news'
+    );
 
     // Fetch JSON to build the template and scroll to focus_id.
     $.ajax.mostRecentCall.args[0].success(data);
@@ -217,11 +239,19 @@ describe("QUORUM", function() {
     var algo_id = 1,
         algo = 'a',
         el = $("#download_sequence"),
-        data = [{meta_id:"foo"}];
+        data = [{meta_id:"foo"}],
+        error = {
+          status: 505,
+          statusText: 'wut?'
+        };
 
     QUORUM.downloadSequence(algo_id, algo, el);
 
     expect(el.html()).toEqual('Fetching sequence...');
+
+    // error
+    $.ajax.mostRecentCall.args[0].error(error);
+    expect(el).toHaveText("Error: 505 wut?");
 
     $.ajax.mostRecentCall.args[0].success(data);
     expect(QUORUM.getSequenceFile).toHaveBeenCalledWith(data[0].meta_id, el);
@@ -241,13 +271,21 @@ describe("QUORUM", function() {
     var meta_id = 'foo',
         el = $("#download_sequence"),
         data = 'bar',
-        error = 'error';
+        error = 'error',
+        xhrError = {
+          status: 501,
+          statusText: 'wut?'
+        };
 
     QUORUM.getSequenceFile(meta_id, el);
 
     // setTimeout()
     $.ajax.mostRecentCall.args[0].success([]);
     expect(window.setTimeout).toHaveBeenCalled();
+
+    // Print jqXHR error message
+    $.ajax.mostRecentCall.args[0].error(xhrError);
+    expect(el).toHaveText("Error: 501 wut?");
 
     // Print error message
     $.ajax.mostRecentCall.args[0].success(error);

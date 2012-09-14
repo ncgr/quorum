@@ -441,8 +441,13 @@ module Quorum
         generate_blast_cmd
         @logger.log("NCBI Blast", @cmd)
         system(@cmd)
-        parse_and_save_results
-        add_hps_groups_to_reports
+
+        # Wrap these methods in a transaction to prevent premature return.
+        @job.method(@job_report_association).call.transaction do
+          parse_and_save_results
+          add_hps_groups_to_reports
+        end
+
         remove_tmp_files
       end
 

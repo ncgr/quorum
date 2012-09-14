@@ -1,3 +1,11 @@
+## 0.5.0 (2012-09-14)
+
+* Fixed partial data load bug. https://github.com/ncgr/quorum/issues/2
+  Requires running quorum:install and quorum:views generators.
+  See the Upgrading? section in the README for more information.
+* Added better support for jQuery ajax errors in quorum.js.
+* Added better support for URLs in quorum.js.
+
 ## 0.4.0 (2012-08-10)
 
 * Added Hsp gaps to Blast Job Reports.

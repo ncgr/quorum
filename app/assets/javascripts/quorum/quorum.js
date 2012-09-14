@@ -360,7 +360,7 @@ QUORUM.downloadSequence = function(algo_id, algo, el) {
 QUORUM.getSequenceFile = function(meta_id, el) {
 
   var self = this,
-      url = document.URL + '/send_quorum_blast_hit_sequence',
+      url = document.URL + '/send_quorum_blast_hit_sequence?meta_id=' + meta_id,
       timeoutId = 0;
 
   function downloadFile(data) {
@@ -383,22 +383,7 @@ QUORUM.getSequenceFile = function(meta_id, el) {
     }
   }
 
-  function renderError(jqXHR) {
-    $(el).addClass('ui-state-error').html(
-      "Error: " + jqXHR.status + " " + jqXHR.statusText
-    );
-  }
-
-  $.ajax({
-    url: url,
-    data: { 'meta_id': meta_id },
-    success: function(data) {
-      downloadFile(data);
-    },
-    error: function(jqXHR) {
-      renderError(jqXHR);
-    }
-  });
+  $.get(url, function(data) { downloadFile(data); });
 
 };
 

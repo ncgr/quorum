@@ -266,33 +266,25 @@ describe("QUORUM", function() {
   it("polls server to extract Blast hit sequence, once found, force browser to download via iframe", function() {
     loadFixtures("quorum_tabs.html");
 
-    spyOn($, 'ajax');
+    spyOn($, 'get');
     spyOn(window, 'setTimeout');
     var meta_id = 'foo',
         el = $("#download_sequence"),
         data = 'bar',
-        error = 'error',
-        xhrError = {
-          status: 501,
-          statusText: 'wut?'
-        };
+        error = 'error';
 
     QUORUM.getSequenceFile(meta_id, el);
 
     // setTimeout()
-    $.ajax.mostRecentCall.args[0].success([]);
+    $.get.mostRecentCall.args[1]([]);
     expect(window.setTimeout).toHaveBeenCalled();
 
-    // Print jqXHR error message.
-    $.ajax.mostRecentCall.args[0].error(xhrError);
-    expect(el).toHaveText("Error: 501 wut?");
-
     // Print error message.
-    $.ajax.mostRecentCall.args[0].success(error);
+    $.get.mostRecentCall.args[1](error);
     expect(el.html()).toEqual(error);
 
     // Force browser to download file.
-    $.ajax.mostRecentCall.args[0].success(data);
+    $.get.mostRecentCall.args[1](data);
     expect(el.html()).toEqual('Sequence Downloaded Successfully');
     expect($('iframe.quorum_sequence_download')).toBeDefined();
     $('.quorum_sequence_download').remove();

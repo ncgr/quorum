@@ -1,3 +1,7 @@
+## 0.5.2 (2012-09-14)
+
+* Removed jQuery ajax timeout for long lasting blast jobs.
+
 ## 0.5.1 (2012-09-14)
 
 * Fixed Quorum::VERSION uninitialized constant error when overriding views.

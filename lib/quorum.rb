@@ -1,6 +1,7 @@
 require "quorum/engine"
 require "quorum/helpers"
 require "quorum/sequence"
+require "quorum/version"
 require "resque"
 require "resque/server"
 require "resque-result"

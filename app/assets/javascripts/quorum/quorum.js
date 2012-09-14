@@ -74,7 +74,6 @@ QUORUM.pollResults = function(callback, callback_obj, interval, algos) {
       dataType: 'json',
       data: { 'algo': a },
       cache: false,
-      timeout: 10000,
       success: function(data) {
         processData(data, a);
       },
@@ -147,7 +146,6 @@ QUORUM.viewDetailedReport = function(focus_id, query, algo) {
     type: 'get',
     dataType: 'json',
     data: { 'algo': algo, 'query': query },
-    timeout: 10000,
     success: function(data) {
       renderTemplate(data);
     },
@@ -343,7 +341,6 @@ QUORUM.downloadSequence = function(algo_id, algo, el) {
     url: url,
     dataType: 'json',
     data: { 'algo_id': algo_id, 'algo': algo },
-    timeout: 10000,
     success: function(data) {
       self.getSequenceFile(data[0].meta_id, el);
     },

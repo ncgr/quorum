@@ -40,7 +40,7 @@ describe("QUORUM", function() {
     $.ajax.mostRecentCall.args[0].success([]);
     expect(window.setTimeout).toHaveBeenCalled();
 
-    // error
+    // Print jqXHR error message.
     $.ajax.mostRecentCall.args[0].error(error);
     expect($(".ui-state-error")).toHaveText(
       'Something went wrong. Error: 400 bad news'
@@ -74,7 +74,7 @@ describe("QUORUM", function() {
 
     expect($("#detailed_report_dialog")).toBeVisible();
 
-    // error
+    // Print jqXHR error message.
     $.ajax.mostRecentCall.args[0].error(error);
     expect($("#detailed_report_dialog")).toHaveText(
       'Something went wrong. Error: 500 bad news'
@@ -249,7 +249,7 @@ describe("QUORUM", function() {
 
     expect(el.html()).toEqual('Fetching sequence...');
 
-    // error
+    // Print jqXHR error message.
     $.ajax.mostRecentCall.args[0].error(error);
     expect(el).toHaveText("Error: 505 wut?");
 
@@ -283,11 +283,11 @@ describe("QUORUM", function() {
     $.ajax.mostRecentCall.args[0].success([]);
     expect(window.setTimeout).toHaveBeenCalled();
 
-    // Print jqXHR error message
+    // Print jqXHR error message.
     $.ajax.mostRecentCall.args[0].error(xhrError);
     expect(el).toHaveText("Error: 501 wut?");
 
-    // Print error message
+    // Print error message.
     $.ajax.mostRecentCall.args[0].success(error);
     expect(el.html()).toEqual(error);
 

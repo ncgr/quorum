@@ -105,7 +105,7 @@ module Quorum
 
         @filter                = @job.method(@job_association).call.filter
         @expectation           = @job.method(@job_association).call.expectation
-        @max_score             = @job.method(@job_association).call.max_score
+        @max_target_seqs       = @job.method(@job_association).call.max_target_seqs
         @min_score             = @job.method(@job_association).call.min_bit_score
         @gapped_alignments     = @job.method(@job_association).call.gapped_alignments
         @gap_opening_penalty   = @job.method(@job_association).call.gap_opening_penalty
@@ -136,7 +136,7 @@ module Quorum
         "-outfmt 5 " <<
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
-        "-max_target_seqs #{@max_score} " <<
+        "-max_target_seqs #{@max_target_seqs} " <<
         "-out #{@out} "
         if @gapped_alignments
           blastn << "-gapopen #{@gap_opening_penalty} "
@@ -158,7 +158,7 @@ module Quorum
         "-outfmt 5 " <<
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
-        "-max_target_seqs #{@max_score} " <<
+        "-max_target_seqs #{@max_target_seqs} " <<
         "-out #{@out} "
         if @gapped_alignments
           blastx << "-gapopen #{@gap_opening_penalty} "
@@ -180,7 +180,7 @@ module Quorum
         "-outfmt 5 " <<
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
-        "-max_target_seqs #{@max_score} " <<
+        "-max_target_seqs #{@max_target_seqs} " <<
         "-out #{@out} "
         if @gapped_alignments
           tblastn << "-gapopen #{@gap_opening_penalty} "
@@ -204,7 +204,7 @@ module Quorum
         "-outfmt 5 " <<
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
-        "-max_target_seqs #{@max_score} " <<
+        "-max_target_seqs #{@max_target_seqs} " <<
         "-out #{@out} "
         if @gapped_alignments
           blastp << "-gapopen #{@gap_opening_penalty} "

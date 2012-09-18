@@ -22,16 +22,16 @@ describe Quorum::BlastnJob do
     @blastn_job.should have(0).errors_on(:expectation)
   end
 
-  it "fails validation with poorly formatted max_score (using error_on)" do
-    @blastn_job.max_score = 12.34
-    @blastn_job.should have(1).error_on(:max_score)
-    @blastn_job.max_score = "not a number"
-    @blastn_job.should have(1).error_on(:max_score)
+  it "fails validation with poorly formatted max_target_seqs (using error_on)" do
+    @blastn_job.max_target_seqs = 12.34
+    @blastn_job.should have(1).error_on(:max_target_seqs)
+    @blastn_job.max_target_seqs = "not a number"
+    @blastn_job.should have(1).error_on(:max_target_seqs)
   end
 
-  it "passed validation with valid max_score (using error_on)" do
-    @blastn_job.max_score = 1235
-    @blastn_job.should have(0).errors_on(:max_score)
+  it "passed validation with valid max_target_seqs (using error_on)" do
+    @blastn_job.max_target_seqs = 1235
+    @blastn_job.should have(0).errors_on(:max_target_seqs)
   end
 
   it "fails validation with poorly formatted gap_opening_penalty (using error_on)" do
@@ -42,7 +42,7 @@ describe Quorum::BlastnJob do
   end
 
   it "passed validation with valid gap_opening_penalty (using error_on)" do
-    @blastn_job.max_score = 13
+    @blastn_job.max_target_seqs = 13
     @blastn_job.should have(0).errors_on(:gap_opening_penalty)
   end
 
@@ -54,7 +54,7 @@ describe Quorum::BlastnJob do
   end
 
   it "passed validation with valid gap_extension_penalty (using error_on)" do
-    @blastn_job.max_score = 456
+    @blastn_job.max_target_seqs = 456
     @blastn_job.should have(0).errors_on(:gap_extension_penalty)
   end
 
@@ -109,7 +109,7 @@ describe Quorum::BlastnJob do
   it "sets optional params to default values if empty after save" do
     @blastn_job.save
     @blastn_job.expectation.should eq("5e-20")
-    @blastn_job.max_score.should eq(25)
+    @blastn_job.max_target_seqs.should eq(25)
     @blastn_job.min_bit_score.should eq(0)
     @blastn_job.gap_opening_penalty.should eq(0)
     @blastn_job.gap_extension_penalty.should eq(0)

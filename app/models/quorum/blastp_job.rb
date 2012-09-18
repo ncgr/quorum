@@ -9,7 +9,7 @@ module Quorum
       :foreign_key => :blastp_job_id,
       :primary_key => :job_id
 
-    attr_accessible :expectation, :max_score, :min_bit_score,
+    attr_accessible :expectation, :max_target_seqs, :min_bit_score,
       :filter,  :gapped_alignments, :gap_opening_penalty,
       :gap_extension_penalty, :gap_opening_extension, :queue,
       :blast_dbs
@@ -18,7 +18,7 @@ module Quorum
       :with        => /^[+-]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/,
       :message     => " - Valid formats (12, 32.05, 43e-123)",
       :allow_blank => true
-    validates_numericality_of :max_score,
+    validates_numericality_of :max_target_seqs,
       :only_integer => true,
       :allow_blank  => true
     validates_numericality_of :min_bit_score,
@@ -86,8 +86,8 @@ module Quorum
     end
 
     def set_optional_params
-      self.expectation   = "5e-20" if self.expectation.blank?
-      self.max_score     ||= 25
+      self.expectation = "5e-20" if self.expectation.blank?
+      self.max_target_seqs ||= 25
       self.min_bit_score ||= 0
       unless self.gapped_alignments
         self.gap_opening_penalty   = 0

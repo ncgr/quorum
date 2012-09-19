@@ -100,6 +100,25 @@ describe Quorum::BlastpJob do
     )
   end
 
+  it "passes validation if not enqueued and blast_dbs is empty" do
+    @blastp_job.queue = false
+    @blastp_job.blast_dbs = []
+    @blastp_job.should have(0).errors_on(:blast_dbs)
+  end
+
+  it "fails validation if blast_dbs is empty" do
+    @blastp_job.queue = true
+    @blastp_job.blast_dbs = []
+    @blastp_job.should have(1).errors_on(:blast_dbs)
+  end
+
+  # Test for removal of multiple select hidden field value.
+  it "fails validation if blast_dbs contains an empty string" do
+    @blastp_job.queue = true
+    @blastp_job.blast_dbs = ["", "", ""]
+    @blastp_job.should have(1).errors_on(:blast_dbs)
+  end
+
   it "joins blast_dbs on semicolon after save" do
     @blastp_job.blast_dbs = ["test_1", "test_2"]
     @blastp_job.save

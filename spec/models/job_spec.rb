@@ -7,7 +7,7 @@ describe Quorum::Job do
     ResqueSpec.reset!
   end
 
-  it "fails validation without params (using error_on)" do
+  it "fails validation without params" do
     @job.should have(1).error_on(:sequence)
     @job.should have(1).error_on(:algorithm)
   end

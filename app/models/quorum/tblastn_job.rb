@@ -31,7 +31,6 @@ module Quorum
       :only_integer => true,
       :allow_blank  => true
     validates_presence_of :blast_dbs, :if => :queue
-    validate :gap_opening_extension_exists
 
     #
     # Gapped alignment helper.
@@ -89,22 +88,8 @@ module Quorum
       self.expectation = "5e-20" if self.expectation.blank?
       self.max_target_seqs ||= 25
       self.min_bit_score ||= 0
-      unless self.gapped_alignments
-        self.gap_opening_penalty   = 0
-        self.gap_extension_penalty = 0
-      end
-    end
-
-    #
-    # Add error if gapped_alignment? without gap_opening_extension.
-    #
-    def gap_opening_extension_exists
-      if gap_opening_extension.split(',').blank? && gapped_alignment?
-        errors.add(
-          :gap_opening_extension,
-          " - Please select a value."
-        )
-      end
+      self.gap_opening_penalty ||= nil
+      self.gap_extension_penalty ||= nil
     end
 
   end

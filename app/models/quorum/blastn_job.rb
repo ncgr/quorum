@@ -1,6 +1,8 @@
 module Quorum
   class BlastnJob < ActiveRecord::Base
 
+    before_validation :check_blast_dbs, :if => :queue
+
     before_save :set_optional_params, :set_blast_dbs
 
     belongs_to :job
@@ -78,9 +80,15 @@ module Quorum
 
     private
 
+    def check_blast_dbs
+      if self.blast_dbs.present?
+        self.blast_dbs = self.blast_dbs.delete_if { |b| b.empty? }
+      end
+    end
+
     def set_blast_dbs
       if self.blast_dbs.present?
-        self.blast_dbs = self.blast_dbs.delete_if { |b| b.empty? }.join(';')
+        self.blast_dbs = self.blast_dbs.join(';')
       end
     end
 

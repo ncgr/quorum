@@ -68,7 +68,7 @@ describe "Jobs" do
         # Blastn
         check "job_blastn_job_attributes_queue"
         select "tmp", :from => "job_blastn_job_attributes_blast_dbs"
-        check "job_blastn_job_attributes_filter"
+        select "Yes", :from => "job_blastn_job_attributes_filter"
         fill_in "job_blastn_job_attributes_expectation", :with => "5e-20"
         fill_in "job_blastn_job_attributes_min_bit_score", :with => "0"
         fill_in "job_blastn_job_attributes_max_target_seqs", :with => "25"
@@ -78,7 +78,7 @@ describe "Jobs" do
         # Blastx
         check "job_blastx_job_attributes_queue"
         select "tmp", :from => "job_blastx_job_attributes_blast_dbs"
-        check "job_blastx_job_attributes_filter"
+        select "Yes", :from => "job_blastx_job_attributes_filter"
         fill_in "job_blastx_job_attributes_expectation", :with => "5e-20"
         fill_in "job_blastx_job_attributes_min_bit_score", :with => "0"
         fill_in "job_blastx_job_attributes_max_target_seqs", :with => "25"
@@ -88,7 +88,7 @@ describe "Jobs" do
         # Tblastn
         check "job_tblastn_job_attributes_queue"
         select "tmp", :from => "job_tblastn_job_attributes_blast_dbs"
-        check "job_tblastn_job_attributes_filter"
+        select "Yes", :from => "job_tblastn_job_attributes_filter"
         fill_in "job_tblastn_job_attributes_expectation", :with => "5e-20"
         fill_in "job_tblastn_job_attributes_min_bit_score", :with => "0"
         fill_in "job_tblastn_job_attributes_max_target_seqs", :with => "25"
@@ -98,7 +98,7 @@ describe "Jobs" do
         # Blastp
         check "job_blastp_job_attributes_queue"
         select "tmp", :from => "job_blastp_job_attributes_blast_dbs"
-        check "job_blastp_job_attributes_filter"
+        select "No", :from => "job_blastp_job_attributes_filter"
         fill_in "job_blastp_job_attributes_expectation", :with => "5e-20"
         fill_in "job_blastp_job_attributes_min_bit_score", :with => "0"
         fill_in "job_blastp_job_attributes_max_target_seqs", :with => "25"

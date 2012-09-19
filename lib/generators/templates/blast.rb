@@ -146,7 +146,7 @@ module Quorum
         else
           blastn << "-ungapped "
         end
-        blastn << "-dust yes " if @filter
+        blastn << "-dust #{@filter ? 'yes' : 'no'} "
         blastn
       end
 
@@ -170,7 +170,7 @@ module Quorum
         else
           blastx << "-ungapped "
         end
-        blastx << "-seg yes " if @filter
+        blastx << "-seg #{@filter ? 'yes' : 'no'} "
         blastx
       end
 
@@ -196,7 +196,7 @@ module Quorum
           tblastn << "-ungapped "
           tblastn << "-comp_based_stats F "
         end
-        tblastn << "-seg yes " if @filter
+        tblastn << "-seg #{@filter ? 'yes' : 'no'} "
         tblastn
       end
 
@@ -222,7 +222,7 @@ module Quorum
           blastp << "-ungapped "
           blastp << "-comp_based_stats F "
         end
-        blastp << "-seg yes " if @filter
+        blastp << "-seg #{@filter ? 'yes' : 'no'} "
         blastp
       end
 

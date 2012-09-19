@@ -139,8 +139,10 @@ module Quorum
         "-max_target_seqs #{@max_target_seqs} " <<
         "-out #{@out} "
         if @gapped_alignments
-          blastn << "-gapopen #{@gap_opening_penalty} "
-          blastn << "-gapextend #{@gap_extension_penalty} "
+          if @gap_opening_penalty && @gap_extension_penalty
+            blastn << "-gapopen #{@gap_opening_penalty} "
+            blastn << "-gapextend #{@gap_extension_penalty} "
+          end
         else
           blastn << "-ungapped "
         end
@@ -161,8 +163,10 @@ module Quorum
         "-max_target_seqs #{@max_target_seqs} " <<
         "-out #{@out} "
         if @gapped_alignments
-          blastx << "-gapopen #{@gap_opening_penalty} "
-          blastx << "-gapextend #{@gap_extension_penalty} "
+          if @gap_opening_penalty && @gap_extension_penalty
+            blastx << "-gapopen #{@gap_opening_penalty} "
+            blastx << "-gapextend #{@gap_extension_penalty} "
+          end
         else
           blastx << "-ungapped "
         end
@@ -183,8 +187,10 @@ module Quorum
         "-max_target_seqs #{@max_target_seqs} " <<
         "-out #{@out} "
         if @gapped_alignments
-          tblastn << "-gapopen #{@gap_opening_penalty} "
-          tblastn << "-gapextend #{@gap_extension_penalty} "
+          if @gap_opening_penalty && @gap_extension_penalty
+            tblastn << "-gapopen #{@gap_opening_penalty} "
+            tblastn << "-gapextend #{@gap_extension_penalty} "
+          end
           tblastn << "-comp_based_stats D "
         else
           tblastn << "-ungapped "
@@ -207,8 +213,10 @@ module Quorum
         "-max_target_seqs #{@max_target_seqs} " <<
         "-out #{@out} "
         if @gapped_alignments
-          blastp << "-gapopen #{@gap_opening_penalty} "
-          blastp << "-gapextend #{@gap_extension_penalty} "
+          if @gap_opening_penalty && @gap_extension_penalty
+            blastp << "-gapopen #{@gap_opening_penalty} "
+            blastp << "-gapextend #{@gap_extension_penalty} "
+          end
           blastp << "-comp_based_stats D "
         else
           blastp << "-ungapped "
@@ -277,20 +285,18 @@ module Quorum
       # Set the attribute results to true for downstream processes.
       #
       def save_hsp_results
-        if @data[:bit_score] && (@data[:bit_score].to_i > @min_score.to_i)
-          @data[:results] = true
-          @data["#{@algorithm}_job_id".to_sym] = @job.method(@job_association).call.job_id
+        @data[:results] = true
+        @data["#{@algorithm}_job_id".to_sym] = @job.method(@job_association).call.job_id
 
-          job_report = @job.method(@job_report_association).call.build(@data)
+        job_report = @job.method(@job_report_association).call.build(@data)
 
-          unless job_report.save!
-            @logger.log(
-              "ActiveRecord",
-              "Unable to save #{@algorithm} results to database.",
-              1,
-              @tmp_files
-            )
-          end
+        unless job_report.save!
+          @logger.log(
+            "ActiveRecord",
+            "Unable to save #{@algorithm} results to database.",
+            1,
+            @tmp_files
+          )
         end
       end
 

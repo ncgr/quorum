@@ -25,9 +25,19 @@ load 'rails/tasks/engine.rake'
 
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec)
-task :default => :spec
 
 Bundler::GemHelper.install_tasks
 
 # Travis tasks
 load 'spec/lib/tasks/travis.rake'
+
+task :spec_runner do
+  unless File.exists?(File.expand_path("../spec/dummy/quorum", __FILE__))
+    Rake::Task["travis:quorum_install"].execute
+    Rake::Task["travis:copy_quorum_settings"].execute
+  end
+  Rake::Task["spec"].execute
+  Rake::Task["app:jasmine:ci"].execute
+end
+
+task :default => :spec_runner

@@ -54,8 +54,8 @@ namespace :travis do
   # Copy quorum_settings.yml for specs.
   task :copy_quorum_settings do
     settings = File.expand_path("../../../config/quorum_settings.yml", __FILE__)
-    config = File.expand_path("../../../dummy/config", __FILE__)
-    FileUtils.copy(settings, config)
+    config = File.expand_path("../../../dummy/config/quorum_settings.yml", __FILE__)
+    FileUtils.copy_file(settings, config)
   end
 
   # Remove quorum.

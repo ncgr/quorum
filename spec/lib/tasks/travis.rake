@@ -96,7 +96,7 @@ namespace :travis do
     File.open(File.join(config, "database.yml"), "w+") do |file|
       file.puts "\ntest:\n  adapter: mysql2\n  encoding: utf8\n" <<
       "  reconnect: false\n  database: quorum_test\n" <<
-      "  pool: 5\n  username: root\n  password: root\n" <<
+      "  pool: 5\n  username: root\n  password:\n" <<
       "  host: localhost\n"
     end
   end

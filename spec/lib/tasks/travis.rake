@@ -5,6 +5,7 @@ namespace :travis do
     Rake::Task["travis:create_db_config"].execute
     Rake::Task["travis:quorum_install"].execute
     Rake::Task["travis:copy_quorum_settings"].execute
+    Rake::Task["travis:create_dummy_tmp"].execute
   end
 
   # Remove
@@ -107,5 +108,13 @@ namespace :travis do
     if File.exists?(File.join(config, "database.yml"))
       FileUtils.rm File.join(config, "database.yml")
     end
+  end
+
+  # Create tmp directory for dummy app.
+  task :create_dummy_tmp do
+    FileUtils.mkdir_p File.expand_path("../../../dummy", __FILE__) +
+      "/tmp/" + "pids"
+    FileUtils.mkdir_p File.expand_path("../../../dummy", __FILE__) +
+      "/tmp/" + "cache"
   end
 end

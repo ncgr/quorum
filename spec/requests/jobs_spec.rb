@@ -68,40 +68,40 @@ describe "Jobs" do
         # Blastn
         check "job_blastn_job_attributes_queue"
         select "tmp", :from => "job_blastn_job_attributes_blast_dbs"
-        check "job_blastn_job_attributes_filter"
+        select "Yes", :from => "job_blastn_job_attributes_filter"
         fill_in "job_blastn_job_attributes_expectation", :with => "5e-20"
         fill_in "job_blastn_job_attributes_min_bit_score", :with => "0"
-        fill_in "job_blastn_job_attributes_max_score", :with => "25"
+        fill_in "job_blastn_job_attributes_max_target_seqs", :with => "25"
         select "Yes", :from => "job_blastn_job_attributes_gapped_alignments"
         select "11, 2", :from => "job_blastn_job_attributes_gap_opening_extension"
 
         # Blastx
         check "job_blastx_job_attributes_queue"
         select "tmp", :from => "job_blastx_job_attributes_blast_dbs"
-        check "job_blastx_job_attributes_filter"
+        select "Yes", :from => "job_blastx_job_attributes_filter"
         fill_in "job_blastx_job_attributes_expectation", :with => "5e-20"
         fill_in "job_blastx_job_attributes_min_bit_score", :with => "0"
-        fill_in "job_blastx_job_attributes_max_score", :with => "25"
+        fill_in "job_blastx_job_attributes_max_target_seqs", :with => "25"
         select "Yes", :from => "job_blastx_job_attributes_gapped_alignments"
         select "10, 2", :from => "job_blastx_job_attributes_gap_opening_extension"
 
         # Tblastn
         check "job_tblastn_job_attributes_queue"
         select "tmp", :from => "job_tblastn_job_attributes_blast_dbs"
-        check "job_tblastn_job_attributes_filter"
+        select "Yes", :from => "job_tblastn_job_attributes_filter"
         fill_in "job_tblastn_job_attributes_expectation", :with => "5e-20"
         fill_in "job_tblastn_job_attributes_min_bit_score", :with => "0"
-        fill_in "job_tblastn_job_attributes_max_score", :with => "25"
+        fill_in "job_tblastn_job_attributes_max_target_seqs", :with => "25"
         select "Yes", :from => "job_tblastn_job_attributes_gapped_alignments"
         select "9, 2", :from => "job_tblastn_job_attributes_gap_opening_extension"
 
         # Blastp
         check "job_blastp_job_attributes_queue"
         select "tmp", :from => "job_blastp_job_attributes_blast_dbs"
-        check "job_blastp_job_attributes_filter"
+        select "No", :from => "job_blastp_job_attributes_filter"
         fill_in "job_blastp_job_attributes_expectation", :with => "5e-20"
         fill_in "job_blastp_job_attributes_min_bit_score", :with => "0"
-        fill_in "job_blastp_job_attributes_max_score", :with => "25"
+        fill_in "job_blastp_job_attributes_max_target_seqs", :with => "25"
         select "Yes", :from => "job_blastp_job_attributes_gapped_alignments"
         select "13, 1", :from => "job_blastp_job_attributes_gap_opening_extension"
 

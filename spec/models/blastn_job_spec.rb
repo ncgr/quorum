@@ -6,12 +6,12 @@ describe Quorum::BlastnJob do
     @blastn_job = Quorum::BlastnJob.new()
   end
 
-  it "fails validation with poorly formatted expectation (using error_on)" do
+  it "fails validation with poorly formatted expectation" do
     @blastn_job.expectation = "this is bad"
     @blastn_job.should have(1).error_on(:expectation)
   end
 
-  it "passes validation with valid expectation values (using error_on)" do
+  it "passes validation with valid expectation values" do
     @blastn_job.expectation = 12
     @blastn_job.should have(0).errors_on(:expectation)
     @blastn_job.expectation = 12.1201
@@ -22,49 +22,49 @@ describe Quorum::BlastnJob do
     @blastn_job.should have(0).errors_on(:expectation)
   end
 
-  it "fails validation with poorly formatted max_score (using error_on)" do
-    @blastn_job.max_score = 12.34
-    @blastn_job.should have(1).error_on(:max_score)
-    @blastn_job.max_score = "not a number"
-    @blastn_job.should have(1).error_on(:max_score)
+  it "fails validation with poorly formatted max_target_seqs" do
+    @blastn_job.max_target_seqs = 12.34
+    @blastn_job.should have(1).error_on(:max_target_seqs)
+    @blastn_job.max_target_seqs = "not a number"
+    @blastn_job.should have(1).error_on(:max_target_seqs)
   end
 
-  it "passed validation with valid max_score (using error_on)" do
-    @blastn_job.max_score = 1235
-    @blastn_job.should have(0).errors_on(:max_score)
+  it "passed validation with valid max_target_seqs" do
+    @blastn_job.max_target_seqs = 1235
+    @blastn_job.should have(0).errors_on(:max_target_seqs)
   end
 
-  it "fails validation with poorly formatted gap_opening_penalty (using error_on)" do
+  it "fails validation with poorly formatted gap_opening_penalty" do
     @blastn_job.gap_opening_penalty = "not a number"
     @blastn_job.should have(1).error_on(:gap_opening_penalty)
     @blastn_job.gap_opening_penalty = 100.10
     @blastn_job.should have(1).error_on(:gap_opening_penalty)
   end
 
-  it "passed validation with valid gap_opening_penalty (using error_on)" do
-    @blastn_job.max_score = 13
+  it "passed validation with valid gap_opening_penalty" do
+    @blastn_job.max_target_seqs = 13
     @blastn_job.should have(0).errors_on(:gap_opening_penalty)
   end
 
-  it "fails validation with poorly formatted gap_extension_penalty (using error_on)" do
+  it "fails validation with poorly formatted gap_extension_penalty" do
     @blastn_job.gap_extension_penalty = "who are you?"
     @blastn_job.should have(1).error_on(:gap_extension_penalty)
     @blastn_job.gap_extension_penalty = 0.3
     @blastn_job.should have(1).error_on(:gap_extension_penalty)
   end
 
-  it "passed validation with valid gap_extension_penalty (using error_on)" do
-    @blastn_job.max_score = 456
+  it "passed validation with valid gap_extension_penalty" do
+    @blastn_job.max_target_seqs = 456
     @blastn_job.should have(0).errors_on(:gap_extension_penalty)
   end
 
-  it "fails validation without selecting gap_opening_extension with gapped_alignment (using error_on)" do
+  it "passes validation without selecting gap_opening_extension with gapped_alignment" do
     @blastn_job.gapped_alignments = true
     @blastn_job.gap_opening_extension = ""
-    @blastn_job.should have(1).error_on(:gap_opening_extension)
+    @blastn_job.should have(0).error_on(:gap_opening_extension)
   end
 
-  it "fails validation without selecting gap_opening_extension with gapped_alignment (using error_on)" do
+  it "fails validation without selecting gap_opening_extension with gapped_alignment" do
     @blastn_job.gapped_alignments = true
     @blastn_job.gap_opening_extension = "11, 2"
     @blastn_job.should have(0).errors_on(:gap_opening_extension)
@@ -100,6 +100,25 @@ describe Quorum::BlastnJob do
     )
   end
 
+  it "passes validation if not enqueued and blast_dbs is empty" do
+    @blastn_job.queue = false
+    @blastn_job.blast_dbs = []
+    @blastn_job.should have(0).errors_on(:blast_dbs)
+  end
+
+  it "fails validation if blast_dbs is empty" do
+    @blastn_job.queue = true
+    @blastn_job.blast_dbs = []
+    @blastn_job.should have(1).errors_on(:blast_dbs)
+  end
+
+  # Test for removal of multiple select hidden field value.
+  it "fails validation if blast_dbs contains an empty string" do
+    @blastn_job.queue = true
+    @blastn_job.blast_dbs = ["", "", ""]
+    @blastn_job.should have(1).errors_on(:blast_dbs)
+  end
+
   it "joins blast_dbs on semicolon after save" do
     @blastn_job.blast_dbs = ["test_1", "test_2"]
     @blastn_job.save
@@ -109,10 +128,10 @@ describe Quorum::BlastnJob do
   it "sets optional params to default values if empty after save" do
     @blastn_job.save
     @blastn_job.expectation.should eq("5e-20")
-    @blastn_job.max_score.should eq(25)
+    @blastn_job.max_target_seqs.should eq(25)
     @blastn_job.min_bit_score.should eq(0)
-    @blastn_job.gap_opening_penalty.should eq(0)
-    @blastn_job.gap_extension_penalty.should eq(0)
+    @blastn_job.gap_opening_penalty.should be_nil
+    @blastn_job.gap_extension_penalty.should be_nil
   end
 
 end

@@ -1,8 +1,0 @@
-en:
-  quorum:
-    jobs:
-      errors:
-      notices:
-        data_not_found: "The data you requested is unavailable. Please check your URL and try again."
-      alerts:
-

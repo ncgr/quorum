@@ -25,58 +25,23 @@ load 'rails/tasks/engine.rake'
 
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec)
-task :default => :spec
 
 Bundler::GemHelper.install_tasks
 
-# Travis Tasks
-namespace :travis do
-  # Specs
-  task :spec do
-    Rake::Task["travis:create_dirs"].execute
-    ["rake spec", "rake app:jasmine:ci JASMINE_PORT=53331"].each do |cmd|
-      puts "Starting to run #{cmd}..."
-      system("export DISPLAY=:99.0 && bundle exec #{cmd}")
-      raise "#{cmd} failed!" unless $?.exitstatus == 0
-    end
-    Rake::Task["travis:remove_db_config"].execute
+# Travis tasks
+load 'spec/lib/tasks/travis.rake'
+
+# Spec runner
+task :spec_runner do
+  unless File.exists?(File.expand_path("../spec/dummy/quorum", __FILE__))
+    Rake::Task["travis:quorum_install"].execute
+    Rake::Task["travis:copy_quorum_settings"].execute
   end
-
-  # Create spec/dummy/config/database.yml for Travis.
-  task :create_db_config do
-    config = File.expand_path("../spec/dummy/config", __FILE__)
-    File.open(File.join(config, "database.yml"), "w+") do |file|
-      file.puts "test:\n  adapter: mysql2\n  database: quorum_test\n" <<
-      "  username: root\n  password:\n  host: localhost\n  encoding: utf8"
-    end
+  unless File.exists?(File.expand_path("../spec/dummy/tmp", __FILE__))
+    Rake::Task["travis:create_dummy_tmp"].execute
   end
-
-  # Remove spec/dummy/config/database.yml after Travis.
-  task :remove_db_config do
-    config = File.expand_path("../spec/dummy/config", __FILE__)
-    File.delete(File.join(config, "database.yml"))
-  end
-
-  # Create necessary directories for test. Mimic a real app install
-  # via rails g quorum:install.
-  #
-  # The directories below are not in the git repo.
-  task :create_dirs do
-    app    = File.expand_path("../spec/dummy", __FILE__)
-    quorum = File.expand_path("../spec/dummy/quorum", __FILE__)
-
-    app_tmp   = File.join(app, "tmp")
-    app_pids  = File.join(app_tmp, "pids")
-    app_cache = File.join(app_tmp, "cache")
-
-    Dir.mkdir(app_tmp) unless File.directory?(app_tmp)
-    Dir.mkdir(app_pids) unless File.directory?(app_pids)
-    Dir.mkdir(app_cache) unless File.directory?(app_cache)
-
-    quorum_log = File.join(quorum, "log")
-    quorum_tmp = File.join(quorum, "tmp")
-
-    Dir.mkdir(quorum_log) unless File.directory?(quorum_log)
-    Dir.mkdir(quorum_tmp) unless File.directory?(quorum_tmp)
-  end
+  Rake::Task["spec"].execute
+  Rake::Task["app:jasmine:ci"].execute
 end
+
+task :default => :spec_runner

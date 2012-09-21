@@ -37,6 +37,9 @@ task :spec_runner do
     Rake::Task["travis:quorum_install"].execute
     Rake::Task["travis:copy_quorum_settings"].execute
   end
+  unless File.exists?(File.expand_path("../spec/dummy/tmp", __FILE__))
+    Rake::Task["travis:create_dummy_tmp"].execute
+  end
   Rake::Task["spec"].execute
   Rake::Task["app:jasmine:ci"].execute
 end

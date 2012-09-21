@@ -9,15 +9,16 @@ module Quorum
       values = [
         "query",
         "hit_display_id",
-        "identity",
+        "pct_identity",
         "align_len",
+        "mismatch",
+        "gaps",
         "query_from",
         "query_to",
         "hit_from",
         "hit_to",
         "evalue",
-        "bit_score",
-        "pct_identity"
+        "bit_score"
       ]
 
       data.each do |d|

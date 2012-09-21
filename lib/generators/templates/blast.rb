@@ -374,6 +374,9 @@ module Quorum
                   @data[:identity].to_f / @data[:align_len].to_f
                 ) * 100
 
+                # Calculate mismatch
+                @data[:mismatch] = @data[:align_len] - @data[:identity]
+
                 if @data[:bit_score] &&
                   (@data[:bit_score].to_i > @min_score.to_i)
                   @results = true

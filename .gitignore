@@ -1,10 +1,8 @@
 .bundle/
 log/*.log
 pkg/
-spec/dummy/db/*.sqlite3
-spec/dummy/db/migrate/
+spec/dummy/db/*
 spec/dummy/log/*.log
-spec/dummy/tmp/
+spec/dummy/tmp/*
 spec/dummy/config/database.yml
-spec/dummy/quorum/log/*
-spec/dummy/quorum/tmp/*
+spec/dummy/quorum/

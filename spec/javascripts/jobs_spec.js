@@ -67,17 +67,17 @@ describe("Quorum Search Form", function() {
       $('#job_blastp_job_attributes_min_bit_score').attr('title')
     );
 
-    expect($('#job_blastn_job_attributes_max_score')).toHaveValue(
-      $('#job_blastn_job_attributes_max_score').attr('title')
+    expect($('#job_blastn_job_attributes_max_target_seqs')).toHaveValue(
+      $('#job_blastn_job_attributes_max_target_seqs').attr('title')
     );
-    expect($('#job_blastx_job_attributes_max_score')).toHaveValue(
-      $('#job_blastx_job_attributes_max_score').attr('title')
+    expect($('#job_blastx_job_attributes_max_target_seqs')).toHaveValue(
+      $('#job_blastx_job_attributes_max_target_seqs').attr('title')
     );
-    expect($('#job_tblastn_job_attributes_max_score')).toHaveValue(
-      $('#job_tblastn_job_attributes_max_score').attr('title')
+    expect($('#job_tblastn_job_attributes_max_target_seqs')).toHaveValue(
+      $('#job_tblastn_job_attributes_max_target_seqs').attr('title')
     );
-    expect($('#job_blastp_job_attributes_max_score')).toHaveValue(
-      $('#job_blastp_job_attributes_max_score').attr('title')
+    expect($('#job_blastp_job_attributes_max_target_seqs')).toHaveValue(
+      $('#job_blastp_job_attributes_max_target_seqs').attr('title')
     );
   });
 

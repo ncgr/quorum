@@ -1,5 +1,5 @@
 require 'spec_helper'
-require File.expand_path("../../dummy/quorum/lib/search_tools/blast", __FILE__)
+require 'generators/templates/blast'
 
 describe "Quorum::SearchTools::Blast" do
   describe "#execute_blast non empty report" do

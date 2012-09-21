@@ -16,7 +16,7 @@
           <%= n.label :filter, "SEG" %>
         </td>
         <td>
-          <%= n.check_box :filter %>
+          <%= n.select :filter, [['Yes', true],['No', false]] %>
         </td>
       </tr>
       <tr>
@@ -37,17 +37,17 @@
       </tr>
       <tr>
         <td>
-          <%= n.label :max_score %>
+          <%= n.label :max_target_seqs, "Max target sequences" %>
         </td>
         <td>
-          <%= n.text_field :max_score, :size => 15, :title => "25",
+          <%= n.text_field :max_target_seqs, :size => 15, :title => "25",
             :class => "auto-hint" %>
         </td>
         <td>
           <%= n.label :gapped_alignments %>
         </td>
         <td>
-          <%= n.select :gapped_alignments, [['No', false], ['Yes', true]] %>
+          <%= n.select :gapped_alignments, [['Yes', true],['No', false]] %>
         </td>
       </tr>
       <tr>

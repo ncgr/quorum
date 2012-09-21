@@ -1,0 +1,55 @@
+development:
+  blast:
+    remote: false
+    ssh_host:
+    ssh_user:
+    ssh_options:
+    bin: "%{RAILS_ROOT}/quorum/bin"
+    log_dir: "%{RAILS_ROOT}/quorum/log"
+    tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
+    blast_db: "%{RAILS_ROOT}/quorum/blastdb"
+    blastn:
+      "tmp": test
+    blastx:
+      "tmp": test
+    tblastn:
+      "tmp": test
+    blastp:
+      "tmp": test
+    blast_threads: 4
+
+test:
+  blast:
+    remote: false
+    ssh_host:
+    ssh_user:
+    ssh_options:
+    bin: "%{RAILS_ROOT}/quorum/bin"
+    log_dir: "%{RAILS_ROOT}/quorum/log"
+    tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
+    blast_db: "%{RAILS_ROOT}/quorum/blastdb"
+    blastn:
+      "tmp": test
+    blastx:
+      "tmp": test
+    tblastn:
+      "tmp": test
+    blastp:
+      "tmp": test
+    blast_threads:
+
+production:
+  blast:
+    remote: true
+    ssh_host:
+    ssh_user:
+    ssh_options:
+    bin:
+    log_dir:
+    tmp_dir:
+    blast_db:
+    blastn:
+    blastx:
+    tblastn:
+    blastp:
+    blast_threads:

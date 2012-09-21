@@ -1,6 +1,8 @@
 module Quorum
   class BlastnJob < ActiveRecord::Base
 
+    before_validation :check_blast_dbs, :if => :queue
+
     before_save :set_optional_params, :set_blast_dbs
 
     belongs_to :job
@@ -9,7 +11,7 @@ module Quorum
       :foreign_key => :blastn_job_id,
       :primary_key => :job_id
 
-    attr_accessible :expectation, :max_score, :min_bit_score,
+    attr_accessible :expectation, :max_target_seqs, :min_bit_score,
       :filter,  :gapped_alignments, :gap_opening_penalty,
       :gap_extension_penalty, :gap_opening_extension, :queue,
       :blast_dbs
@@ -18,7 +20,7 @@ module Quorum
       :with        => /\A[+-]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\z/,
       :message     => " - Valid formats (12, 32.05, 43e-123)",
       :allow_blank => true
-    validates_numericality_of :max_score,
+    validates_numericality_of :max_target_seqs,
       :only_integer => true,
       :allow_blank  => true
     validates_numericality_of :min_bit_score,
@@ -31,7 +33,6 @@ module Quorum
       :only_integer => true,
       :allow_blank  => true
     validates_presence_of :blast_dbs, :if => :queue
-    validate :gap_opening_extension_exists
 
     #
     # Gapped alignment helper.
@@ -79,32 +80,24 @@ module Quorum
 
     private
 
+    def check_blast_dbs
+      if self.blast_dbs.present?
+        self.blast_dbs = self.blast_dbs.delete_if { |b| b.empty? }
+      end
+    end
+
     def set_blast_dbs
       if self.blast_dbs.present?
-        self.blast_dbs = self.blast_dbs.delete_if { |b| b.empty? }.join(';')
+        self.blast_dbs = self.blast_dbs.join(';')
       end
     end
 
     def set_optional_params
-      self.expectation   = "5e-20" if self.expectation.blank?
-      self.max_score     ||= 25
+      self.expectation = "5e-20" if self.expectation.blank?
+      self.max_target_seqs ||= 25
       self.min_bit_score ||= 0
-      unless self.gapped_alignments
-        self.gap_opening_penalty   = 0
-        self.gap_extension_penalty = 0
-      end
-    end
-
-    #
-    # Add error if gapped_alignment? without gap_opening_extension.
-    #
-    def gap_opening_extension_exists
-      if gap_opening_extension.split(',').blank? && gapped_alignment?
-        errors.add(
-          :gap_opening_extension,
-          " - Please select a value."
-        )
-      end
+      self.gap_opening_penalty ||= nil
+      self.gap_extension_penalty ||= nil
     end
 
   end

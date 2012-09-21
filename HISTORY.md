@@ -1,3 +1,15 @@
+## 0.6.0 (2012-09-21)
+
+* Renamed blast report max_score to max_target_seqs to match NCBI Blast
+  reports. Updated search interface. NOTE: requires migration install.
+* Updated the default search interface:
+* Enabled gapped alignments by default.
+* Improved existing filter options (NCBI Blast DUST and SEG) to use NCBI Blast
+  default values.
+* Fixed Rails 3.2 multiple select validation error.
+* Refactored travis-ci rake tasks.
+* Added default spec runner task.
+
 ## 0.5.2 (2012-09-14)
 
 * Removed jQuery ajax timeout for long lasting blast jobs.

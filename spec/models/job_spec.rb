@@ -12,6 +12,22 @@ describe Quorum::Job do
     @job.should have(1).error_on(:algorithm)
   end
 
+  it "fails validation when input sequence size is too large" do
+    @job.sequence = ">header\n" << "a" * 51200
+    @job.build_blastn_job
+    @job.blastn_job.queue = true
+    @job.should have(1).errors_on(:sequence)
+  end
+
+  it "fails validation with invalid sequence data" do
+    @job.sequence = File.open(
+      File.expand_path("../../data/seqs_not_fa.txt", __FILE__)
+    ).read
+    @job.build_blastn_job
+    @job.blastn_job.queue = true
+    @job.should have(1).errors_on(:sequence)
+  end
+
   it "passes validation with algorithm and valid sequence data" do
     @job.sequence = File.open(
       File.expand_path("../../data/nucl_prot_seqs.txt", __FILE__)

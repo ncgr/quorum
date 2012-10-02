@@ -10,12 +10,21 @@ settings = YAML.load_file(
 
 ## Sub %{RAILS_ROOT} ##
 settings.keys.each do |k|
-  settings[k.to_s].each_value do |v|
-    if v.kind_of?(String)
-      v.to_s.gsub!('%{RAILS_ROOT}', ::Rails.root.to_s)
+  if settings[k.to_s].respond_to?(:each_value)
+    settings[k.to_s].each_value do |v|
+      if v.kind_of?(String)
+        v.to_s.gsub!('%{RAILS_ROOT}', ::Rails.root.to_s)
+      end
+    end
+  else
+    if settings[k.to_s].kind_of?(String)
+      settings[k.to_s].gsub!('%{RAILS_ROOT}', ::Rails.root.to_s)
     end
   end
 end
+
+## Quorum General Settings ##
+Quorum.max_sequence_size = settings['max_sequence_size']
 
 blast = settings['blast']
 
@@ -33,4 +42,3 @@ Quorum.blastp            = blast['blastp']
 Quorum.blastn            = blast['blastn']
 Quorum.blastx            = blast['blastx']
 Quorum.blast_threads     = blast['blast_threads']
-

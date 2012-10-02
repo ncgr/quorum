@@ -318,12 +318,7 @@ module Quorum
             @tmp_files
           )
         end
-        @logger.log(
-          "NCBI Blast",
-          "#{@algorithm} report empty.",
-          0,
-          @tmp_files
-        )
+        @logger.log("NCBI Blast", "#{@algorithm} report empty.")
       end
 
       #

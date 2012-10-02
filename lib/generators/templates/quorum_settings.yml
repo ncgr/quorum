@@ -3,6 +3,9 @@
 # ==> General
 # Quorum initializer safely substitutes %{RAILS_ROOT} with ::Rails.root.to_s.
 #
+# max_sequence_size: Max input sequence size in bytes.
+#   Defaults to 51200 (50 KB).
+#
 # ==> NCBI BLAST+ Settings
 # blast:
 #   remote: true to execute script on remote machine via
@@ -64,6 +67,7 @@
 #     Defaults to 1.
 
 development:
+  max_sequence_size:
   blast:
     remote: false
     ssh_host:
@@ -95,6 +99,7 @@ development:
     blast_threads:
 
 test:
+  max_sequence_size:
   blast:
     remote: false
     ssh_host:
@@ -126,6 +131,7 @@ test:
     blast_threads:
 
 production:
+  max_sequence_size:
   blast:
     remote: true
     ssh_host:

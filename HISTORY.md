@@ -1,3 +1,9 @@
+## 0.7.0 (2012-10-02)
+
+* Fixed empty blast report bug. https://github.com/ncgr/quorum/issues/6
+* Added max_sequence_size to quorum_settings.yml to allow user to specify
+  max input sequence size in bytes. Defaults to 50 KB.
+
 ## 0.6.0 (2012-09-21)
 
 * Renamed blast report max_score to max_target_seqs to match NCBI Blast

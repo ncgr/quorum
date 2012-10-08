@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'generators/templates/blast'
 
-describe "Quorum::SearchTools::Blast", :focus do
+describe "Quorum::SearchTools::Blast" do
   describe "#execute_blast non empty report" do
     before(:each) do
       # Set args as though we executed bin/search.
@@ -43,8 +43,8 @@ describe "Quorum::SearchTools::Blast", :focus do
       @job.blastp_job.blast_dbs = ["test"]
 
       @job.build_tblastx_job
-      @job.blastx_job.queue     = true
-      @job.blastx_job.blast_dbs = ["test"]
+      @job.tblastx_job.queue     = true
+      @job.tblastx_job.blast_dbs = ["test"]
     end
 
     it "executes blastn on a given dataset" do

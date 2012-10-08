@@ -26,7 +26,7 @@ module Quorum
       :dependent => :destroy
 
     accepts_nested_attributes_for :blastn_job, :blastx_job, :tblastn_job,
-      :blastp_job, :tblastx,
+      :blastp_job, :tblastx_job,
       :reject_if => proc { |attributes| attributes['queue'] == '0' }
 
     attr_accessible :sequence, :na_sequence, :aa_sequence,
@@ -34,7 +34,7 @@ module Quorum
       :blastp_job_attributes, :tblastx_job_attributes
 
     validates_associated :blastn_job, :blastx_job, :tblastn_job, :blastp_job,
-      :tblastx
+      :tblastx_job
 
     validate :filter_input_sequences, :algorithm_selected, :sequence_size
 

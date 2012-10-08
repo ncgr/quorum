@@ -16,7 +16,7 @@ module Quorum
   mattr_accessor :max_sequence_size, :blast_remote, :blast_ssh_host,
                  :blast_ssh_user, :blast_ssh_options, :blast_bin,
                  :blast_log_dir, :blast_tmp_dir, :blast_db, :tblastn,
-                 :blastp, :blastn, :blastx, :blast_threads
+                 :blastp, :blastn, :blastx, :tblastx, :blast_threads
 
   ## Deprecated ##
   mattr_accessor :blast_script
@@ -90,6 +90,11 @@ module Quorum
     # blastx directories.
     def blastx
       @@blastx || []
+    end
+
+    # tblastx directories.
+    def tblastx
+      @@tblastx || []
     end
 
     # Number of Blast threads.

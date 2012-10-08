@@ -10,6 +10,7 @@
       <li><a href="#tabs-2">Blastx</a></li>
       <li><a href="#tabs-3">Tblastn</a></li>
       <li><a href="#tabs-4">Blastp</a></li>
+      <li><a href="#tabs-5">Tblastx</a></li>
     </ul>
 
     <%# Search results per algorithm %>
@@ -37,6 +38,13 @@
     <div id="tabs-4">
       <h2>Blastp</h2>
       <div id="blastp-results">
+        Searching... <%= image_tag "quorum/loading.gif" %>
+      </div>
+    </div>
+
+    <div id="tabs-5">
+      <h2>Tblastx</h2>
+      <div id="tblastx-results">
         Searching... <%= image_tag "quorum/loading.gif" %>
       </div>
     </div>

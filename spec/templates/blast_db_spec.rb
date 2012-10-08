@@ -1,5 +1,5 @@
 require 'spec_helper'
-require File.expand_path("../../dummy/quorum/lib/fetch_tools/blast_db", __FILE__)
+require 'generators/templates/blast_db'
 
 describe "Quorum::FetchTools::BlastDb" do
   describe "#execute_blast_db_cmd" do

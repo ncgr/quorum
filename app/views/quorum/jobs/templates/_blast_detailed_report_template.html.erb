@@ -2,19 +2,8 @@
 <script type="text/template" id="detailed_report_template">
   <h3>Query Accession {{= query }}</h3>
   {{ _.each(data, function(v) { }}
-    {{ var id        = v.id }}
-    {{ var qseq      = v.qseq }}
-    {{ var midline   = v.midline }}
-    {{ var hseq      = v.hseq }}
-    {{ var q_from    = v.query_from }}
-    {{ var q_to      = v.query_to }}
-    {{ var h_from    = v.hit_from }}
-    {{ var h_to      = v.hit_to }}
-    {{ var qstrand   = v.query_frame }}
-    {{ var hstrand   = v.hit_frame }}
-    {{ var hsp_group = v.hsp_group }}
-    <div id="{{= id }}">
-      <p class="small">{{= QUORUM.displayHspLinks(id, hsp_group, data) }}</p>
+    <div id="{{= v.id }}">
+      <p class="small">{{= QUORUM.displayHspLinks(v.id, v.hsp_group, data) }}</p>
       <p class="small">Hit Accession: {{= v.hit_display_id }}</p>
       <p class="small">Hit Description: {{= v.hit_def }}</p>
       <table class="report_details">
@@ -25,7 +14,7 @@
         </tr>
         <tr>
           <td>Alignment Length: {{= v.align_len }}</td>
-          <td>Qstrand / Hstrand: {{= QUORUM.formatStrand(qstrand, hstrand) }}</td>
+          <td>Qstrand / Hstrand: {{= QUORUM.formatStrand(v.query_frame, v.hit_frame) }}</td>
           <td></td>
         </tr>
         <tr>
@@ -40,12 +29,12 @@
         </tr>
       </table>
       <p class="small">
-        <a id="download_sequence_{{= id }}"
-          onclick="QUORUM.downloadSequence(<%= @jobs.id %>, {{= id }}, '{{= algo }}', this)">
+        <a id="download_sequence_{{= v.id }}"
+          onclick="QUORUM.downloadSequence({{= v.id }}, '{{= algo }}', this)">
           Download Sequence
         </a>
       </p>
-      {{= QUORUM.formatSequenceReport(qseq, midline, hseq, q_from, q_to, h_from, h_to, algo) }}
+      {{= QUORUM.formatSequenceReport(v.qseq, v.midline, v.hseq, v.query_from, v.query_to, v.hit_from, v.hit_to, algo) }}
     </div>
     <hr />
     {{ }); }}

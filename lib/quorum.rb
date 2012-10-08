@@ -1,6 +1,7 @@
 require "quorum/engine"
 require "quorum/helpers"
 require "quorum/sequence"
+require "quorum/version"
 require "resque"
 require "resque/server"
 require "resque-result"
@@ -10,16 +11,24 @@ require "workers/quorum"
 module Quorum
 
   ## Supported Algorithms ##
-  BLAST_ALGORITHMS = ["blastn", "blastx", "blastp", "tblastn"]
+  BLAST_ALGORITHMS = ["blastn", "blastx", "blastp", "tblastn"].freeze
 
-  mattr_accessor :blast_remote, :blast_ssh_host, :blast_ssh_user,
-    :blast_ssh_options, :blast_bin, :blast_log_dir, :blast_tmp_dir,
-    :blast_db, :tblastn, :blastp, :blastn, :blastx, :blast_threads
+  mattr_accessor :max_sequence_size, :blast_remote, :blast_ssh_host,
+                 :blast_ssh_user, :blast_ssh_options, :blast_bin,
+                 :blast_log_dir, :blast_tmp_dir, :blast_db, :tblastn,
+                 :blastp, :blastn, :blastx, :blast_threads
 
   ## Deprecated ##
   mattr_accessor :blast_script
 
   class << self
+
+    ## General ##
+
+    # Max input sequence size.
+    def max_sequence_size
+      @@max_sequence_size || 50.kilobytes
+    end
 
     ## Blast ##
 

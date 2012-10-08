@@ -105,7 +105,7 @@ module Quorum
 
         @filter                = @job.method(@job_association).call.filter
         @expectation           = @job.method(@job_association).call.expectation
-        @max_score             = @job.method(@job_association).call.max_score
+        @max_target_seqs       = @job.method(@job_association).call.max_target_seqs
         @min_score             = @job.method(@job_association).call.min_bit_score
         @gapped_alignments     = @job.method(@job_association).call.gapped_alignments
         @gap_opening_penalty   = @job.method(@job_association).call.gap_opening_penalty
@@ -136,15 +136,17 @@ module Quorum
         "-outfmt 5 " <<
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
-        "-max_target_seqs #{@max_score} " <<
+        "-max_target_seqs #{@max_target_seqs} " <<
         "-out #{@out} "
         if @gapped_alignments
-          blastn << "-gapopen #{@gap_opening_penalty} "
-          blastn << "-gapextend #{@gap_extension_penalty} "
+          if @gap_opening_penalty && @gap_extension_penalty
+            blastn << "-gapopen #{@gap_opening_penalty} "
+            blastn << "-gapextend #{@gap_extension_penalty} "
+          end
         else
           blastn << "-ungapped "
         end
-        blastn << "-dust yes " if @filter
+        blastn << "-dust #{@filter ? 'yes' : 'no'} "
         blastn
       end
 
@@ -158,15 +160,17 @@ module Quorum
         "-outfmt 5 " <<
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
-        "-max_target_seqs #{@max_score} " <<
+        "-max_target_seqs #{@max_target_seqs} " <<
         "-out #{@out} "
         if @gapped_alignments
-          blastx << "-gapopen #{@gap_opening_penalty} "
-          blastx << "-gapextend #{@gap_extension_penalty} "
+          if @gap_opening_penalty && @gap_extension_penalty
+            blastx << "-gapopen #{@gap_opening_penalty} "
+            blastx << "-gapextend #{@gap_extension_penalty} "
+          end
         else
           blastx << "-ungapped "
         end
-        blastx << "-seg yes " if @filter
+        blastx << "-seg #{@filter ? 'yes' : 'no'} "
         blastx
       end
 
@@ -180,17 +184,19 @@ module Quorum
         "-outfmt 5 " <<
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
-        "-max_target_seqs #{@max_score} " <<
+        "-max_target_seqs #{@max_target_seqs} " <<
         "-out #{@out} "
         if @gapped_alignments
-          tblastn << "-gapopen #{@gap_opening_penalty} "
-          tblastn << "-gapextend #{@gap_extension_penalty} "
+          if @gap_opening_penalty && @gap_extension_penalty
+            tblastn << "-gapopen #{@gap_opening_penalty} "
+            tblastn << "-gapextend #{@gap_extension_penalty} "
+          end
           tblastn << "-comp_based_stats D "
         else
           tblastn << "-ungapped "
           tblastn << "-comp_based_stats F "
         end
-        tblastn << "-seg yes " if @filter
+        tblastn << "-seg #{@filter ? 'yes' : 'no'} "
         tblastn
       end
 
@@ -204,17 +210,19 @@ module Quorum
         "-outfmt 5 " <<
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<
-        "-max_target_seqs #{@max_score} " <<
+        "-max_target_seqs #{@max_target_seqs} " <<
         "-out #{@out} "
         if @gapped_alignments
-          blastp << "-gapopen #{@gap_opening_penalty} "
-          blastp << "-gapextend #{@gap_extension_penalty} "
+          if @gap_opening_penalty && @gap_extension_penalty
+            blastp << "-gapopen #{@gap_opening_penalty} "
+            blastp << "-gapextend #{@gap_extension_penalty} "
+          end
           blastp << "-comp_based_stats D "
         else
           blastp << "-ungapped "
           blastp << "-comp_based_stats F "
         end
-        blastp << "-seg yes " if @filter
+        blastp << "-seg #{@filter ? 'yes' : 'no'} "
         blastp
       end
 
@@ -277,20 +285,18 @@ module Quorum
       # Set the attribute results to true for downstream processes.
       #
       def save_hsp_results
-        if @data[:bit_score] && (@data[:bit_score].to_i > @min_score.to_i)
-          @data[:results] = true
-          @data["#{@algorithm}_job_id".to_sym] = @job.method(@job_association).call.job_id
+        @data[:results] = true
+        @data["#{@algorithm}_job_id".to_sym] = @job.method(@job_association).call.job_id
 
-          job_report = @job.method(@job_report_association).call.build(@data)
+        job_report = @job.method(@job_report_association).call.build(@data)
 
-          unless job_report.save!
-            @logger.log(
-              "ActiveRecord",
-              "Unable to save #{@algorithm} results to database.",
-              1,
-              @tmp_files
-            )
-          end
+        unless job_report.save!
+          @logger.log(
+            "ActiveRecord",
+            "Unable to save #{@algorithm} results to database.",
+            1,
+            @tmp_files
+          )
         end
       end
 
@@ -312,12 +318,7 @@ module Quorum
             @tmp_files
           )
         end
-        @logger.log(
-          "NCBI Blast",
-          "#{@algorithm} report empty.",
-          0,
-          @tmp_files
-        )
+        @logger.log("NCBI Blast", "#{@algorithm} report empty.")
       end
 
       #
@@ -437,8 +438,13 @@ module Quorum
         generate_blast_cmd
         @logger.log("NCBI Blast", @cmd)
         system(@cmd)
-        parse_and_save_results
-        add_hps_groups_to_reports
+
+        # Wrap these methods in a transaction to prevent premature return.
+        @job.method(@job_report_association).call.transaction do
+          parse_and_save_results
+          add_hps_groups_to_reports
+        end
+
         remove_tmp_files
       end
 

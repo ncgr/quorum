@@ -1,5 +1,5 @@
 require 'spec_helper'
-require File.expand_path("../../dummy/quorum/lib/search_tools/blast", __FILE__)
+require 'generators/templates/blast'
 
 describe "Quorum::SearchTools::Blast", :focus do
   describe "#execute_blast non empty report" do
@@ -171,7 +171,7 @@ describe "Quorum::SearchTools::Blast", :focus do
       blast = Quorum::SearchTools::Blast.new(@args)
       expect {
         blast.execute_blast
-      }.to raise_error
+      }.to_not raise_error
 
       Dir.glob(
         File.join(@args[:tmp_directory], "*")

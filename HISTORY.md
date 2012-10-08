@@ -1,3 +1,37 @@
+## 0.7.0 (2012-10-02)
+
+* Fixed empty blast report bug. https://github.com/ncgr/quorum/issues/6
+* Added max_sequence_size to quorum_settings.yml to allow user to specify
+  max input sequence size in bytes. Defaults to 50 KB.
+
+## 0.6.0 (2012-09-21)
+
+* Renamed blast report max_score to max_target_seqs to match NCBI Blast
+  reports. Updated search interface. NOTE: requires migration install.
+* Updated the default search interface:
+* Enabled gapped alignments by default.
+* Improved existing filter options (NCBI Blast DUST and SEG) to use NCBI Blast
+  default values.
+* Fixed Rails 3.2 multiple select validation error.
+* Refactored travis-ci rake tasks.
+* Added default spec runner task.
+
+## 0.5.2 (2012-09-14)
+
+* Removed jQuery ajax timeout for long lasting blast jobs.
+
+## 0.5.1 (2012-09-14)
+
+* Fixed Quorum::VERSION uninitialized constant error when overriding views.
+
+## 0.5.0 (2012-09-14)
+
+* Fixed partial data load bug. https://github.com/ncgr/quorum/issues/2
+  Requires running quorum:install and quorum:views generators.
+  See the Upgrading? section in the README for more information.
+* Added better support for jQuery ajax errors in quorum.js.
+* Added better support for URLs in quorum.js.
+
 ## 0.4.0 (2012-08-10)
 
 * Added Hsp gaps to Blast Job Reports.

@@ -36,7 +36,7 @@ module Quorum
     validates_associated :blastn_job, :blastx_job, :tblastn_job, :blastp_job,
       :tblastx
 
-    validate :filter_input_sequences, :algorithm_selected
+    validate :filter_input_sequences, :algorithm_selected, :sequence_size
 
     #
     # Fetch Blast hit_id, hit_display_id, queue Resque worker and
@@ -138,6 +138,21 @@ module Quorum
         errors.add(
           :algorithm,
           " - Please select at least one algorithm to continue."
+        )
+      end
+    end
+
+    #
+    # Validate input sequence size.
+    #
+    # Defaults to 50 KB. See lib/quorum.rb.
+    #
+    def sequence_size
+      if self.sequence.size > Quorum.max_sequence_size
+        errors.add(
+          :sequence,
+          " - Input sequence size too large. " <<
+          "Max size: #{Quorum.max_sequence_size / 1024} KB"
         )
       end
     end

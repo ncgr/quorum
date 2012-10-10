@@ -129,9 +129,21 @@ describe("QUORUM", function() {
   //
   // Blastp should increment qseq's title by 1 and hseq's title by 1.
   //
-  it("formats blastx sequence report for Blast detailed report", function() {
+  it("formats blastp sequence report for Blast detailed report", function() {
     var report = QUORUM.formatSequenceReport(
       "ELVIS", "ELVIS", "ELVIS", 10, 14, 121, 125, "blastp"
+    );
+    expect(report).toEqual("<p class='small'>Alignment (Mouse over for positions):</p><span class='small sequence'><pre>\nqseq <a rel='quorum-tipsy' title=10>E</a><a rel='quorum-tipsy' title=11>L</a><a rel='quorum-tipsy' title=12>V</a><a rel='quorum-tipsy' title=13>I</a><a rel='quorum-tipsy' title=14>S</a>\n     ELVIS\nhseq <a rel='quorum-tipsy' title=121>E</a><a rel='quorum-tipsy' title=122>L</a><a rel='quorum-tipsy' title=123>V</a><a rel='quorum-tipsy' title=124>I</a><a rel='quorum-tipsy' title=125>S</a>\n\n</pre></span>");
+  });
+
+  //
+  // Spec covers QUORUM.formatSequenceReport & QUORUM.addBaseTitleIndex.
+  //
+  // Tblastx should increment qseq's title by 1 and hseq's title by 1.
+  //
+  it("formats tblastx sequence report for Blast detailed report", function() {
+    var report = QUORUM.formatSequenceReport(
+      "ELVIS", "ELVIS", "ELVIS", 10, 14, 121, 125, "tblastx"
     );
     expect(report).toEqual("<p class='small'>Alignment (Mouse over for positions):</p><span class='small sequence'><pre>\nqseq <a rel='quorum-tipsy' title=10>E</a><a rel='quorum-tipsy' title=11>L</a><a rel='quorum-tipsy' title=12>V</a><a rel='quorum-tipsy' title=13>I</a><a rel='quorum-tipsy' title=14>S</a>\n     ELVIS\nhseq <a rel='quorum-tipsy' title=121>E</a><a rel='quorum-tipsy' title=122>L</a><a rel='quorum-tipsy' title=123>V</a><a rel='quorum-tipsy' title=124>I</a><a rel='quorum-tipsy' title=125>S</a>\n\n</pre></span>");
   });

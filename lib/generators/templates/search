@@ -11,7 +11,8 @@ SEARCH_TOOLS = {
   "blastn"  => ["blastn"],
   "blastx"  => ["blastx"],
   "tblastn" => ["tblastn"],
-  "blastp"  => ["blastp"]
+  "blastp"  => ["blastp"],
+  "tblastx" => ["tblastx"]
 }
 
 module Quorum

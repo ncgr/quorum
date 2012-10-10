@@ -14,6 +14,7 @@ module Quorum
       @job.build_blastx_job
       @job.build_tblastn_job
       @job.build_blastp_job
+      @job.build_tblastx_job
     end
 
     def create
@@ -34,6 +35,7 @@ module Quorum
         @job.build_blastx_job  if @job.blastx_job.nil?
         @job.build_tblastn_job if @job.tblastn_job.nil?
         @job.build_blastp_job  if @job.blastp_job.nil?
+        @job.build_tblastx_job  if @job.tblastx_job.nil?
         render :action => "new"
         return
       end
@@ -162,7 +164,8 @@ module Quorum
         :blastn  => Quorum.blastn,
         :blastx  => Quorum.blastx,
         :tblastn => Quorum.tblastn,
-        :blastp  => Quorum.blastp
+        :blastp  => Quorum.blastp,
+        :tblastx => Quorum.tblastx
       }
     end
 

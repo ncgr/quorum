@@ -105,6 +105,14 @@ describe "Jobs" do
         select "Yes", :from => "job_blastp_job_attributes_gapped_alignments"
         select "13, 1", :from => "job_blastp_job_attributes_gap_opening_extension"
 
+        # Tblastx
+        check "job_tblastx_job_attributes_queue"
+        select "tmp", :from => "job_tblastx_job_attributes_blast_dbs"
+        select "No", :from => "job_tblastx_job_attributes_filter"
+        fill_in "job_tblastx_job_attributes_expectation", :with => "5e-20"
+        fill_in "job_tblastx_job_attributes_min_bit_score", :with => "0"
+        fill_in "job_tblastx_job_attributes_max_target_seqs", :with => "25"
+
         click_button "Submit"
 
         page.should have_content("Search Results")
@@ -143,6 +151,14 @@ describe "Jobs" do
 
         # Render modal box.
         find("#blastp-results").find("td a").click
+        page.should have_content("Quorum Report Details")
+        page.should have_content("qseq")
+        page.should have_content("hseq")
+
+        click_link "Tblastx"
+
+        # Render modal box.
+        find("#tblastx-results").find("td a").click
         page.should have_content("Quorum Report Details")
         page.should have_content("qseq")
         page.should have_content("hseq")

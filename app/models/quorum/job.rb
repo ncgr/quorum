@@ -21,15 +21,20 @@ module Quorum
     has_many :blastp_job_reports, :through => :blastp_job,
       :dependent => :destroy
 
+    has_one :tblastx_job, :dependent => :destroy
+    has_many :tblastx_job_reports, :through => :tblastx_job,
+      :dependent => :destroy
+
     accepts_nested_attributes_for :blastn_job, :blastx_job, :tblastn_job,
-      :blastp_job,
+      :blastp_job, :tblastx_job,
       :reject_if => proc { |attributes| attributes['queue'] == '0' }
 
     attr_accessible :sequence, :na_sequence, :aa_sequence,
       :blastn_job_attributes, :blastx_job_attributes, :tblastn_job_attributes,
-      :blastp_job_attributes
+      :blastp_job_attributes, :tblastx_job_attributes
 
-    validates_associated :blastn_job, :blastx_job, :tblastn_job, :blastp_job
+    validates_associated :blastn_job, :blastx_job, :tblastn_job, :blastp_job,
+      :tblastx_job
 
     validate :filter_input_sequences, :algorithm_selected, :sequence_size
 
@@ -125,7 +130,8 @@ module Quorum
       if (self.blastn_job && self.blastn_job.queue) ||
         (self.blastx_job && self.blastx_job.queue) ||
         (self.tblastn_job && self.tblastn_job.queue) ||
-        (self.blastp_job && self.blastp_job.queue)
+        (self.blastp_job && self.blastp_job.queue) ||
+        (self.tblastx_job && self.tblastx_job.queue)
         in_queue = true
       end
       unless in_queue
@@ -167,6 +173,9 @@ module Quorum
       end
       if self.blastp_job && self.blastp_job.queue
         jobs << create_search_command("blastp")
+      end
+      if self.tblastx_job && self.tblastx_job.queue
+        jobs << create_search_command("tblastx")
       end
 
       unless jobs.blank?

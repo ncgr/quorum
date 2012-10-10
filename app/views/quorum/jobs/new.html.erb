@@ -30,6 +30,10 @@
     <%= render :partial => "quorum/jobs/form/blastp_form", :locals => {
       :f => f, :blast_dbs => @blast_dbs } %>
 
+    <%# tblastx %>
+    <%= render :partial => "quorum/jobs/form/tblastx_form", :locals => {
+      :f => f, :blast_dbs => @blast_dbs } %>
+
     <%# End Search Algorithms %>
     <div>
       <%= f.submit "Submit" %>&nbsp;&nbsp;

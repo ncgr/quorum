@@ -63,6 +63,13 @@
 #       "Display name": blastp_database_name
 #       "A really cool genome": really_cool_genome
 #
+#   tblastx: Collection of Blast DBs under the parent blast_db
+#     to use with tblastx.
+#     Example Usage:
+#     tblastx:
+#       "Display name": tblastx_database_name
+#       "A really cool genome": really_cool_genome
+#
 #   blast_threads: Number of Blast threads. >= 1
 #     Defaults to 1.
 
@@ -96,6 +103,10 @@ development:
       # Example:
       # "Display name": blastp_database_name
       # "A really cool genome": really_cool_genome
+    tblastx:
+      # Example:
+      # "Display name": tblastx_database_name
+      # "A really cool genome": really_cool_genome
     blast_threads:
 
 test:
@@ -128,6 +139,10 @@ test:
       # Example:
       # "Display name": blastp_database_name
       # "A really cool genome": really_cool_genome
+    tblastx:
+      # Example:
+      # "Display name": tblastx_database_name
+      # "A really cool genome": really_cool_genome
     blast_threads:
 
 production:
@@ -159,5 +174,9 @@ production:
     blastp:
       # Example:
       # "Display name": blastp_database_name
+      # "A really cool genome": really_cool_genome
+    tblastx:
+      # Example:
+      # "Display name": tblastx_database_name
       # "A really cool genome": really_cool_genome
     blast_threads:

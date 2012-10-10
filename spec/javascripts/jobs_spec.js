@@ -13,6 +13,7 @@ describe("Quorum Search Form", function() {
     spyOnEvent($("#job_blastx_job_attributes_queue"), 'change');
     spyOnEvent($("#job_tblastn_job_attributes_queue"), 'change');
     spyOnEvent($("#job_blastp_job_attributes_queue"), 'change');
+    spyOnEvent($("#job_tblastx_job_attributes_queue"), 'change');
 
     $('#job_blastn_job_attributes_queue').change();
     expect('change').toHaveBeenTriggeredOn($('#blastn'));
@@ -25,6 +26,9 @@ describe("Quorum Search Form", function() {
 
     $('#job_blastp_job_attributes_queue').change();
     expect('change').toHaveBeenTriggeredOn($('#blastp'));
+
+    $('#job_tblastx_job_attributes_queue').change();
+    expect('change').toHaveBeenTriggeredOn($('#tblastx'));
   });
 
   it("resets form", function() {
@@ -53,6 +57,9 @@ describe("Quorum Search Form", function() {
     expect($('#job_blastp_job_attributes_expectation')).toHaveValue(
       $('#job_blastp_job_attributes_expectation').attr('title')
     );
+    expect($('#job_tblastx_job_attributes_expectation')).toHaveValue(
+      $('#job_tblastx_job_attributes_expectation').attr('title')
+    );
 
     expect($('#job_blastn_job_attributes_min_bit_score')).toHaveValue(
       $('#job_blastn_job_attributes_min_bit_score').attr('title')
@@ -66,6 +73,9 @@ describe("Quorum Search Form", function() {
     expect($('#job_blastp_job_attributes_min_bit_score')).toHaveValue(
       $('#job_blastp_job_attributes_min_bit_score').attr('title')
     );
+    expect($('#job_tblastx_job_attributes_min_bit_score')).toHaveValue(
+      $('#job_tblastx_job_attributes_min_bit_score').attr('title')
+    );
 
     expect($('#job_blastn_job_attributes_max_target_seqs')).toHaveValue(
       $('#job_blastn_job_attributes_max_target_seqs').attr('title')
@@ -78,6 +88,9 @@ describe("Quorum Search Form", function() {
     );
     expect($('#job_blastp_job_attributes_max_target_seqs')).toHaveValue(
       $('#job_blastp_job_attributes_max_target_seqs').attr('title')
+    );
+    expect($('#job_tblastx_job_attributes_max_target_seqs')).toHaveValue(
+      $('#job_tblastx_job_attributes_max_target_seqs').attr('title')
     );
   });
 

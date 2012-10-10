@@ -32,6 +32,11 @@ module Quorum
           :foreign_key => "job_id"
         has_many :quorum_blastp_job_reports,
           :foreign_key => "blastp_job_id"
+
+        has_one :quorum_tblastx_job,
+          :foreign_key => "job_id"
+        has_many :quorum_tblastx_job_reports,
+          :foreign_key => "tblastx_job_id"
       end
 
       class QuorumBlastnJob < ActiveRecord::Base
@@ -76,6 +81,17 @@ module Quorum
       class QuorumBlastpJobReport < ActiveRecord::Base
         self.table_name = "quorum_blastp_job_reports"
         belongs_to :quorum_blastp_job
+      end
+
+      class QuorumTblastxJob < ActiveRecord::Base
+        self.table_name = "quorum_tblastx_jobs"
+        belongs_to :quorum_job
+        has_many :quorum_tblastx_job_reports
+      end
+
+      class QuorumTblastxJobReport < ActiveRecord::Base
+        self.table_name = "quorum_tblastx_job_reports"
+        belongs_to :quorum_tblastx_job
       end
 
       private
@@ -227,6 +243,22 @@ module Quorum
       end
 
       #
+      # Tblastx command
+      #
+      def generate_tblastx_cmd
+        tblastx = "tblastx " <<
+        "-db \"#{@db}\" " <<
+        "-query #{@na_fasta} " <<
+        "-outfmt 5 " <<
+        "-num_threads #{@threads} " <<
+        "-evalue #{@expectation} " <<
+        "-max_target_seqs #{@max_target_seqs} " <<
+        "-out #{@out} "
+        tblastx << "-seg #{@filter ? 'yes' : 'no'} "
+        tblastx
+      end
+
+      #
       # Generate Blast Command
       #
       def generate_blast_cmd
@@ -249,6 +281,8 @@ module Quorum
           @cmd << generate_tblastn_cmd
         when "blastp"
           @cmd << generate_blastp_cmd
+        when "tblastx"
+          @cmd << generate_tblastx_cmd
         end
       end
 

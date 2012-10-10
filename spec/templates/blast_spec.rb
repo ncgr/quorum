@@ -41,6 +41,10 @@ describe "Quorum::SearchTools::Blast" do
       @job.build_blastp_job
       @job.blastp_job.queue     = true
       @job.blastp_job.blast_dbs = ["test"]
+
+      @job.build_tblastx_job
+      @job.tblastx_job.queue     = true
+      @job.tblastx_job.blast_dbs = ["test"]
     end
 
     it "executes blastn on a given dataset" do
@@ -109,6 +113,24 @@ describe "Quorum::SearchTools::Blast" do
         File.join(@args[:tmp_directory], "*")
       ).length.should be == 0
     end
+
+    it "executes tblastx on a given dataset" do
+      @job.stub(:queue_workers)
+      @job.save!
+
+      @args[:search_tool] = "tblastx"
+      @args[:id]          = @job.id
+
+      blast = Quorum::SearchTools::Blast.new(@args)
+      expect {
+        blast.execute_blast
+      }.to_not raise_error
+
+      Dir.glob(
+        File.join(@args[:tmp_directory], "*")
+      ).length.should be == 0
+    end
+
   end
 
   describe "#execute_blast empty report" do

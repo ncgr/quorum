@@ -22,6 +22,10 @@ $(function() {
     $('#blastp').hide();
   }
 
+  if (!$('#job_tblastx_job_attributes_queue').is(':checked')) {
+    $('#tblastx').hide();
+  }
+
   // End Elements //
 
 
@@ -46,6 +50,10 @@ $(function() {
 
   $('#job_blastp_job_attributes_queue').change(function() {
     $('#blastp').slideToggle();
+  });
+
+  $('#job_tblastx_job_attributes_queue').change(function() {
+    $('#tblastx').slideToggle();
   });
 
   // End Algorithms //

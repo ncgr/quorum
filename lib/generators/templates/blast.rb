@@ -248,7 +248,7 @@ module Quorum
       def generate_tblastx_cmd
         tblastx = "tblastx " <<
         "-db \"#{@db}\" " <<
-        "-query #{@aa_fasta} " <<
+        "-query #{@na_fasta} " <<
         "-outfmt 5 " <<
         "-num_threads #{@threads} " <<
         "-evalue #{@expectation} " <<

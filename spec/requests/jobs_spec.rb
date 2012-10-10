@@ -49,7 +49,7 @@ describe "Jobs" do
 
   context "javascript", @javascript do
     before(:all) do
-      Capybara.default_wait_time = 5
+      Capybara.default_wait_time = 15
       Capybara.server_port       = 53331
       Capybara.current_driver    = :selenium
     end

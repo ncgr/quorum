@@ -34,6 +34,17 @@ module Quorum
     validate :filter_input_sequences, :algorithm_selected, :sequence_size
 
     #
+    # Delete submitted jobs.
+    #
+    def self.delete_jobs(time = 1.week)
+      if time.is_a?(String)
+        time = time.split.inject { |count, unit| count.to_i.send(unit) }
+      end
+
+      self.where("created_at < '#{time.ago.to_s(:db)}'").delete_all
+    end
+
+    #
     # Fetch Blast hit_id, hit_display_id, queue Resque worker and
     # return worker's meta_id.
     #

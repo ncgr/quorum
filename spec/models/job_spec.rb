@@ -47,12 +47,12 @@ describe Quorum::Job do
 
       job.build_blastn_job
       job.blastn_job.queue     = true
-      job.blastn_job.blast_dbs = ["test_1", "test_2"]
+      job.blastn_job.blast_dbs = ["test"]
 
       job.created_at = i.weeks.ago
       job.save!
     end
-    Quorum::Job.delete_jobs("3 weeks").should eq(2)
+    Quorum::Job.delete_jobs("25 days").should eq(2)
   end
 
   it "queues workers after save" do

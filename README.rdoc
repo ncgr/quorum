@@ -316,6 +316,9 @@ Override Quorum's views and specify your own JavaScript callback function!
 
 See "app/views/quorum/show.html.erb" for more details.
 
+For an example using d3.js (https://github.com/mbostock/d3) see:
+https://github.com/ncgr/lis_sequence_search
+
 === Redis
 
 For detailed Redis installation instructions, follow the links below.

@@ -55,9 +55,7 @@ module Quorum
     # Returns Resque worker results.
     #
     def get_quorum_search_results
-      empty = [{ :results => false }].to_json
-
-      json = empty
+      json = [{ :results => false }].to_json
 
       if Quorum::BLAST_ALGORITHMS.include?(params[:algo])
         queued = "#{params[:algo]}_job".to_sym
@@ -66,7 +64,7 @@ module Quorum
         begin
           job = Job.find(params[:id])
         rescue ActiveRecord::RecordNotFound => e
-          json = empty
+          json
         else
           if job.method(queued).call.present?
             if job.method(report).call.present?
@@ -90,8 +88,6 @@ module Quorum
     # for lookup.
     #
     def get_quorum_blast_hit_sequence
-      json = []
-
       if Quorum::BLAST_ALGORITHMS.include?(params[:algo])
         begin
           job = Job.find(params[:id])
@@ -105,7 +101,7 @@ module Quorum
         end
       end
 
-      respond_with json
+      respond_with json || []
     end
 
     #

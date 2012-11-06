@@ -71,7 +71,7 @@ module Quorum
         time = time.split.inject { |count, unit| count.to_i.send(unit) }
       end
 
-      self.where("created_at < '#{time.ago.to_s(:db)}'").delete_all
+      self.where("created_at < '#{time.ago.to_s(:db)}'").destroy_all
     end
 
     private

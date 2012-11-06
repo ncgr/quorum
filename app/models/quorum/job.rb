@@ -188,7 +188,7 @@ module Quorum
         jobs << Workers::System.create_search_command("blastp", self.id)
       end
       if self.tblastx_job && self.tblastx_job.queue
-        jobs << create_search_command("tblastx")
+        jobs << Workers::System.create_search_command("tblastx", self.id)
       end
 
       unless jobs.blank?

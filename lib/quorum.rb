@@ -6,7 +6,7 @@ require "resque"
 require "resque/server"
 require "resque-result"
 require "net/ssh"
-require "workers/quorum"
+require "workers/system"
 
 module Quorum
 

@@ -113,8 +113,6 @@ module Quorum
     # for lookup.
     #
     def get_quorum_blast_hit_sequence
-      json = []
-
       if Quorum::BLAST_ALGORITHMS.include?(params[:algo])
         begin
           job = Job.find(params[:id])
@@ -128,7 +126,7 @@ module Quorum
         end
       end
 
-      respond_with json
+      respond_with json || []
     end
 
     #

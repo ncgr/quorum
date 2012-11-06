@@ -43,19 +43,21 @@ module Quorum
     # return worker's meta_id.
     #
     def fetch_quorum_blast_sequence(algo, algo_id)
-      job    = "#{algo}_job".to_sym
-      report = "#{algo}_job_reports".to_sym
+      job         = "#{algo}_job".to_sym
+      job_reports = "#{algo}_job_reports".to_sym
 
       blast_dbs = self.method(job).call.blast_dbs
 
-      job_report = self.method(report).call.where(
+      job_report = self.method(job_reports).call.where(
         "quorum_#{algo}_job_reports.id = ?", algo_id
       ).first
 
       hit_id          = job_report.hit_id
       hit_display_id  = job_report.hit_display_id
 
-      cmd = create_blast_fetch_command(blast_dbs, hit_id, hit_display_id, algo)
+      cmd = Workers::System.create_blast_fetch_command(
+        blast_dbs, hit_id, hit_display_id, algo
+      )
 
       data = Workers::System.enqueue(
         cmd, Quorum.blast_remote,
@@ -64,6 +66,17 @@ module Quorum
       )
 
       Workers::System.get_meta(data.meta_id)
+    end
+
+    #
+    # Delete submitted jobs.
+    #
+    def self.delete_jobs(time = 1.week)
+      if time.is_a?(String)
+        time = time.split.inject { |count, unit| count.to_i.send(unit) }
+      end
+
+      self.where("created_at < '#{time.ago.to_s(:db)}'").delete_all
     end
 
     private
@@ -163,16 +176,16 @@ module Quorum
     def queue_workers
       jobs = []
       if self.blastn_job && self.blastn_job.queue
-        jobs << create_search_command("blastn")
+        jobs << Workers::System.create_search_command("blastn", self.id)
       end
       if self.blastx_job && self.blastx_job.queue
-        jobs << create_search_command("blastx")
+        jobs << Workers::System.create_search_command("blastx", self.id)
       end
       if self.tblastn_job && self.tblastn_job.queue
-        jobs << create_search_command("tblastn")
+        jobs << Workers::System.create_search_command("tblastn", self.id)
       end
       if self.blastp_job && self.blastp_job.queue
-        jobs << create_search_command("blastp")
+        jobs << Workers::System.create_search_command("blastp", self.id)
       end
       if self.tblastx_job && self.tblastx_job.queue
         jobs << create_search_command("tblastx")
@@ -187,44 +200,6 @@ module Quorum
           )
         end
       end
-    end
-
-    #
-    # Create fetch command based on config/quorum_settings.yml
-    #
-    def create_blast_fetch_command(db_names, hit_id, hit_display_id, algo)
-      # System command
-      cmd = ""
-
-      fetch = File.join(Quorum.blast_bin, "fetch")
-      cmd << "#{fetch} -f blastdbcmd -l #{Quorum.blast_log_dir} " <<
-        "-m #{Quorum.blast_tmp_dir} -d #{Quorum.blast_db} " <<
-        "-n '#{db_names}' -b '#{hit_id}' -s '#{hit_display_id}' " <<
-        "-a #{algo}"
-    end
-
-    #
-    # Create search command based on config/quorum_settings.yml
-    #
-    def create_search_command(algorithm)
-      # System command
-      cmd = ""
-
-      if Quorum::BLAST_ALGORITHMS.include?(algorithm)
-        search = File.join(Quorum.blast_bin, "search")
-        cmd << "#{search} -l #{Quorum.blast_log_dir} " <<
-          "-m #{Quorum.blast_tmp_dir} -b #{Quorum.blast_db} " <<
-          "-t #{Quorum.blast_threads} "
-      else
-        return cmd
-      end
-
-      cmd << "-s #{algorithm} -i #{self.id} " <<
-        "-d #{ActiveRecord::Base.configurations[::Rails.env.to_s]['database']} " <<
-        "-a #{ActiveRecord::Base.configurations[::Rails.env.to_s]['adapter']} " <<
-        "-k #{ActiveRecord::Base.configurations[::Rails.env.to_s]['host']} " <<
-        "-u #{ActiveRecord::Base.configurations[::Rails.env.to_s]['username']} " <<
-        "-p '#{ActiveRecord::Base.configurations[::Rails.env.to_s]['password']}' "
     end
 
   end

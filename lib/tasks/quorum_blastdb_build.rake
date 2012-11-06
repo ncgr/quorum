@@ -1,5 +1,5 @@
 #
-# Quourm Rake Tasks
+# Quourm Build Blast DBs
 #
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'blastdb'))

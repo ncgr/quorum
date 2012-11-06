@@ -52,7 +52,8 @@ describe Quorum::Job do
       job.created_at = i.weeks.ago
       job.save!
     end
-    Quorum::Job.delete_jobs("25 days").should eq(2)
+    Quorum::Job.delete_jobs("25 days").count.should eq(2)
+    Quorum::BlastnJob.count.should eq(3)
   end
 
   it "queues workers after save" do

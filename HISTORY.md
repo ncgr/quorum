@@ -1,3 +1,8 @@
+## 0.7.1 (2012-11-07)
+
+* Added quorum:delete_jobs rake task.
+* Bug fixes.
+
 ## 0.7.0 (2012-10-02)
 
 * Fixed empty blast report bug. https://github.com/ncgr/quorum/issues/6

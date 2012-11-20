@@ -1,6 +1,8 @@
 <%# Blast Results Template %>
 <script type="text/template" id="blast_template">
-  {{ if (data[0].results === false) { }}
+  {{ if (data[0].enqueued === false) { }}
+    <p><strong>Not enqueued.</strong></p>
+  {{ } else if (data[0].results === false) { }}
     <p><strong>Your search returned 0 hits.</strong></p>
   {{ } else { }}
     <table class="results">

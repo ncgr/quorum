@@ -4,6 +4,7 @@ require 'quorum/sequence'
 include Quorum::Sequence
 
 describe "Quorum::Sequence" do
+
   describe "#create_hash" do
     it "creates a MD5.hexdigest of a sequence" do
       sequence = File.open(
@@ -89,4 +90,5 @@ describe "Quorum::Sequence" do
       discover_input_sequence_type(sequence).should eq("amino_acid")
     end
   end
+
 end

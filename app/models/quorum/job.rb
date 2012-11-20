@@ -3,8 +3,6 @@ module Quorum
 
     include Quorum::Sequence
 
-    after_save :queue_workers
-
     has_one :blastn_job, :dependent => :destroy
     has_many :blastn_job_reports, :through => :blastn_job,
       :dependent => :destroy
@@ -34,33 +32,72 @@ module Quorum
     validate :filter_input_sequences, :algorithm_selected, :sequence_size
 
     #
+    # Return search results (Resque worker results).
+    #
+    def self.search(params)
+      data = JobData.new
+
+      # Allow for multiple algos and search params.
+      # Ex: /quorum/jobs/:id/search?algo=blastn,blastp
+      if params[:algo]
+        params[:algo].split(",").each do |a|
+          if Quorum::BLAST_ALGORITHMS.include?(a)
+            enqueued = "#{a}_job".to_sym
+            report   = "#{a}_job_reports".to_sym
+            begin
+              job = Job.find(params[:id])
+            rescue ActiveRecord::RecordNotFound => e
+              logger.error e.message
+            else
+              if job.try(enqueued).present?
+                if job.try(report).present?
+                  data.results << job.try(report).search(params).default_order
+                else
+                  data = JobData.new
+                end
+              else
+                data.not_enqueued
+              end
+            end
+          end
+        end
+      else
+        data.no_results
+      end
+
+      data.results
+    end
+
+    #
     # Fetch Blast hit_id, hit_display_id, queue Resque worker and
     # return worker's meta_id.
     #
-    def fetch_quorum_blast_sequence(algo, algo_id)
-      job         = "#{algo}_job".to_sym
-      job_reports = "#{algo}_job_reports".to_sym
+    def self.set_blast_hit_sequence_lookup_values(params)
+      fetch_data   = JobFetchData.new
+      algo         = params[:algo]
+      algo_id      = params[:algo_id]
 
-      blast_dbs = self.method(job).call.blast_dbs
+      if Quorum::BLAST_ALGORITHMS.include?(algo)
+        fetch_data.algo = algo
+        begin
+          job = Job.find(params[:id])
+        rescue ActiveRecord::RecordNotFound => e
+          logger.error e.message
+        else
+          algo_job         = "#{algo}_job".to_sym
+          algo_job_reports = "#{algo}_job_reports".to_sym
 
-      job_report = self.method(job_reports).call.where(
-        "quorum_#{algo}_job_reports.id = ?", algo_id
-      ).first
+          fetch_data.blast_dbs = job.try(algo_job).blast_dbs
 
-      hit_id          = job_report.hit_id
-      hit_display_id  = job_report.hit_display_id
+          job_report = job.try(algo_job_reports).where(
+            "quorum_#{algo}_job_reports.id = ?", algo_id
+          ).first
 
-      cmd = Workers::System.create_blast_fetch_command(
-        blast_dbs, hit_id, hit_display_id, algo
-      )
-
-      data = Workers::System.enqueue(
-        cmd, Quorum.blast_remote,
-        Quorum.blast_ssh_host, Quorum.blast_ssh_user,
-        Quorum.blast_ssh_options, true
-      )
-
-      Workers::System.get_meta(data.meta_id)
+          fetch_data.hit_id          = job_report.hit_id
+          fetch_data.hit_display_id  = job_report.hit_display_id
+        end
+      end
+      fetch_data
     end
 
     #
@@ -161,35 +198,6 @@ module Quorum
           " - Input sequence size too large. " <<
           "Max size: #{Quorum.max_sequence_size / 1024} KB"
         )
-      end
-    end
-
-    #
-    # Queue Resque workers.
-    #
-    def queue_workers
-      jobs = []
-      if self.blastn_job && self.blastn_job.queue
-        jobs << Workers::System.create_search_command("blastn", self.id)
-      end
-      if self.blastx_job && self.blastx_job.queue
-        jobs << Workers::System.create_search_command("blastx", self.id)
-      end
-      if self.tblastn_job && self.tblastn_job.queue
-        jobs << Workers::System.create_search_command("tblastn", self.id)
-      end
-      if self.blastp_job && self.blastp_job.queue
-        jobs << Workers::System.create_search_command("blastp", self.id)
-      end
-
-      unless jobs.blank?
-        jobs.each do |j|
-          Workers::System.enqueue(
-            j, Quorum.blast_remote,
-            Quorum.blast_ssh_host, Quorum.blast_ssh_user,
-            Quorum.blast_ssh_options
-          )
-        end
       end
     end
 

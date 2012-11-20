@@ -54,6 +54,7 @@ describe "Jobs" do
       Capybara.current_driver    = :selenium
     end
     before(:each) do
+      ActiveRecord::Base.observers.enable Quorum::JobQueueObserver
       ResqueSpec.reset!
       ResqueSpec.inline = true
     end
@@ -150,6 +151,7 @@ describe "Jobs" do
     end
     after(:all) do
       Capybara.use_default_driver
+      ActiveRecord::Base.observers.disable :all
     end
   end
 
@@ -161,22 +163,29 @@ describe "Jobs" do
     end
   end
 
-  describe "GET /quorum/jobs/id/get_quorum_search_results" do
+  describe "GET /quorum/jobs/id/search" do
     it "renders JSON results => false with invalid id" do
-      visit "/quorum/jobs/23542352345/get_quorum_search_results.json"
+      visit "/quorum/jobs/23542352345/search.json"
       page.should have_content("[{\"results\":false}]")
     end
   end
 
-  describe "GET /quorum/jobs/id/get_quorum_blast_hit_sequence" do
+  describe "GET /quorum/jobs/id/get_blast_hit_sequence" do
     it "renders empty JSON with invalid id" do
-      visit "/quorum/jobs/23542352345/get_quorum_blast_hit_sequence.json"
+      visit "/quorum/jobs/23542352345/get_blast_hit_sequence.json"
       page.should have_content("[]")
     end
 
     it "renders empty JSON with invalid id and valid params" do
-      visit "/quorum/jobs/23542352345/get_quorum_blast_hit_sequence.json?algo=blastn"
+      visit "/quorum/jobs/23542352345/get_blast_hit_sequence.json?algo=blastn"
       page.should have_content("[]")
+    end
+  end
+
+  describe "GET /quorum/jobs/id/send_blast_hit_sequence" do
+    it "renders empty text on error" do
+      visit "/quorum/jobs/23423454325/send_blast_hit_sequence?meta_id=1231"
+      page.should_not have_content(" ")
     end
   end
 end

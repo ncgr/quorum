@@ -4,7 +4,6 @@ describe Quorum::Job do
 
   before(:each) do
     @job = Quorum::Job.new()
-    ResqueSpec.reset!
   end
 
   it "fails validation without params" do
@@ -38,7 +37,7 @@ describe Quorum::Job do
     @job.should have(0).errors_on(:algorithm)
   end
 
-  it "deletes submitted jobs" do
+  it "deletes completed jobs" do
     1.upto(5) do |i|
       job = Quorum::Job.new()
       job.sequence = File.open(
@@ -54,20 +53,6 @@ describe Quorum::Job do
     end
     Quorum::Job.delete_jobs("25 days").count.should eq(2)
     Quorum::BlastnJob.count.should eq(3)
-  end
-
-  it "queues workers after save" do
-    @job.sequence = File.open(
-      File.expand_path("../../data/nucl_prot_seqs.txt", __FILE__)
-    ).read
-
-    @job.build_blastn_job
-    @job.blastn_job.queue     = true
-    @job.blastn_job.blast_dbs = ["test_1", "test_2"]
-
-    @job.save!
-
-    Workers::System.should have_queue_size_of(1)
   end
 
 end

@@ -161,21 +161,21 @@ describe "Jobs" do
     end
   end
 
-  describe "GET /quorum/jobs/id/get_quorum_search_results" do
+  describe "GET /quorum/jobs/id/search_results" do
     it "renders JSON results => false with invalid id" do
-      visit "/quorum/jobs/23542352345/get_quorum_search_results.json"
+      visit "/quorum/jobs/23542352345/search_results.json"
       page.should have_content("[{\"results\":false}]")
     end
   end
 
-  describe "GET /quorum/jobs/id/get_quorum_blast_hit_sequence" do
+  describe "GET /quorum/jobs/id/get_blast_hit_sequence" do
     it "renders empty JSON with invalid id" do
-      visit "/quorum/jobs/23542352345/get_quorum_blast_hit_sequence.json"
+      visit "/quorum/jobs/23542352345/get_blast_hit_sequence.json"
       page.should have_content("[]")
     end
 
     it "renders empty JSON with invalid id and valid params" do
-      visit "/quorum/jobs/23542352345/get_quorum_blast_hit_sequence.json?algo=blastn"
+      visit "/quorum/jobs/23542352345/get_blast_hit_sequence.json?algo=blastn"
       page.should have_content("[]")
     end
   end

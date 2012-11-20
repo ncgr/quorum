@@ -32,7 +32,7 @@ Bundler::GemHelper.install_tasks
 load 'spec/lib/tasks/travis.rake'
 
 # Spec runner
-task :spec_runner do
+task :spec_runner => :environment do
   unless File.exists?(File.expand_path("../spec/dummy/quorum", __FILE__))
     Rake::Task["travis:quorum_install"].execute
     Rake::Task["travis:copy_quorum_settings"].execute

@@ -86,5 +86,40 @@ module Quorum
       type
     end
 
+
+    #
+    # Send sequence data to the browser.
+    #
+    module SendSequence
+
+      def sequence(data)
+        @data = data
+        if @data.respond_to?(:succeeded?) && @data.succeeded?
+          if self.has_error?
+            return self.render_error
+          else
+            return send_data @data.result,
+              :filename     => @data.meta_id,
+              :type         => "text/plain",
+              :disposition  => "attachment"
+          end
+        end
+        self.render_empty
+      end
+
+      def has_error?
+        @data.result.downcase.include?("error")
+      end
+
+      def render_error
+        render :text => @data.result
+      end
+
+      def render_empty
+        render :text => ""
+      end
+
+    end
+
   end
 end

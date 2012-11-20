@@ -1,7 +1,6 @@
 require "quorum/engine"
 require "quorum/helpers"
 require "quorum/sequence"
-require "quorum/data_export"
 require "quorum/version"
 require "resque"
 require "resque/server"
@@ -18,9 +17,6 @@ module Quorum
                  :blast_ssh_user, :blast_ssh_options, :blast_bin,
                  :blast_log_dir, :blast_tmp_dir, :blast_db, :tblastn,
                  :blastp, :blastn, :blastx, :blast_threads
-
-  ## Deprecated ##
-  mattr_accessor :blast_script
 
   class << self
 
@@ -96,12 +92,6 @@ module Quorum
     # Number of Blast threads.
     def blast_threads
       @@blast_threads || 1
-    end
-
-    ## Blast Deprecated ##
-
-    def blast_script
-      nil
     end
 
   end

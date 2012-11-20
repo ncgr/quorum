@@ -1,10 +1,21 @@
 module Quorum
-  module DataExport
+  module JobSerializer
 
     #
-    # Convert search results to tab delimited output.
+    # Convert jobs to json. Uses Rails default.
     #
-    def to_txt(data)
+    def self.as_json(job)
+      if job.respond_to?(:errors) && job.errors.present?
+        { errors: job.errors.full_messages }
+      else
+        job.as_json(root: false)
+      end
+    end
+
+    #
+    # Convert jobs to tab delimited output.
+    #
+    def self.as_txt(job)
       txt = ""
       values = [
         "query",
@@ -21,30 +32,29 @@ module Quorum
         "bit_score"
       ]
 
-      data.each do |d|
-        txt << d.attributes.values_at(*values).join("\t") << "\n"
+      job.each do |j|
+        txt << j.attributes.values_at(*values).join("\t") << "\n"
       end
-
       txt
     end
 
     #
-    # Convert search results to GFF.
+    # Convert jobs to GFF.
     #
-    def to_gff(data)
+    def self.as_gff(job)
       pragma = "##gff-version 3\n"
       source = "."
       type   = "match"
       phase  = "."
       txt    = ""
-      data.each do |d|
-        if d.results
+      job.each do |j|
+        if j.results
           # Add sequence-region.
-          unless pragma.include?(d.hit_display_id)
-            pragma << "##sequence-region #{d.hit_display_id} 1 #{d.hit_len}\n"
+          unless pragma.include?(j.hit_display_id)
+            pragma << "##sequence-region #{j.hit_display_id} 1 #{j.hit_len}\n"
           end
 
-          start, stop = d.hit_from, d.hit_to
+          start, stop = j.hit_from, j.hit_to
 
           # Set the strand based on the original start, stop.
           start > stop ? strand = "-" : strand = "+"
@@ -52,20 +62,20 @@ module Quorum
           start, stop = format_hit_start_stop(start, stop)
 
           values = [
-            d.hit_display_id,
+            j.hit_display_id,
             source,
             type,
             start,
             stop,
-            d.evalue,
+            j.evalue,
             strand,
             phase
           ]
 
-          txt << values.join("\t") << "\tTarget=#{d.query} " <<
-            "#{d.query_from} #{d.query_to};Name=#{d.query};" <<
-            "identity=#{d.pct_identity};rawscore=#{d.score};" <<
-            "significance=#{d.evalue}\n"
+          txt << values.join("\t") << "\tTarget=#{j.query} " <<
+            "#{j.query_from} #{j.query_to};Name=#{j.query};" <<
+            "identity=#{j.pct_identity};rawscore=#{j.score};" <<
+            "significance=#{j.evalue}\n"
         end
       end
       txt.insert(0, pragma)
@@ -74,9 +84,8 @@ module Quorum
     #
     # Start must be <= to stop.
     #
-    def format_hit_start_stop(start, stop)
+    def self.format_hit_start_stop(start, stop)
       tmp_start, tmp_stop = start, stop
-
       if start > stop
         tmp_start, tmp_stop = stop, start
       end

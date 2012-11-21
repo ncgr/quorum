@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'debugger'
 
 describe "Jobs" do
   describe "GET /" do
@@ -54,6 +55,7 @@ describe "Jobs" do
       Capybara.current_driver    = :selenium
     end
     before(:each) do
+      ActiveRecord::Base.observers.enable Quorum::JobQueueObserver
       ResqueSpec.reset!
       ResqueSpec.inline = true
     end
@@ -150,6 +152,7 @@ describe "Jobs" do
     end
     after(:all) do
       Capybara.use_default_driver
+      ActiveRecord::Base.observers.disable :all
     end
   end
 

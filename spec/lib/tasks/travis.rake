@@ -1,5 +1,3 @@
-ENV["RAILS_ENV"] ||= 'test'
-
 # Travis Tasks
 namespace :travis do
   # Install

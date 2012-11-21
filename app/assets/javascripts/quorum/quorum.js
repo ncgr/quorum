@@ -18,7 +18,7 @@ QUORUM.algorithms = ["blastn", "blastx", "tblastn", "blastp"];
 QUORUM.pollResults = function(callback, callback_obj, interval, algos) {
 
   var self = this,
-      url = document.URL + '/get_quorum_search_results.json',
+      url = document.URL + '/search_results.json',
       interval = interval || 5000,
       algos = algos || self.algorithms,
       error = false,
@@ -97,7 +97,7 @@ QUORUM.pollResults = function(callback, callback_obj, interval, algos) {
 QUORUM.viewDetailedReport = function(focus_id, query, algo) {
 
   var self = this,
-      url = document.URL + '/get_quorum_search_results.json';
+      url = document.URL + '/search_results.json';
 
   // Create the modal box.
   $('#detailed_report_dialog').html(
@@ -327,7 +327,7 @@ QUORUM.displayHspLinks = function(focus, group, data) {
 QUORUM.downloadSequence = function(algo_id, algo, el) {
 
   var self = this,
-      url = document.URL + '/get_quorum_blast_hit_sequence.json';
+      url = document.URL + '/get_blast_hit_sequence.json';
 
   $(el).html('Fetching sequence...');
 
@@ -357,7 +357,7 @@ QUORUM.downloadSequence = function(algo_id, algo, el) {
 QUORUM.getSequenceFile = function(meta_id, el) {
 
   var self = this,
-      url = document.URL + '/send_quorum_blast_hit_sequence?meta_id=' + meta_id,
+      url = document.URL + '/send_blast_hit_sequence?meta_id=' + meta_id,
       timeoutId = 0;
 
   function downloadFile(data) {

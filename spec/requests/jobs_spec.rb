@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'debugger'
 
 describe "Jobs" do
   describe "GET /" do
@@ -180,6 +179,13 @@ describe "Jobs" do
     it "renders empty JSON with invalid id and valid params" do
       visit "/quorum/jobs/23542352345/get_blast_hit_sequence.json?algo=blastn"
       page.should have_content("[]")
+    end
+  end
+
+  describe "GET /quorum/jobs/id/send_blast_hit_sequence" do
+    it "renders empty text on error" do
+      visit "/quorum/jobs/23423454325/send_blast_hit_sequence?meta_id=1231"
+      page.should_not have_content(" ")
     end
   end
 end

@@ -72,30 +72,32 @@ module Quorum
     # Fetch Blast hit_id, hit_display_id, queue Resque worker and
     # return worker's meta_id.
     #
-    def fetch_quorum_blast_sequence(algo, algo_id)
-      job         = "#{algo}_job".to_sym
-      job_reports = "#{algo}_job_reports".to_sym
+    def self.set_blast_hit_sequence_lookup_values(params)
+      fetch_data   = JobFetchData.new
+      algo         = params[:algo]
+      algo_id      = params[:algo_id]
 
-      blast_dbs = self.method(job).call.blast_dbs
+      if Quorum::BLAST_ALGORITHMS.include?(algo)
+        fetch_data.algo = algo
+        begin
+          job = Job.find(params[:id])
+        rescue ActiveRecord::RecordNotFound => e
+          logger.error e.message
+        else
+          algo_job         = "#{algo}_job".to_sym
+          algo_job_reports = "#{algo}_job_reports".to_sym
 
-      job_report = self.method(job_reports).call.where(
-        "quorum_#{algo}_job_reports.id = ?", algo_id
-      ).first
+          fetch_data.blast_dbs = job.try(algo_job).blast_dbs
 
-      hit_id          = job_report.hit_id
-      hit_display_id  = job_report.hit_display_id
+          job_report = job.try(algo_job_reports).where(
+            "quorum_#{algo}_job_reports.id = ?", algo_id
+          ).first
 
-      cmd = Workers::System.create_blast_fetch_command(
-        blast_dbs, hit_id, hit_display_id, algo
-      )
-
-      data = Workers::System.enqueue(
-        cmd, Quorum.blast_remote,
-        Quorum.blast_ssh_host, Quorum.blast_ssh_user,
-        Quorum.blast_ssh_options, true
-      )
-
-      Workers::System.get_meta(data.meta_id)
+          fetch_data.hit_id          = job_report.hit_id
+          fetch_data.hit_display_id  = job_report.hit_display_id
+        end
+      end
+      fetch_data
     end
 
     #

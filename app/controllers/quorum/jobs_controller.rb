@@ -42,6 +42,7 @@ module Quorum
     #
     def search_results
       data = Job.search_results(params)
+
       # Respond with :json, :txt (tab delimited Blast results), or GFF3.
       respond_with data.flatten!(1) do |format|
         format.json {
@@ -57,24 +58,13 @@ module Quorum
     end
 
     #
-    # Find hit sequence, queue worker and return worker meta_id
-    # for lookup.
+    # Find hit sequence and return worker meta_id for lookup. If the method
+    # returns [], try again.
     #
     def get_blast_hit_sequence
-      if Quorum::BLAST_ALGORITHMS.include?(params[:algo])
-        begin
-          job = Job.find(params[:id])
-        rescue ActiveRecord::RecordNotFound => e
-          logger.error e.message
-        else
-          data = job.fetch_quorum_blast_sequence(
-            params[:algo], params[:algo_id]
-          )
-          json = [{ :meta_id => data.meta_id }]
-        end
-      end
-
-      respond_with json || []
+      fetch_data = Job.set_blast_hit_sequence_lookup_values(params)
+      data       = Quorum::JobQueueService.queue_fetch_worker(fetch_data)
+      respond_with data || []
     end
 
     #
@@ -85,19 +75,7 @@ module Quorum
     #
     def send_blast_hit_sequence
       data = Workers::System.get_meta(params[:meta_id])
-      if data.succeeded?
-        if data.result.downcase.include?("error")
-          render :text => data.result
-          return
-        else
-          send_data data.result,
-            :filename    => "#{params[:meta_id]}.fa",
-            :type        => "text/plain",
-            :disposition => "attachment"
-          return
-        end
-      end
-      render :text => ""
+      sequence(data)
     end
 
     private

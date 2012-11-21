@@ -4,7 +4,7 @@ module Quorum
     observe Quorum::Job
 
     def after_create(job)
-      Quorum::JobQueueService.queue_workers(job)
+      Quorum::JobQueueService.queue_search_workers(job)
     end
 
   end

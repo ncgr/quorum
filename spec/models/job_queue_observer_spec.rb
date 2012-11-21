@@ -11,7 +11,7 @@ describe Quorum::JobQueueObserver do
 
     obs = Quorum::JobQueueObserver.instance
 
-    Quorum::JobQueueService.should_receive(:queue_workers).with(job)
+    Quorum::JobQueueService.should_receive(:queue_search_workers).with(job)
     obs.after_create(job)
   end
 

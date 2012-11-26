@@ -40,8 +40,8 @@ module Quorum
     # This method should be used to gather Resque worker results, or user
     # supplied query params.
     #
-    def search_results
-      data = Job.search_results(params)
+    def search
+      data = Job.search(params)
 
       # Respond with :json, :txt (tab delimited Blast results), or GFF3.
       respond_with data.flatten!(1) do |format|

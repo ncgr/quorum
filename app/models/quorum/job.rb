@@ -34,11 +34,11 @@ module Quorum
     #
     # Return search results (Resque worker results).
     #
-    def self.search_results(params)
+    def self.search(params)
       data = JobData.new
 
       # Allow for multiple algos and search params.
-      # Ex: /quorum/jobs/:id/get_quorum_search_results.json?algo=blastn,blastp
+      # Ex: /quorum/jobs/:id/search?algo=blastn,blastp
       if params[:algo]
         params[:algo].split(",").each do |a|
           if Quorum::BLAST_ALGORITHMS.include?(a)

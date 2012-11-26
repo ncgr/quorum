@@ -163,9 +163,9 @@ describe "Jobs" do
     end
   end
 
-  describe "GET /quorum/jobs/id/search_results" do
+  describe "GET /quorum/jobs/id/search" do
     it "renders JSON results => false with invalid id" do
-      visit "/quorum/jobs/23542352345/search_results.json"
+      visit "/quorum/jobs/23542352345/search.json"
       page.should have_content("[{\"results\":false}]")
     end
   end

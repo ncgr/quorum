@@ -94,8 +94,10 @@ module Workers
     def self.create_search_command(algo, id)
       # System command
       cmd = ""
+      return cmd unless Quorum::SUPPORTED_ALGORITHMS.include?(algo)
 
-      if Quorum::SUPPORTED_ALGORITHMS.include?(algo)
+      case
+      when Quorum::BLAST_ALGORITHMS.include?(algo)
         search = File.join(Quorum.blast_bin, "search")
         cmd << "#{search} -l #{Quorum.blast_log_dir} " <<
           "-m #{Quorum.blast_tmp_dir} -b #{Quorum.blast_db} " <<

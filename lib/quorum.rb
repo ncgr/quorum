@@ -11,7 +11,9 @@ require "workers/system"
 module Quorum
 
   ## Supported Algorithms ##
-  BLAST_ALGORITHMS = ["blastn", "blastx", "blastp", "tblastn"].freeze
+  BLAST_ALGORITHMS     = ["blastn", "blastx", "blastp", "tblastn"].freeze
+  SUPPORTED_ALGORITHMS = [BLAST_ALGORITHMS]
+  SUPPORTED_ALGORITHMS.flatten!
 
   mattr_accessor :max_sequence_size, :blast_remote, :blast_ssh_host,
                  :blast_ssh_user, :blast_ssh_options, :blast_bin,

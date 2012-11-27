@@ -41,7 +41,7 @@ module Quorum
       # Ex: /quorum/jobs/:id/search?algo=blastn,blastp
       if params[:algo]
         params[:algo].split(",").each do |a|
-          if Quorum::BLAST_ALGORITHMS.include?(a)
+          if Quorum::SUPPORTED_ALGORITHMS.include?(a)
             enqueued = "#{a}_job".to_sym
             report   = "#{a}_job_reports".to_sym
             begin
@@ -77,7 +77,7 @@ module Quorum
       algo         = params[:algo]
       algo_id      = params[:algo_id]
 
-      if Quorum::BLAST_ALGORITHMS.include?(algo)
+      if Quorum::SUPPORTED_ALGORITHMS.include?(algo)
         fetch_data.algo = algo
         begin
           job = Job.find(params[:id])

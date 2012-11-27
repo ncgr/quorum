@@ -18,9 +18,6 @@ module Quorum
                  :blast_log_dir, :blast_tmp_dir, :blast_db, :tblastn,
                  :blastp, :blastn, :blastx, :blast_threads
 
-  ## Deprecated ##
-  mattr_accessor :blast_script
-
   class << self
 
     ## General ##
@@ -95,12 +92,6 @@ module Quorum
     # Number of Blast threads.
     def blast_threads
       @@blast_threads || 1
-    end
-
-    ## Blast Deprecated ##
-
-    def blast_script
-      nil
     end
 
   end

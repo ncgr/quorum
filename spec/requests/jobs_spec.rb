@@ -136,7 +136,7 @@ describe "Jobs" do
         page.should have_content("hseq")
 
         # Download sequence
-        find("p.small a#download_sequence_2").click
+        find("p.small a.download_sequence").click
         page.should have_content("Fetching sequence...")
         page.should have_content("Sequence Downloaded Successfully")
 
@@ -157,7 +157,7 @@ describe "Jobs" do
 
   describe "GET /quorum/jobs/id" do
     it "displays notice and renders form with invalid id" do
-      visit job_path('12893479812347912')
+      visit job_path('12893')
       page.should have_content("The data you requested is unavailable. Please check your URL and try again.")
       current_path.should eq(new_job_path)
     end
@@ -165,26 +165,26 @@ describe "Jobs" do
 
   describe "GET /quorum/jobs/id/search" do
     it "renders JSON results => false with invalid id" do
-      visit "/quorum/jobs/23542352345/search.json"
+      visit "/quorum/jobs/23542/search.json"
       page.should have_content("[{\"results\":false}]")
     end
   end
 
   describe "GET /quorum/jobs/id/get_blast_hit_sequence" do
     it "renders empty JSON with invalid id" do
-      visit "/quorum/jobs/23542352345/get_blast_hit_sequence.json"
+      visit "/quorum/jobs/23542/get_blast_hit_sequence.json"
       page.should have_content("[]")
     end
 
     it "renders empty JSON with invalid id and valid params" do
-      visit "/quorum/jobs/23542352345/get_blast_hit_sequence.json?algo=blastn"
+      visit "/quorum/jobs/23542/get_blast_hit_sequence.json?algo=blastn"
       page.should have_content("[]")
     end
   end
 
   describe "GET /quorum/jobs/id/send_blast_hit_sequence" do
     it "renders empty text on error" do
-      visit "/quorum/jobs/23423454325/send_blast_hit_sequence?meta_id=1231"
+      visit "/quorum/jobs/23423/send_blast_hit_sequence?meta_id=1231"
       page.should_not have_content(" ")
     end
   end

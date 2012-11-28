@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "bio-blastxmlparser", "~> 1.1.0"
 
   s.add_development_dependency "mysql2", "~> 0.3.11"
+  s.add_development_dependency "pg", "~> 0.14.1"
   s.add_development_dependency "rspec-rails", "~> 2.11"
   s.add_development_dependency "resque_spec", "~> 0.12"
   s.add_development_dependency "capybara", "~> 1.1"

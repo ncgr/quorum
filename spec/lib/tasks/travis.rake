@@ -95,10 +95,15 @@ namespace :travis do
   task :create_db_config do
     config = File.expand_path("../../../dummy/config", __FILE__)
     File.open(File.join(config, "database.yml"), "w+") do |file|
-      file.puts "\ntest:\n  adapter: mysql2\n  encoding: utf8\n" <<
-      "  reconnect: false\n  database: quorum_test\n" <<
-      "  pool: 5\n  username: root\n  password:\n" <<
-      "  host: localhost\n"
+      file.puts "\nmysql: &mysql\n  adapter: mysql2\n" <<
+      "  database: quorum_test\n  username: root\n"
+      file.puts "\npostgresql: &postgresql\n  adapter: postgresql\n" <<
+      "  database: quorum_test\n  username: postgres\n" <<
+      "  min_messages: ERROR\n"
+      file.puts "\ndefaults: &defaults\n  pool: 5\n" <<
+      "  timeout: 5000\n  host: localhost\n" <<
+      "  <<: *<%= ENV['DB'] %>\n"
+      file.puts "\ntest:\n  <<: *defaults"
     end
   end
 

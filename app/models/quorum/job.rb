@@ -113,6 +113,9 @@ module Quorum
 
     private
 
+    def add_sequence_plain_text_error
+    end
+
     #
     # Filter input sequences by type (AA or NA) and place each in it's
     # appropriate attribute.
@@ -121,7 +124,7 @@ module Quorum
       # Ensure the sequences are in plain text.
       begin
         ActiveSupport::Multibyte::Unicode.u_unpack(self.sequence)
-      rescue ActiveSupport::Multibyte::EncodingError => e
+      rescue NoMethodError, ActiveSupport::Multibyte::EncodingError => e
         logger.error e.message
         errors.add(
           :sequence,

@@ -2,6 +2,7 @@ source "http://rubygems.org"
 
 gemspec
 
-group :test do
+group :development, :test do
   gem 'rake', '~> 10.0.0'
+  gem 'thin'
 end

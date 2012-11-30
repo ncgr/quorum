@@ -1,3 +1,12 @@
+## 0.8.0 (2012-11-30)
+
+* Major refactoring and bug fixes.
+* Merged feature branch data_export. Search results are available as .txt (tab
+  delimited), .gff (GFF3) and JSONi (default).
+* Shortened search url to /quorum/jobs/:id/search?algo=[ie: blastn]
+* Search returns [{ enqueued: false }] if algorithm was not enqueued.
+* Upgrading? Install migrations and run generators.
+
 ## 0.7.1 (2012-11-07)
 
 * Added quorum:delete_jobs rake task.

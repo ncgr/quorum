@@ -51,7 +51,7 @@ module Quorum
             else
               if job.try(enqueued).present?
                 if job.try(report).present?
-                  data.results << job.try(report).search(params).default_order
+                  data.results << job.try(report).search(a, params).default_order
                 else
                   data = JobData.new
                 end
@@ -113,9 +113,6 @@ module Quorum
 
     private
 
-    def add_sequence_plain_text_error
-    end
-
     #
     # Filter input sequences by type (AA or NA) and place each in it's
     # appropriate attribute.
@@ -124,7 +121,7 @@ module Quorum
       # Ensure the sequences are in plain text.
       begin
         ActiveSupport::Multibyte::Unicode.u_unpack(self.sequence)
-      rescue NoMethodError, ActiveSupport::Multibyte::EncodingError => e
+      rescue Exception => e
         logger.error e.message
         errors.add(
           :sequence,

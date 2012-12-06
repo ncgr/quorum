@@ -53,7 +53,7 @@ module Workers
     def self.execute_ssh
       Net::SSH.start(@ssh_host, @ssh_user, @ssh_options) do |ssh|
         ssh.open_channel do |ch|
-          ch.exec(cmd) do |ch, success|
+          ch.exec(@cmd) do |ch, success|
             if success
               # Capture STDOUT from ch.exec()
               if @stdout

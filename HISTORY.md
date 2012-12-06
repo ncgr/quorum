@@ -1,3 +1,7 @@
+## 0.8.1 (2012-12-06)
+
+* SSH bug fix.
+
 ## 0.8.0 (2012-11-30)
 
 * Major refactoring and bug fixes.

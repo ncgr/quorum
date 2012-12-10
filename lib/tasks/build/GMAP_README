@@ -1,0 +1,17 @@
+
+==
+
+Finished building your GMAP database(s).
+
+gmap_build results are located in quorum/log/gmap_build.log.
+
+===================================================================
+
+Add the newly created GMAP database files in
+quorum/gmapdb to config/quorum_settings.yml. Update
+RAILS_ENV settings.
+
+   See config/quorum_settings.yml for instructions.
+
+===================================================================
+

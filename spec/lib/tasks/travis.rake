@@ -4,6 +4,7 @@ namespace :travis do
   task :install do
     Rake::Task["travis:create_db_config"].execute
     Rake::Task["travis:quorum_install"].execute
+    Rake::Task["travis:extract_gmapdb"].execute
     Rake::Task["travis:copy_quorum_settings"].execute
     Rake::Task["travis:create_dummy_tmp"].execute
   end
@@ -50,6 +51,17 @@ namespace :travis do
     end
 
     Dir.chdir(app_dir)
+  end
+
+  # Extract GMAP db for specs.
+  task :extract_gmapdb do
+    puts "Extracting GMAP db..."
+
+    file = File.expand_path("../../../data/gmap.tar.gz", __FILE__)
+    dest = File.expand_path("../../../dummy/quorum/gmapdb", __FILE__)
+
+    system("tar -C #{dest} -xzf #{file}")
+    raise "gmapdb extraction failed!" unless $?.exitstatus == 0
   end
 
   # Copy quorum_settings.yml for specs.

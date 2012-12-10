@@ -1,0 +1,17 @@
+
+==
+
+Finished building your Blast database(s).
+
+makeblastdb results are located in quorum/log/makeblastdb.log.
+
+===================================================================
+
+Add the newly created Blast database files in
+quorum/blastdb to config/quorum_settings.yml. Update
+RAILS_ENV settings.
+
+   See config/quorum_settings.yml for instructions.
+
+===================================================================
+

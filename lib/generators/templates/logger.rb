@@ -35,7 +35,7 @@ module Quorum
           "Unable to remove #{files}"
         )
       else
-       `rm #{files}`
+       FileUtils.rm(files)
       end
     end
 

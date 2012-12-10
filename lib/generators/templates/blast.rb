@@ -433,7 +433,7 @@ module Quorum
       # Remove tmp files.
       #
       def remove_tmp_files
-        `rm #{@tmp_files}` if @tmp_files
+        FileUtils.rm(@tmp_files) if @tmp_files
       end
 
       public

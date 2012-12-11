@@ -1,0 +1,59 @@
+<%= f.fields_for :gmap_job do |n| %>
+  <p>
+    <strong>gmap</strong>
+    <%= n.check_box :queue %>
+  </p>
+  <div id="gmap" class="toggle">
+    <table class="options">
+      <tr>
+        <td>
+          <label>Database(s)</label>
+        </td>
+        <td>
+          <%= n.select :gmap_dbs, @dbs[:gmap], {}, { :multiple => true } %>
+        </td>
+        <td>
+          <%= n.label :splicing, "Splicing" %>
+        </td>
+        <td>
+          <%= n.select :splicing, [['Yes', true],['No', false]] %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= n.label :intron_len, "Intron length" %>
+        </td>
+        <td>
+          <%= n.text_field :intron_len, :size => 15,
+            :title => Quorum.gmap_max_internal_intron_len,
+            :class => "auto-hint" %>
+        </td>
+        <td>
+          <%= n.label :total_len, "Total length" %>
+        </td>
+        <td>
+          <%= n.text_field :total_len, :size => 15,
+            :title => Quorum.gmap_max_total_intron_len,
+            :class => "auto-hint" %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= n.label :chimera_margin, "Chimera margin" %>
+        </td>
+        <td>
+          <%= n.text_field :chimera_margin, :size => 15, :title => "40",
+            :class => "auto-hint" %>
+        </td>
+        <td>
+          <%= n.label :prune_level %>
+        </td>
+        <td>
+          <%= n.select :prune_level,
+            [['No pruning', 0],['Poor seqs', 1],['Repetitive seqs', 2],
+              ['Poor and repetitive seqs', 3]] %>
+        </td>
+      </tr>
+    </table>
+  </div>
+<% end %>

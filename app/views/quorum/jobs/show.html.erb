@@ -6,37 +6,45 @@
   <%# div#tabs ul li and corresponding div#tabs-(tab number) %>
   <div id="tabs">
     <ul>
-      <li><a href="#tabs-1">Blastn</a></li>
-      <li><a href="#tabs-2">Blastx</a></li>
-      <li><a href="#tabs-3">Tblastn</a></li>
-      <li><a href="#tabs-4">Blastp</a></li>
+      <li><a href="#blastn">Blastn</a></li>
+      <li><a href="#blastx">Blastx</a></li>
+      <li><a href="#tblastn">Tblastn</a></li>
+      <li><a href="#blastp">Blastp</a></li>
+      <li><a href="#gmap">Gmap</a></li>
     </ul>
 
     <%# Search results per algorithm %>
-    <div id="tabs-1">
+    <div id="blastn">
       <h2>Blastn</h2>
       <div id="blastn-results">
         Searching... <%= image_tag "quorum/loading.gif" %>
       </div>
     </div>
 
-    <div id="tabs-2">
+    <div id="blastx">
       <h2>Blastx</h2>
       <div id="blastx-results">
         Searching... <%= image_tag "quorum/loading.gif" %>
       </div>
     </div>
 
-    <div id="tabs-3">
+    <div id="tblastn">
       <h2>Tblastn</h2>
       <div id="tblastn-results">
         Searching... <%= image_tag "quorum/loading.gif" %>
       </div>
     </div>
 
-    <div id="tabs-4">
+    <div id="blastp">
       <h2>Blastp</h2>
       <div id="blastp-results">
+        Searching... <%= image_tag "quorum/loading.gif" %>
+      </div>
+    </div>
+
+    <div id="gmap">
+      <h2>Gmap</h2>
+      <div id="gmap-results">
         Searching... <%= image_tag "quorum/loading.gif" %>
       </div>
     </div>

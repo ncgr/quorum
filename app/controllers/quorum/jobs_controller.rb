@@ -2,14 +2,14 @@ module Quorum
   class JobsController < ApplicationController
 
     respond_to :html, :json, :gff, :txt
-    before_filter :set_blast_dbs, :only => [:new, :create]
+    before_filter :set_dbs, :only => [:new, :create]
 
     def index
       redirect_to :action => "new"
     end
 
     def new
-      build_blast_jobs
+      build_jobs
     end
 
     def create
@@ -18,7 +18,7 @@ module Quorum
       set_sequence
 
       unless @job.save
-        build_blast_jobs
+        build_jobs
         render :action => "new"
         return
       end
@@ -83,23 +83,25 @@ module Quorum
     #
     # Create new Job and build associations.
     #
-    def build_blast_jobs
+    def build_jobs
       @job ||= Job.new
       @job.build_blastn_job  if @job.blastn_job.nil?
       @job.build_blastx_job  if @job.blastx_job.nil?
       @job.build_tblastn_job if @job.tblastn_job.nil?
       @job.build_blastp_job  if @job.blastp_job.nil?
+      @job.build_gmap_job    if @job.gmap_job.nil?
     end
 
     #
     # Blast Database options for select.
     #
-    def set_blast_dbs
-      @blast_dbs = {
+    def set_dbs
+      @dbs = {
         :blastn  => Quorum.blastn,
         :blastx  => Quorum.blastx,
         :tblastn => Quorum.tblastn,
-        :blastp  => Quorum.blastp
+        :blastp  => Quorum.blastp,
+        :gmap    => Quorum.gmap_db
       }
     end
 

@@ -9,7 +9,7 @@ module Quorum
       desc "Creates Quorum initializer, settings and search " <<
            "/ fetch tool files."
 
-      DEPENDENCIES = ["makeblastdb", "seqret"]
+      DEPENDENCIES = ["gmap_build", "makeblastdb", "seqret"]
 
       def copy_quorum
         template "quorum_initializer.rb",
@@ -20,6 +20,7 @@ module Quorum
         template "trollop.rb", "quorum/lib/trollop.rb"
         template "logger.rb", "quorum/lib/logger.rb"
         template "blast.rb", "quorum/lib/search_tools/blast.rb"
+        template "gmap.rb", "quorum/lib/search_tools/gmap.rb"
         template "blast_db.rb", "quorum/lib/fetch_tools/blast_db.rb"
       end
 

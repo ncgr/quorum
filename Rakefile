@@ -35,6 +35,7 @@ load 'spec/lib/tasks/travis.rake'
 task :spec_runner do
   unless File.exists?(File.expand_path("../spec/dummy/quorum", __FILE__))
     Rake::Task["travis:quorum_install"].execute
+    Rake::Task["travis:extract_gmapdb"].execute
     Rake::Task["travis:copy_quorum_settings"].execute
   end
   unless File.exists?(File.expand_path("../spec/dummy/tmp", __FILE__))

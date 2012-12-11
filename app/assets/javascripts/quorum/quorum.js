@@ -7,7 +7,7 @@ var QUORUM = QUORUM || {};
 //
 // Supported algorithms.
 //
-QUORUM.algorithms = ["blastn", "blastx", "tblastn", "blastp"];
+QUORUM.algorithms = ["blastn", "blastx", "tblastn", "blastp", "gmap"];
 
 //
 // Poll search results asynchronously.

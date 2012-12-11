@@ -22,6 +22,10 @@ $(function() {
     $('#blastp').hide();
   }
 
+  if (!$('#job_gmap_job_attributes_queue').is(':checked')) {
+    $('#gmap').hide();
+  }
+
   // End Elements //
 
 
@@ -46,6 +50,10 @@ $(function() {
 
   $('#job_blastp_job_attributes_queue').change(function() {
     $('#blastp').slideToggle();
+  });
+
+  $('#job_gmap_job_attributes_queue').change(function() {
+    $('#gmap').slideToggle();
   });
 
   // End Algorithms //

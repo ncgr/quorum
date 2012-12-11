@@ -43,7 +43,8 @@ namespace :travis do
       "rake quorum:install:migrations",
       "rake db:migrate",
       "rake db:test:prepare",
-      "rake quorum:blastdb:build DIR=#{blastdb_dir}"
+      "rake quorum:blastdb:build DIR=#{blastdb_dir}",
+      "rake quorum:gmapdb:build EMPTY=true"
     ]
     cmds.each do |cmd|
       system("bundle exec #{cmd}")

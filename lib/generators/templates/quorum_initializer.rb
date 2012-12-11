@@ -26,9 +26,25 @@ end
 ## Quorum General Settings ##
 Quorum.max_sequence_size = settings['max_sequence_size']
 
-blast = settings['blast']
+## Quorum GMAP Settings ##
+gmap = settings['gmap']
+
+Quorum.gmap_remote                  = gmap['remote']
+Quorum.gmap_ssh_host                = gmap['ssh_host']
+Quorum.gmap_ssh_user                = gmap['ssh_user']
+Quorum.gmap_ssh_options             = gmap['ssh_options']
+Quorum.gmap_bin                     = gmap['bin']
+Quorum.gmap_log_dir                 = gmap['log_dir']
+Quorum.gmap_tmp_dir                 = gmap['tmp_dir']
+Quorum.gmap_db_dir                  = gmap['gmap_db_dir']
+Quorum.gmap_db                      = gmap['gmap_db']
+Quorum.gmap_max_internal_intron_len = gmap['gmap_max_internal_intron_len']
+Quorum.gmap_max_total_intron_len    = gmap['gmap_max_total_intron_len']
+Quorum.gmap_threads                 = gmap['gmap_threads']
 
 ## Quorum Blast Settings ##
+blast = settings['blast']
+
 Quorum.blast_remote      = blast['remote']
 Quorum.blast_ssh_host    = blast['ssh_host']
 Quorum.blast_ssh_user    = blast['ssh_user']

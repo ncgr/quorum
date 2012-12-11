@@ -1,5 +1,19 @@
 development:
   max_sequence_size:
+  gmap:
+    remote: false
+    ssh_host:
+    ssh_user:
+    ssh_options:
+    bin: "%{RAILS_ROOT}/quorum/bin"
+    log_dir: "%{RAILS_ROOT}/quorum/log"
+    tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
+    gmap_db_dir: "%{RAILS_ROOT}/quorum/gmapdb"
+    gmap_db:
+      "tmp": test
+    gmap_max_internal_intron_len:
+    gmap_max_total_intron_len:
+    gmap_threads:
   blast:
     remote: false
     ssh_host:
@@ -21,6 +35,20 @@ development:
 
 test:
   max_sequence_size:
+  gmap:
+    remote: false
+    ssh_host:
+    ssh_user:
+    ssh_options:
+    bin: "%{RAILS_ROOT}/quorum/bin"
+    log_dir: "%{RAILS_ROOT}/quorum/log"
+    tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
+    gmap_db_dir: "%{RAILS_ROOT}/quorum/gmapdb"
+    gmap_db:
+      "tmp": test
+    gmap_max_internal_intron_len:
+    gmap_max_total_intron_len:
+    gmap_threads:
   blast:
     remote: false
     ssh_host:
@@ -42,6 +70,19 @@ test:
 
 production:
   max_sequence_size:
+  gmap:
+    remote: false
+    ssh_host:
+    ssh_user:
+    ssh_options:
+    bin:
+    log_dir:
+    tmp_dir:
+    gmap_db_dir:
+    gmap_db:
+    gmap_max_internal_intron_len:
+    gmap_max_total_intron_len:
+    gmap_threads:
   blast:
     remote: true
     ssh_host:

@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'tasks/build/db'
-require 'debugger'
 
 describe "db rake tasks" do
   describe "rake quorum:blastdb:build" do

@@ -5,13 +5,15 @@ $LOAD_PATH.unshift(File.expand_path("../../lib", __FILE__))
 require 'trollop'
 require 'active_record'
 require 'search_tools/blast'
+require 'search_tools/gmap'
 
 # Quorum search tools and dependencies.
 SEARCH_TOOLS = {
   "blastn"  => ["blastn"],
   "blastx"  => ["blastx"],
   "tblastn" => ["tblastn"],
-  "blastp"  => ["blastp"]
+  "blastp"  => ["blastp"],
+  "gmap"    => ["gmap"]
 }
 
 module Quorum
@@ -114,8 +116,11 @@ Options:
       ## Execute search tool ##
 
       if @args[:search_tool].include? "blast"
-        blast = Quorum::SearchTools::Blast.new(@args)
-        blast.execute_blast
+        Quorum::SearchTools::Blast.new(@args).execute_blast
+      end
+
+      if @args[:search_tool].include? "gmap"
+        Quorum::SearchTools::Gmap.new(@args).execute_gmap
       end
     end
 

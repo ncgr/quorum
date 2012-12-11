@@ -16,19 +16,23 @@
 
     <%# blastn %>
     <%= render :partial => "quorum/jobs/form/blastn_form", :locals => {
-      :f => f, :blast_dbs => @blast_dbs } %>
+      :f => f, :dbs => @dbs } %>
 
     <%# blastx %>
     <%= render :partial => "quorum/jobs/form/blastx_form", :locals => {
-      :f => f, :blast_dbs => @blast_dbs } %>
+      :f => f, :dbs => @dbs } %>
 
     <%# tblastn %>
     <%= render :partial => "quorum/jobs/form/tblastn_form", :locals => {
-      :f => f, :blast_dbs => @blast_dbs } %>
+      :f => f, :dbs => @dbs } %>
 
     <%# blastp %>
     <%= render :partial => "quorum/jobs/form/blastp_form", :locals => {
-      :f => f, :blast_dbs => @blast_dbs } %>
+      :f => f, :dbs => @dbs } %>
+
+    <%# gmap %>
+    <%= render :partial => "quorum/jobs/form/gmap_form", :locals => {
+      :f => f, :dbs => @dbs } %>
 
     <%# End Search Algorithms %>
     <div>

@@ -6,6 +6,47 @@
 # max_sequence_size: Max input sequence size in bytes.
 #   Defaults to 51200 (50 KB).
 #
+# ==> GMAP Settings
+# gmap:
+#   remote: true to execute script on remote machine via
+#     Net::SSH. false to execute locally via Kernel#system.
+#     See Net::SSH for more information.
+#     http://net-ssh.github.com/ssh/v2/api/index.html
+#
+#   ssh_host: Net::SSH.start() host.
+#
+#   ssh_user: Net::SSH.start() user.
+#
+#   ssh_options: Net::SSH.start() optional params.
+#     See http://net-ssh.github.com/ssh/v2/api/classes/Net/SSH.html#M000002
+#     for a complete list of options.
+#     Example Usage:
+#     ssh_options:
+#       password: "secret password"
+#       port: 8888
+#
+#   bin: Absolute path to quorum/bin.
+#
+#   log_dir: Absolute path to log file directory.
+#
+#   tmp_dir: Absolute path to tmp file directory.
+#
+#   gmap_db_dir: Absolute path to GMAP genome database directory.
+#     Execute the rake task below to build your GMAP DB.
+#     rake quorum:gmapdb:build
+#
+#   gmap_db: Collection of GMAP DBs under the parent gmap_db_dir.
+#     Example Usage:
+#     "Display name": gmap_genome_database_name
+#
+#   gmap_max_interal_intron_len: Max length for one internal intron (default
+#     1000000).
+#
+#   gmap_max_total_intron_len: Max total intron length (default 2400000).
+#
+#   gmap_threads: Number of GMAP worker threads. >= 1
+#     Defaults to 1.
+#
 # ==> NCBI BLAST+ Settings
 # blast:
 #   remote: true to execute script on remote machine via
@@ -63,11 +104,29 @@
 #       "Display name": blastp_database_name
 #       "A really cool genome": really_cool_genome
 #
-#   blast_threads: Number of Blast threads. >= 1
+#   blast_threads: Number of Blast worker threads. >= 1
 #     Defaults to 1.
 
 development:
   max_sequence_size:
+  gmap:
+    remote: false
+    ssh_host:
+    ssh_user:
+    ssh_options:
+      # Example:
+      # password: "secret password"
+      # port: 8888
+    bin: "%{RAILS_ROOT}/quorum/bin"
+    log_dir: "%{RAILS_ROOT}/quorum/log"
+    tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
+    gmap_db_dir: "%{RAILS_ROOT}/quorum/gmapdb"
+    gmap_db:
+      # Example:
+      # "Display name": gmap_genome_database_name
+    gmap_max_internal_intron_len:
+    gmap_max_total_intron_len:
+    gmap_threads:
   blast:
     remote: false
     ssh_host:
@@ -100,6 +159,24 @@ development:
 
 test:
   max_sequence_size:
+  gmap:
+    remote: false
+    ssh_host:
+    ssh_user:
+    ssh_options:
+      # Example:
+      # password: "secret password"
+      # port: 8888
+    bin: "%{RAILS_ROOT}/quorum/bin"
+    log_dir: "%{RAILS_ROOT}/quorum/log"
+    tmp_dir: "%{RAILS_ROOT}/quorum/tmp"
+    gmap_db_dir: "%{RAILS_ROOT}/quorum/gmapdb"
+    gmap_db:
+      # Example:
+      # "Display name": gmap_genome_database_name
+    gmap_max_internal_intron_len:
+    gmap_max_total_intron_len:
+    gmap_threads:
   blast:
     remote: false
     ssh_host:
@@ -132,6 +209,24 @@ test:
 
 production:
   max_sequence_size:
+  gmap:
+    remote: true
+    ssh_host:
+    ssh_user:
+    ssh_options:
+      # Example:
+      # password: "secret password"
+      # port: 8888
+    bin:
+    log_dir:
+    tmp_dir:
+    gmap_db_dir:
+    gmap_db:
+      # Example:
+      # "Display name": gmap_genome_database_name
+    gmap_max_internal_intron_len:
+    gmap_max_total_intron_len:
+    gmap_threads:
   blast:
     remote: true
     ssh_host:

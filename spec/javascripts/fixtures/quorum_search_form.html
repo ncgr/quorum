@@ -6,10 +6,7 @@
     <div>
         <input id="job_sequence_file" name="job[sequence_file]" type="file" />
     </div>
-    <!-- Search Algorithms -->
-    <!-- Comment out an algorithm below to remove it from the form. -->
 
-    <!-- blastn -->
 
     <p>
     <strong>blastn</strong>
@@ -22,48 +19,14 @@
                     <label>Database(s)</label>
                 </td>
                 <td>
-                    <select id="job_blastn_job_attributes_blast_dbs" multiple="multiple" name="job[blastn_job_attributes][blast_dbs][]"><option value="medp_acaau-20110120">Acacia aulacocarpa transcripts, build 20110120</option>
-                        <option value="medp_calan-20110119">Calophyllum antillanum transcripts, build 20110119</option>
-                        <option value="camptotheca_acuminata-20101112">Camptotheca acuminata transcripts, build 20101112</option>
-                        <option value="medp_cepha-20110617">Cephalotaxus harringtonia transcripts, build 20110617</option>
-                        <option value="medp_cinpu-20110618">Cinchona pubescens transcripts, build 20110618</option>
-                        <option value="colchicum_autumnale-20101112">Colchicum autumnale transcripts, build 20101112</option>
-                        <option value="medp_colfo-20110601">Coleus forskohlii transcripts, build 20110601</option>
-                        <option value="datura_ceratocaula-20101112">Datura ceratocaula transcripts, build 20101112</option>
-                        <option value="datura_innoxia-20101112">Datura innoxia transcripts, build 20101112</option>
-                        <option value="datura_me9-20101112">Datura metel transcripts, build 20101112</option>
-                        <option value="datura_stramonium-20100406">Datura stramonium transcripts, build 20100406</option>
-                        <option value="datura_stramonium-20101112">Datura stramonium transcripts, build 20101112</option>
-                        <option value="datura_wrightii-20101112">Datura wrightii transcripts, build 20101112</option>
-                        <option value="digitalis_lanata-20100406">Digitalis lanata transcripts, build 20100406</option>
-                        <option value="digitalis_lanata-20101112">Digitalis lanata transcripts, build 20101112</option>
-                        <option value="huperzia_lucidula-20101112">Huperzia lucidula transcripts, build 20101112</option>
-                        <option value="huperzia_squarrosa-20100406">Huperzia squarrosa transcripts, build 20100406</option>
-                        <option value="huperzia_squarrosa-20101112">Huperzia squarrosa transcripts, build 20101112</option>
-                        <option value="hyoscyamus_niger-20101112">Hyoscyamus niger transcripts, build 20101112</option>
-                        <option value="larrea_tridentata-20100406">Larrea tridentata transcripts, build 20100406</option>
-                        <option value="larrea_tridentata-20101112">Larrea tridentata transcripts, build 20101112</option>
-                        <option value="linum_flavum-20100207">Linum flavum transcripts, build 20100207</option>
-                        <option value="linum_flavum-20100406">Linum flavum transcripts, build 20100406</option>
-                        <option value="linum_flavum-20101112">Linum flavum transcripts, build 20101112</option>
-                        <option value="linum_usitatissimum-20101112">Linum usitatissimum transcripts, build 20101112</option>
-                        <option value="narcissus_9-20101112">Narcissus transcripts, build 20101112</option>
-                        <option value="papaver_somniferum-20100406">Papaver somniferum transcripts, build 20100406</option>
-                        <option value="papaver_somniferum-20101112">Papaver somniferum transcripts, build 20101112</option>
-                        <option value="medp_pilpe-20110620">Pilocarpus pennatifolius transcripts, build 20110620</option>
-                        <option value="podophyllum_hexandrum-20100406">Podophyllum hexandrum transcripts, build 20100406</option>
-                        <option value="podophyllum_hexandrum-20101112">Podophyllum hexandrum transcripts, build 20101112</option>
-                        <option value="podophyllum_peltatum-20101112">Podophyllum peltatum transcripts, build 20101112</option>
-                        <option value="taxus_x_media-20100126">Taxus x media transcripts, build 20100126</option>
-                        <option value="taxus_x_media-20100406">Taxus x media transcripts, build 20100406</option>
-                        <option value="taxus_x_media-20101112">Taxus x media transcripts, build 20101112</option>
-                        <option value="medp_trire-20110120">Tripterygium regelii transcripts, build 20110120</option></select>
+                    <input name="job[blastn_job_attributes][blast_dbs][]" type="hidden" value="" /><select id="job_blastn_job_attributes_blast_dbs" multiple="multiple" name="job[blastn_job_attributes][blast_dbs][]"><option value="test">tmp</option></select>
                 </td>
                 <td>
                     <label for="job_blastn_job_attributes_filter">DUST</label>
                 </td>
                 <td>
-                    <input name="job[blastn_job_attributes][filter]" type="hidden" value="0" /><input id="job_blastn_job_attributes_filter" name="job[blastn_job_attributes][filter]" type="checkbox" value="1" />
+                    <select id="job_blastn_job_attributes_filter" name="job[blastn_job_attributes][filter]"><option value="true">Yes</option>
+                        <option value="false">No</option></select>
                 </td>
             </tr>
             <tr>
@@ -82,7 +45,7 @@
             </tr>
             <tr>
                 <td>
-                    <label for="job_blastn_job_attributes_max_target_seqs">Max score</label>
+                    <label for="job_blastn_job_attributes_max_target_seqs">Max target sequences</label>
                 </td>
                 <td>
                     <input class="auto-hint" id="job_blastn_job_attributes_max_target_seqs" name="job[blastn_job_attributes][max_target_seqs]" size="15" title="25" type="text" />
@@ -91,8 +54,8 @@
                     <label for="job_blastn_job_attributes_gapped_alignments">Gapped alignments</label>
                 </td>
                 <td>
-                    <select id="job_blastn_job_attributes_gapped_alignments" name="job[blastn_job_attributes][gapped_alignments]"><option value="false">No</option>
-                        <option value="true">Yes</option></select>
+                    <select id="job_blastn_job_attributes_gapped_alignments" name="job[blastn_job_attributes][gapped_alignments]"><option value="true">Yes</option>
+                        <option value="false">No</option></select>
                 </td>
             </tr>
             <tr>
@@ -121,7 +84,6 @@
     </div>
 
 
-    <!-- blastx -->
 
     <p>
     <strong>blastx</strong>
@@ -134,46 +96,14 @@
                     <label>Database(s)</label>
                 </td>
                 <td>
-                    <select id="job_blastx_job_attributes_blast_dbs" multiple="multiple" name="job[blastx_job_attributes][blast_dbs][]"><option value="medp_acaau-20110120">Acacia aulacocarpa peptides, build 20110120</option>
-                        <option value="medp_calan-20110119">Calophyllum antillanum peptides, build 20110119</option>
-                        <option value="camptotheca_acuminata-20101112">Camptotheca acuminata peptides, build 20101112</option>
-                        <option value="medp_cepha-20110617">Cephalotaxus harringtonia peptides, build 20110617</option>
-                        <option value="medp_cinpu-20110618">Cinchona pubescens peptides, build 20110618</option>
-                        <option value="colchicum_autumnale-20101112">Colchicum autumnale peptides, build 20101112</option>
-                        <option value="medp_colfo-20110601">Coleus forskohlii peptides, build 20110601</option>
-                        <option value="datura_ceratocaula-20101112">Datura ceratocaula peptides, build 20101112</option>
-                        <option value="datura_innoxia-20101112">Datura innoxia peptides transcripts, build 20101112</option>
-                        <option value="datura_me9-20101112">Datura metel peptides, build 20101112</option>
-                        <option value="datura_stramonium-20100406">Datura stramonium peptides, build 20100406</option>
-                        <option value="datura_stramonium-20101112">Datura stramonium peptides, build 20101112</option>
-                        <option value="datura_wrightii-20101112">Datura wrightii peptides, build 20101112</option>
-                        <option value="digitalis_lanata-20100406">Digitalis lanata peptides, build 20100406</option>
-                        <option value="digitalis_lanata-20101112">Digitalis lanata peptides, build 20101112</option>
-                        <option value="huperzia_lucidula-20101112">Huperzia lucidula peptides, build 20101112</option>
-                        <option value="huperzia_squarrosa-20100406">Huperzia squarrosa peptides, build 20100406</option>
-                        <option value="huperzia_squarrosa-20101112">Huperzia squarrosa peptides, build 20101112</option>
-                        <option value="hyoscyamus_niger-20101112">Hyoscyamus niger peptides, build 20101112</option>
-                        <option value="larrea_tridentata-20100406">Larrea tridentata peptides, build 20100406</option>
-                        <option value="larrea_tridentata-20101112">Larrea tridentata peptides, build 20101112</option>
-                        <option value="linum_flavum-20100406">Linum flavum peptides, build 20100406</option>
-                        <option value="linum_flavum-20101112">Linum flavum peptides, build 20101112</option>
-                        <option value="linum_usitatissimum-20101112">Linum usitatissimum peptides, build 20101112</option>
-                        <option value="narcissus_9-20101112">Narcissus peptides, build 20101112</option>
-                        <option value="papaver_somniferum-20100406">Papaver somniferum peptides, build 20100406</option>
-                        <option value="papaver_somniferum-20101112">Papaver somniferum peptides, build 20101112</option>
-                        <option value="medp_pilpe-20110620">Pilocarpus pennatifolius peptides, build 20110620</option>
-                        <option value="podophyllum_hexandrum-20100406">Podophyllum hexandrum peptides, build 20100406</option>
-                        <option value="podophyllum_hexandrum-20101112">Podophyllum hexandrum peptides, build 20101112</option>
-                        <option value="podophyllum_peltatum-20101112">Podophyllum peltatum peptides, build 20101112</option>
-                        <option value="taxus_x_media-20100406">Taxus x media peptides, build 20100406</option>
-                        <option value="taxus_x_media-20101112">Taxus x media peptides, build 20101112</option>
-                        <option value="medp_trire-20110120">Tripterygium regelii peptides, build 20110120</option></select>
+                    <input name="job[blastx_job_attributes][blast_dbs][]" type="hidden" value="" /><select id="job_blastx_job_attributes_blast_dbs" multiple="multiple" name="job[blastx_job_attributes][blast_dbs][]"><option value="test">tmp</option></select>
                 </td>
                 <td>
                     <label for="job_blastx_job_attributes_filter">SEG</label>
                 </td>
                 <td>
-                    <input name="job[blastx_job_attributes][filter]" type="hidden" value="0" /><input id="job_blastx_job_attributes_filter" name="job[blastx_job_attributes][filter]" type="checkbox" value="1" />
+                    <select id="job_blastx_job_attributes_filter" name="job[blastx_job_attributes][filter]"><option value="true">Yes</option>
+                        <option value="false">No</option></select>
                 </td>
             </tr>
             <tr>
@@ -192,7 +122,7 @@
             </tr>
             <tr>
                 <td>
-                    <label for="job_blastx_job_attributes_max_target_seqs">Max score</label>
+                    <label for="job_blastx_job_attributes_max_target_seqs">Max target sequences</label>
                 </td>
                 <td>
                     <input class="auto-hint" id="job_blastx_job_attributes_max_target_seqs" name="job[blastx_job_attributes][max_target_seqs]" size="15" title="25" type="text" />
@@ -201,8 +131,8 @@
                     <label for="job_blastx_job_attributes_gapped_alignments">Gapped alignments</label>
                 </td>
                 <td>
-                    <select id="job_blastx_job_attributes_gapped_alignments" name="job[blastx_job_attributes][gapped_alignments]"><option value="false">No</option>
-                        <option value="true">Yes</option></select>
+                    <select id="job_blastx_job_attributes_gapped_alignments" name="job[blastx_job_attributes][gapped_alignments]"><option value="true">Yes</option>
+                        <option value="false">No</option></select>
                 </td>
             </tr>
             <tr>
@@ -231,7 +161,6 @@
     </div>
 
 
-    <!-- tblastn -->
 
     <p>
     <strong>tblastn</strong>
@@ -244,48 +173,14 @@
                     <label>Database(s)</label>
                 </td>
                 <td>
-                    <select id="job_tblastn_job_attributes_blast_dbs" multiple="multiple" name="job[tblastn_job_attributes][blast_dbs][]"><option value="medp_acaau-20110120">Acacia aulacocarpa transcripts, build 20110120</option>
-                        <option value="medp_calan-20110119">Calophyllum antillanum transcripts, build 20110119</option>
-                        <option value="camptotheca_acuminata-20101112">Camptotheca acuminata transcripts, build 20101112</option>
-                        <option value="medp_cepha-20110617">Cephalotaxus harringtonia transcripts, build 20110617</option>
-                        <option value="medp_cinpu-20110618">Cinchona pubescens transcripts, build 20110618</option>
-                        <option value="colchicum_autumnale-20101112">Colchicum autumnale transcripts, build 20101112</option>
-                        <option value="medp_colfo-20110601">Coleus forskohlii transcripts, build 20110601</option>
-                        <option value="datura_ceratocaula-20101112">Datura ceratocaula transcripts, build 20101112</option>
-                        <option value="datura_innoxia-20101112">Datura innoxia transcripts, build 20101112</option>
-                        <option value="datura_me9-20101112">Datura metel transcripts, build 20101112</option>
-                        <option value="datura_stramonium-20100406">Datura stramonium transcripts, build 20100406</option>
-                        <option value="datura_stramonium-20101112">Datura stramonium transcripts, build 20101112</option>
-                        <option value="datura_wrightii-20101112">Datura wrightii transcripts, build 20101112</option>
-                        <option value="digitalis_lanata-20100406">Digitalis lanata transcripts, build 20100406</option>
-                        <option value="digitalis_lanata-20101112">Digitalis lanata transcripts, build 20101112</option>
-                        <option value="huperzia_lucidula-20101112">Huperzia lucidula transcripts, build 20101112</option>
-                        <option value="huperzia_squarrosa-20100406">Huperzia squarrosa transcripts, build 20100406</option>
-                        <option value="huperzia_squarrosa-20101112">Huperzia squarrosa transcripts, build 20101112</option>
-                        <option value="hyoscyamus_niger-20101112">Hyoscyamus niger transcripts, build 20101112</option>
-                        <option value="larrea_tridentata-20100406">Larrea tridentata transcripts, build 20100406</option>
-                        <option value="larrea_tridentata-20101112">Larrea tridentata transcripts, build 20101112</option>
-                        <option value="linum_flavum-20100207">Linum flavum transcripts, build 20100207</option>
-                        <option value="linum_flavum-20100406">Linum flavum transcripts, build 20100406</option>
-                        <option value="linum_flavum-20101112">Linum flavum transcripts, build 20101112</option>
-                        <option value="linum_usitatissimum-20101112">Linum usitatissimum transcripts, build 20101112</option>
-                        <option value="narcissus_9-20101112">Narcissus transcripts, build 20101112</option>
-                        <option value="papaver_somniferum-20100406">Papaver somniferum transcripts, build 20100406</option>
-                        <option value="papaver_somniferum-20101112">Papaver somniferum transcripts, build 20101112</option>
-                        <option value="medp_pilpe-20110620">Pilocarpus pennatifolius transcripts, build 20110620</option>
-                        <option value="podophyllum_hexandrum-20100406">Podophyllum hexandrum transcripts, build 20100406</option>
-                        <option value="podophyllum_hexandrum-20101112">Podophyllum hexandrum transcripts, build 20101112</option>
-                        <option value="podophyllum_peltatum-20101112">Podophyllum peltatum transcripts, build 20101112</option>
-                        <option value="taxus_x_media-20100126">Taxus x media transcripts, build 20100126</option>
-                        <option value="taxus_x_media-20100406">Taxus x media transcripts, build 20100406</option>
-                        <option value="taxus_x_media-20101112">Taxus x media transcripts, build 20101112</option>
-                        <option value="medp_trire-20110120">Tripterygium regelii transcripts, build 20110120</option></select>
+                    <input name="job[tblastn_job_attributes][blast_dbs][]" type="hidden" value="" /><select id="job_tblastn_job_attributes_blast_dbs" multiple="multiple" name="job[tblastn_job_attributes][blast_dbs][]"><option value="test">tmp</option></select>
                 </td>
                 <td>
                     <label for="job_tblastn_job_attributes_filter">SEG</label>
                 </td>
                 <td>
-                    <input name="job[tblastn_job_attributes][filter]" type="hidden" value="0" /><input id="job_tblastn_job_attributes_filter" name="job[tblastn_job_attributes][filter]" type="checkbox" value="1" />
+                    <select id="job_tblastn_job_attributes_filter" name="job[tblastn_job_attributes][filter]"><option value="true">Yes</option>
+                        <option value="false">No</option></select>
                 </td>
             </tr>
             <tr>
@@ -304,7 +199,7 @@
             </tr>
             <tr>
                 <td>
-                    <label for="job_tblastn_job_attributes_max_target_seqs">Max score</label>
+                    <label for="job_tblastn_job_attributes_max_target_seqs">Max target sequences</label>
                 </td>
                 <td>
                     <input class="auto-hint" id="job_tblastn_job_attributes_max_target_seqs" name="job[tblastn_job_attributes][max_target_seqs]" size="15" title="25" type="text" />
@@ -313,8 +208,8 @@
                     <label for="job_tblastn_job_attributes_gapped_alignments">Gapped alignments</label>
                 </td>
                 <td>
-                    <select id="job_tblastn_job_attributes_gapped_alignments" name="job[tblastn_job_attributes][gapped_alignments]"><option value="false">No</option>
-                        <option value="true">Yes</option></select>
+                    <select id="job_tblastn_job_attributes_gapped_alignments" name="job[tblastn_job_attributes][gapped_alignments]"><option value="true">Yes</option>
+                        <option value="false">No</option></select>
                 </td>
             </tr>
             <tr>
@@ -343,7 +238,6 @@
     </div>
 
 
-    <!-- blastp -->
 
     <p>
     <strong>blastp</strong>
@@ -356,46 +250,14 @@
                     <label>Database(s)</label>
                 </td>
                 <td>
-                    <select id="job_blastp_job_attributes_blast_dbs" multiple="multiple" name="job[blastp_job_attributes][blast_dbs][]"><option value="medp_acaau-20110120">Acacia aulacocarpa peptides, build 20110120</option>
-                        <option value="medp_calan-20110119">Calophyllum antillanum peptides, build 20110119</option>
-                        <option value="camptotheca_acuminata-20101112">Camptotheca acuminata peptides, build 20101112</option>
-                        <option value="medp_cepha-20110617">Cephalotaxus harringtonia peptides, build 20110617</option>
-                        <option value="medp_cinpu-20110618">Cinchona pubescens peptides, build 20110618</option>
-                        <option value="colchicum_autumnale-20101112">Colchicum autumnale peptides, build 20101112</option>
-                        <option value="medp_colfo-20110601">Coleus forskohlii peptides, build 20110601</option>
-                        <option value="datura_ceratocaula-20101112">Datura ceratocaula peptides, build 20101112</option>
-                        <option value="datura_innoxia-20101112">Datura innoxia peptides, build 20101112</option>
-                        <option value="datura_me9-20101112">Datura metel peptides, build 20101112</option>
-                        <option value="datura_stramonium-20100406">Datura stramonium peptides, build 20100406</option>
-                        <option value="datura_stramonium-20101112">Datura stramonium peptides, build 20101112</option>
-                        <option value="datura_wrightii-20101112">Datura wrightii peptides, build 20101112</option>
-                        <option value="digitalis_lanata-20100406">Digitalis lanata peptides, build 20100406</option>
-                        <option value="digitalis_lanata-20101112">Digitalis lanata peptides, build 20101112</option>
-                        <option value="huperzia_lucidula-20101112">Huperzia lucidula peptides, build 20101112</option>
-                        <option value="huperzia_squarrosa-20100406">Huperzia squarrosa peptides, build 20100406</option>
-                        <option value="huperzia_squarrosa-20101112">Huperzia squarrosa peptides, build 20101112</option>
-                        <option value="hyoscyamus_niger-20101112">Hyoscyamus niger peptides, build 20101112</option>
-                        <option value="larrea_tridentata-20100406">Larrea tridentata peptides, build 20100406</option>
-                        <option value="larrea_tridentata-20101112">Larrea tridentata peptides, build 20101112</option>
-                        <option value="linum_flavum-20100406">Linum flavum peptides, build 20100406</option>
-                        <option value="linum_flavum-20101112">Linum flavum peptides, build 20101112</option>
-                        <option value="linum_usitatissimum-20101112">Linum usitatissimum peptides, build 20101112</option>
-                        <option value="narcissus_9-20101112">Narcissus peptides, build 20101112</option>
-                        <option value="papaver_somniferum-20100406">Papaver somniferum peptides, build 20100406</option>
-                        <option value="papaver_somniferum-20101112">Papaver somniferum peptides, build 20101112</option>
-                        <option value="medp_pilpe-20110620">Pilocarpus pennatifolius peptides, build 20110620</option>
-                        <option value="podophyllum_hexandrum-20100406">Podophyllum hexandrum peptides, build 20100406</option>
-                        <option value="podophyllum_hexandrum-20101112">Podophyllum hexandrum peptides, build 20101112</option>
-                        <option value="podophyllum_peltatum-20101112">Podophyllum peltatum peptides, build 20101112</option>
-                        <option value="taxus_x_media-20100406">Taxus x media peptides, build 20100406</option>
-                        <option value="taxus_x_media-20101112">Taxus x media peptides, build 20101112</option>
-                        <option value="medp_trire-20110120">Tripterygium regelii peptides, build 20110120</option></select>
+                    <input name="job[blastp_job_attributes][blast_dbs][]" type="hidden" value="" /><select id="job_blastp_job_attributes_blast_dbs" multiple="multiple" name="job[blastp_job_attributes][blast_dbs][]"><option value="test">tmp</option></select>
                 </td>
                 <td>
                     <label for="job_blastp_job_attributes_filter">SEG</label>
                 </td>
                 <td>
-                    <input name="job[blastp_job_attributes][filter]" type="hidden" value="0" /><input id="job_blastp_job_attributes_filter" name="job[blastp_job_attributes][filter]" type="checkbox" value="1" />
+                    <select id="job_blastp_job_attributes_filter" name="job[blastp_job_attributes][filter]"><option value="false">No</option>
+                        <option value="true">Yes</option></select>
                 </td>
             </tr>
             <tr>
@@ -414,7 +276,7 @@
             </tr>
             <tr>
                 <td>
-                    <label for="job_blastp_job_attributes_max_target_seqs">Max score</label>
+                    <label for="job_blastp_job_attributes_max_target_seqs">Max target sequences</label>
                 </td>
                 <td>
                     <input class="auto-hint" id="job_blastp_job_attributes_max_target_seqs" name="job[blastp_job_attributes][max_target_seqs]" size="15" title="25" type="text" />
@@ -423,8 +285,8 @@
                     <label for="job_blastp_job_attributes_gapped_alignments">Gapped alignments</label>
                 </td>
                 <td>
-                    <select id="job_blastp_job_attributes_gapped_alignments" name="job[blastp_job_attributes][gapped_alignments]"><option value="false">No</option>
-                        <option value="true">Yes</option></select>
+                    <select id="job_blastp_job_attributes_gapped_alignments" name="job[blastp_job_attributes][gapped_alignments]"><option value="true">Yes</option>
+                        <option value="false">No</option></select>
                 </td>
             </tr>
             <tr>
@@ -453,7 +315,63 @@
     </div>
 
 
-    <!-- End Search Algorithms -->
+
+    <p>
+    <strong>gmap</strong>
+    <input name="job[gmap_job_attributes][queue]" type="hidden" value="0" /><input id="job_gmap_job_attributes_queue" name="job[gmap_job_attributes][queue]" type="checkbox" value="1" />
+    </p>
+    <div id="gmap" class="toggle">
+        <table class="options">
+            <tr>
+                <td>
+                    <label>Database(s)</label>
+                </td>
+                <td>
+                    <input name="job[gmap_job_attributes][gmap_dbs][]" type="hidden" value="" /><select id="job_gmap_job_attributes_gmap_dbs" multiple="multiple" name="job[gmap_job_attributes][gmap_dbs][]"><option value="test">tmp</option></select>
+                </td>
+                <td>
+                    <label for="job_gmap_job_attributes_splicing">Splicing</label>
+                </td>
+                <td>
+                    <select id="job_gmap_job_attributes_splicing" name="job[gmap_job_attributes][splicing]"><option value="true">Yes</option>
+                        <option value="false">No</option></select>
+                </td>
+            </tr>
+            <tr class="intron">
+                <td>
+                    <label for="job_gmap_job_attributes_intron_len">Intron length</label>
+                </td>
+                <td>
+                    <input class="auto-hint" id="job_gmap_job_attributes_intron_len" name="job[gmap_job_attributes][intron_len]" size="15" title="1000000" type="text" />
+                </td>
+                <td>
+                    <label for="job_gmap_job_attributes_total_len">Total length</label>
+                </td>
+                <td>
+                    <input class="auto-hint" id="job_gmap_job_attributes_total_len" name="job[gmap_job_attributes][total_len]" size="15" title="2400000" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="job_gmap_job_attributes_chimera_margin">Chimera margin</label>
+                </td>
+                <td>
+                    <input class="auto-hint" id="job_gmap_job_attributes_chimera_margin" name="job[gmap_job_attributes][chimera_margin]" size="15" title="40" type="text" />
+                </td>
+                <td>
+                    <label for="job_gmap_job_attributes_prune_level">Prune level</label>
+                </td>
+                <td>
+                    <select id="job_gmap_job_attributes_prune_level" name="job[gmap_job_attributes][prune_level]"><option value="0">No pruning</option>
+                        <option value="1">Poor seqs</option>
+                        <option value="2">Repetitive seqs</option>
+                        <option value="3">Poor and repetitive seqs</option></select>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
     <div>
         <input name="commit" type="submit" value="Submit" />&nbsp;&nbsp;
         <input id="quorum_job_reset" name="reset" type="button" value="Reset" />

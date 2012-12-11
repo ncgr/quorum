@@ -13,6 +13,7 @@ describe("Quorum Search Form", function() {
     spyOnEvent($("#job_blastx_job_attributes_queue"), 'change');
     spyOnEvent($("#job_tblastn_job_attributes_queue"), 'change');
     spyOnEvent($("#job_blastp_job_attributes_queue"), 'change');
+    spyOnEvent($("#job_gmap_job_attributes_queue"), 'change');
 
     $('#job_blastn_job_attributes_queue').change();
     expect('change').toHaveBeenTriggeredOn($('#blastn'));
@@ -25,6 +26,15 @@ describe("Quorum Search Form", function() {
 
     $('#job_blastp_job_attributes_queue').change();
     expect('change').toHaveBeenTriggeredOn($('#blastp'));
+
+    $('#job_gmap_job_attributes_queue').change();
+    expect('change').toHaveBeenTriggeredOn($('#gmap'));
+  });
+
+  it("hides intron fields when splicing is false", function() {
+    spyOnEvent($("#job_gmap_job_attributes_splicing"), 'change');
+    $('#job_gmap_job_attributes_splicing').change();
+    expect('change').toHaveBeenTriggeredOn($('.intron'));
   });
 
   it("resets form", function() {

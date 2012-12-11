@@ -56,6 +56,14 @@ $(function() {
     $('#gmap').slideToggle();
   });
 
+  // Hide intron and total length if splicing is false.
+  if ($('#job_gmap_job_attributes_splicing').val() === 'false') {
+    $('.intronm').hide();
+  }
+  $('#job_gmap_job_attributes_splicing').change(function() {
+    $('.intron').slideToggle();
+  });
+
   // End Algorithms //
 
   // Disable submit button and remove input values equal to attr title.

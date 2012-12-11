@@ -79,7 +79,7 @@ module Quorum
       # Display GMAP_README
       #
       def show_readme
-        puts IO.read(File.join(File.dirname(__FILE__), "GMAP_README"))
+        @output.puts IO.read(File.join(File.dirname(__FILE__), "GMAP_README"))
       end
 
       def execute_gmap_build
@@ -256,7 +256,7 @@ module Quorum
       # Display BLAST_README
       #
       def show_readme
-        puts IO.read(File.join(File.dirname(__FILE__), "BLAST_README"))
+        @output.puts IO.read(File.join(File.dirname(__FILE__), "BLAST_README"))
       end
 
       public

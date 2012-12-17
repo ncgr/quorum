@@ -1,21 +1,19 @@
 module Quorum
   class JobData
 
-    def initialize
-      @data = []
-    end
+    attr_accessor :values
 
-    def results
-      @data
+    def initialize
+      @values = []
     end
 
     def no_results
-      @data = [{ results: false }]
+      @values = [{ results: false }]
     end
 
     def not_enqueued
       no_results
-      @data = [{ enqueued: false }.merge(@data[0])]
+      @values = [{ enqueued: false }.merge(@values[0])]
     end
 
   end

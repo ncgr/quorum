@@ -40,7 +40,7 @@ module Quorum
     # Return search results (Resque worker results).
     #
     def self.search(params)
-      data = JobData.new
+      job_data = JobData.new
 
       # Allow for multiple algos and search params.
       # Ex: /quorum/jobs/:id/search?algo=blastn,blastp
@@ -56,21 +56,21 @@ module Quorum
             else
               if job.try(enqueued).present?
                 if job.try(report).present?
-                  data.results << job.try(report).search(a, params).default_order
+                  job_data.values << job.try(report).search(a, params).default_order
                 else
-                  data = JobData.new
+                  job_data = JobData.new
                 end
               else
-                data.not_enqueued
+                job_data.not_enqueued
               end
             end
           end
         end
       else
-        data.no_results
+        job_data.no_results
       end
 
-      data.results
+      job_data.values
     end
 
     #

@@ -10,6 +10,25 @@ var QUORUM = QUORUM || {};
 QUORUM.algorithms = ["blastn", "blastx", "tblastn", "blastp", "gmap"];
 
 //
+// Set template name Quorum.
+//
+QUORUM.templateName = function(algo) {
+
+  var self = this,
+      templates = ["blast", "gmap"],
+      name = "";
+
+  _.each(templates, function(t) {
+    if (algo.match(t)) {
+      name = t;
+    }
+  })
+
+  return name;
+
+};
+
+//
 // Poll search results asynchronously.
 //
 // Allow user to define callback / callback_obj. If callback is
@@ -25,15 +44,17 @@ QUORUM.pollResults = function(callback, callback_obj, interval, algos) {
       timeoutIds = {};
 
   // Render default view.
-  function buildTemplate(data, a) {
-    $('#' + a + '-results').empty();
-    var temp = _.template(
-      $('#blast_template').html(), {
+  function renderView(data, algo) {
+    var tempName = self.templateName(algo),
+        template;
+    template = _.template(
+      $('#' + tempName + '_template').html(), {
         data: data,
-        algo: a
+        algo: algo
       }
     );
-    $('#' + a + '-results').html(temp);
+    $('#' + algo + '-results').empty();
+    $('#' + algo + '-results').html(template);
   }
 
   // Process returned data from ajax call. If data is present, render,
@@ -48,7 +69,7 @@ QUORUM.pollResults = function(callback, callback_obj, interval, algos) {
       if (_.isFunction(callback)) {
         callback.call(callback_obj, data, a);
       } else {
-        buildTemplate(data, a);
+        renderView(data, a);
       }
     }
   }
@@ -97,6 +118,7 @@ QUORUM.pollResults = function(callback, callback_obj, interval, algos) {
 QUORUM.viewDetailedReport = function(focus_id, query, algo) {
 
   var self = this,
+      tempName = self.templateName(algo),
       url = document.URL + '/search';
 
   // Create the modal box.
@@ -110,9 +132,10 @@ QUORUM.viewDetailedReport = function(focus_id, query, algo) {
     position: 'top'
   });
 
-  function renderTemplate(data) {
-    var temp = _.template(
-      $('#detailed_report_template').html(), {
+  // Render detailed report.
+  function renderDetailedReport(data) {
+    var template = _.template(
+      $('#' + tempName + '_detailed_report_template').html(), {
         data:  data,
         query: query,
         algo:  algo
@@ -120,7 +143,7 @@ QUORUM.viewDetailedReport = function(focus_id, query, algo) {
     );
 
     // Insert the detailed report data.
-    $('#detailed_report_dialog').empty().html(temp);
+    $('#detailed_report_dialog').empty().html(template);
     // Add tipsy to sequence data on mouse enter.
     $('#detailed_report_dialog .sequence').mouseenter(function() {
       $(this).find('a[rel=quorum-tipsy]').tipsy({ gravity: 's' });
@@ -147,7 +170,7 @@ QUORUM.viewDetailedReport = function(focus_id, query, algo) {
     dataType: 'json',
     data: { 'algo': algo, 'query': query },
     success: function(data) {
-      renderTemplate(data);
+      renderDetailedReport(data);
     },
     error: function(jqXHR) {
       renderError(jqXHR);
@@ -189,6 +212,33 @@ QUORUM.addBaseTitleIndex = function(bases, from, to, algo, type) {
   }).join('');
 
 };
+
+//
+// Format SAM sequence data for detailed report.
+//
+QUORUM.formatSamSequenceReport = function(qseq) {
+
+  var self = this,
+      max = qseq.length, // max length
+      increment = 60,    // increment value
+      s = 0,             // start position
+      e = increment,     // end position
+      seq = "\n";        // seq string to return
+
+  while(true) {
+    seq += qseq.slice(s, e) + "\n";
+
+    if (e >= max) {
+      break;
+    }
+
+    s += increment;
+    e += increment;
+  }
+  return "<span class='small sequence'><pre>" + seq + "</pre></span>";
+
+};
+
 
 //
 // Format sequence data for detailed report.

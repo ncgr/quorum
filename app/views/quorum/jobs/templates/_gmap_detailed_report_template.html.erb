@@ -1,0 +1,33 @@
+<%# Detailed Report Template %>
+<script type="text/template" id="gmap_detailed_report_template">
+  <h3>Query Accession {{= query }}</h3>
+  {{ _.each(data, function(v) { }}
+    <div id="{{= v.id }}">
+      <table class="report_details">
+        <tr>
+          <td>Flag: {{= v.flag }}</td>
+          <td>Reference: {{= v.reference }}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Position: {{= v.position }}</td>
+          <td>Map Quality: {{= v.map_quality }}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>CIGAR: {{= v.cigar }}</td>
+          <td>Next Reference: {{= v.rnext }}</td>
+          <td>Next Reference Postion: {{= v.pnext }}</td>
+        </tr>
+        <tr>
+          <td>Template Length: {{= v.temp_len }}</td>
+          <td>Quality: {{= v.quality }}</td>
+          <td></td>
+        </tr>
+      </table>
+      {{= QUORUM.formatSamSequenceReport(v.seq) }}
+    </div>
+    <hr />
+    {{ }); }}
+</script>
+

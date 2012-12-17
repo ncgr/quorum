@@ -1,0 +1,50 @@
+<%# Gmap Results Template %>
+<script type="text/template" id="gmap_template">
+  {{ if (data[0].enqueued === false) { }}
+    <p><strong>Not enqueued.</strong></p>
+  {{ } else if (data[0].results === false) { }}
+    <p><strong>Your search returned 0 hits.</strong></p>
+  {{ } else { }}
+    <table class="results">
+      <tr>
+        <th>Query Accession</th>
+        <th>Flag</th>
+        <th>Reference</th>
+        <th>Position</th>
+        <th>Map Quality</th>
+        <th>CIGAR</th>
+        <th>Next Reference</th>
+        <th>Next Reference Position</th>
+        <th>Template Length</th>
+        <th>Quality</th>
+        <th>SAM</th>
+      </tr>
+      {{ var i = 1; var style = "" }}
+      {{ _.each(data, function(v) { }}
+        {{ i % 2 == 0 ? style = "even" : style = "odd" }}
+        <tr class="{{= style }}">
+          <td>{{= v.query }}</td>
+          <td>{{= v.flag }}</td>
+          <td>{{= v.reference }}</td>
+          <td>{{= v.position }}</td>
+          <td>{{= v.map_quality }}</td>
+          <td>{{= v.cigar }}</td>
+          <td>{{= v.rnext }}</td>
+          <td>{{= v.pnext }}</td>
+          <td>{{= v.temp_len }}</td>
+          <td>{{= v.quality }}</td>
+          <td class="right">
+            <a class="detailed_report"
+              onclick="QUORUM.viewDetailedReport(
+                {{= v.id }},
+                '{{= v.query }}',
+                '{{= algo }}')">
+                view
+            </a>
+          </td>
+        </tr>
+        {{ i++ }}
+      {{ }); }}
+    </table>
+  {{ } }}
+</script>

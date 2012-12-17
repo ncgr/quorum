@@ -14,6 +14,15 @@ describe("QUORUM", function() {
   });
 
   //
+  // Spec covers QUORUM.templateName.
+  //
+  it("returns template name", function() {
+    expect(QUORUM.templateName("tblastn")).toEqual("blast");
+    expect(QUORUM.templateName("gmap")).toEqual("gmap");
+    expect(QUORUM.templateName("foo")).toEqual("");
+  });
+
+  //
   // Spec covers QUORUM.pollResults.
   //
   // QUORUM.pollResults calls itself via setTimeout() if the returned JSON
@@ -63,7 +72,7 @@ describe("QUORUM", function() {
     spyOn(QUORUM, 'autoScroll');
     var focus_id = 1,
         query = 'foo',
-        algo = 'a',
+        algo = 'blastn',
         data = 'bar',
         error = {
           status: 500,

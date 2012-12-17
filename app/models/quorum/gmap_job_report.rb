@@ -4,7 +4,7 @@ module Quorum
     extend Quorum::JobReportSearcher
 
     belongs_to :gmap_job
-    scope :default_order, order("query ASC")
+    scope :default_order, order("id ASC")
 
   end
 end

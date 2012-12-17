@@ -44,7 +44,6 @@ describe "Quorum::SearchTools::Blast" do
     end
 
     it "executes blastn on a given dataset" do
-      @job.stub(:queue_workers)
       @job.save!
 
       @args[:id] = @job.id
@@ -60,7 +59,6 @@ describe "Quorum::SearchTools::Blast" do
     end
 
     it "executes blastx on a given dataset" do
-      @job.stub(:queue_workers)
       @job.save!
 
       @args[:search_tool] = "blastx"
@@ -77,7 +75,6 @@ describe "Quorum::SearchTools::Blast" do
     end
 
     it "executes tblastn on a given dataset" do
-      @job.stub(:queue_workers)
       @job.save!
 
       @args[:search_tool] = "tblastn"
@@ -94,7 +91,6 @@ describe "Quorum::SearchTools::Blast" do
     end
 
     it "executes blastp on a given dataset" do
-      @job.stub(:queue_workers)
       @job.save!
 
       @args[:search_tool] = "blastp"
@@ -141,7 +137,6 @@ describe "Quorum::SearchTools::Blast" do
     end
 
     it "executes blastn on a given dataset and returns an empty report" do
-      @job.stub(:queue_workers)
       @job.save!
 
       @args[:id] = @job.id

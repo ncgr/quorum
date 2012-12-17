@@ -106,6 +106,15 @@ describe "Jobs" do
         select "Yes", :from => "job_blastp_job_attributes_gapped_alignments"
         select "13, 1", :from => "job_blastp_job_attributes_gap_opening_extension"
 
+        # Gmap
+        check "job_gmap_job_attributes_queue"
+        select "tmp", :from => "job_gmap_job_attributes_gmap_dbs"
+        select "Yes", :from => "job_gmap_job_attributes_splicing"
+        fill_in "job_gmap_job_attributes_intron_len", :with => "1000000"
+        fill_in "job_gmap_job_attributes_total_len", :with => "2400000"
+        fill_in "job_gmap_job_attributes_chimera_margin", :with => "40"
+        select "No pruning", :from => "job_gmap_job_attributes_prune_level"
+
         click_button "Submit"
 
         page.should have_content("Search Results")
@@ -147,6 +156,14 @@ describe "Jobs" do
         page.should have_content("Quorum Report Details")
         page.should have_content("qseq")
         page.should have_content("hseq")
+
+        click_link "Gmap"
+
+        # Render modal box.
+        find("#gmap-results").find("td a").click
+        page.should have_content("Quorum Report Details")
+        page.should have_content("seq")
+
       end
     end
     after(:all) do

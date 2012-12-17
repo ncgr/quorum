@@ -13,6 +13,7 @@ class CreateGmapJobReports < ActiveRecord::Migration
       t.text :seq
       t.text :quality
       t.text :sam_options
+      t.boolean :results
 
       t.references :gmap_job
 

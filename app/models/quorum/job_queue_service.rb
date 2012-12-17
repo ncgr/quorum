@@ -30,6 +30,23 @@ module Quorum
           )
         end
       end
+
+      gmap_jobs = []
+      if job.gmap_job && job.gmap_job.queue
+        gmap_jobs << Workers::System.create_search_command("gmap", job.id)
+      end
+
+      unless gmap_jobs.blank?
+        gmap_jobs.each do |g|
+          Workers::System.enqueue(
+            g,
+            Quorum.gmap_remote,
+            Quorum.gmap_ssh_host,
+            Quorum.gmap_ssh_user,
+            Quorum.gmap_ssh_options
+          )
+        end
+      end
     end
 
     #

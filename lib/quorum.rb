@@ -12,8 +12,8 @@ module Quorum
 
   ## Supported Algorithms ##
   BLAST_ALGORITHMS     = ["blastn", "blastx", "blastp", "tblastn"].freeze
-  GMAP                 = ["gmap"].freeze
-  SUPPORTED_ALGORITHMS = [BLAST_ALGORITHMS, GMAP]
+  GMAP_ALGORITHMS      = ["gmap"].freeze
+  SUPPORTED_ALGORITHMS = [BLAST_ALGORITHMS, GMAP_ALGORITHMS]
   SUPPORTED_ALGORITHMS.flatten!
 
   mattr_accessor :max_sequence_size, :gmap_remote, :gmap_ssh_host,

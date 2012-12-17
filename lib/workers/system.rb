@@ -53,7 +53,7 @@ module Workers
     def self.execute_ssh
       Net::SSH.start(@ssh_host, @ssh_user, @ssh_options) do |ssh|
         ssh.open_channel do |ch|
-          ch.exec(cmd) do |ch, success|
+          ch.exec(@cmd) do |ch, success|
             if success
               # Capture STDOUT from ch.exec()
               if @stdout
@@ -102,6 +102,11 @@ module Workers
         cmd << "#{search} -l #{Quorum.blast_log_dir} " <<
           "-m #{Quorum.blast_tmp_dir} -b #{Quorum.blast_db} " <<
           "-t #{Quorum.blast_threads} "
+      when Quorum::GMAP_ALGORITHMS.include?(algo)
+        search = File.join(Quorum.gmap_bin, "search")
+        cmd << "#{search} -l #{Quorum.gmap_log_dir} " <<
+          "-m #{Quorum.gmap_tmp_dir} -b #{Quorum.gmap_db_dir} " <<
+          "-t #{Quorum.gmap_threads} "
       else
         return cmd
       end

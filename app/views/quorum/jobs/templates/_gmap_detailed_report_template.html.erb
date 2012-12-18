@@ -7,17 +7,15 @@
         <tr>
           <td>Flag: {{= v.flag }}</td>
           <td>Reference: {{= v.reference }}</td>
-          <td></td>
-        </tr>
-        <tr>
           <td>Position: {{= v.position }}</td>
-          <td>Map Quality: {{= v.map_quality }}</td>
-          <td></td>
         </tr>
         <tr>
-          <td>CIGAR: {{= v.cigar }}</td>
-          <td>Next Reference: {{= v.rnext }}</td>
-          <td>Next Reference Postion: {{= v.pnext }}</td>
+           <td>Next Reference: {{= v.rnext }}</td>
+           <td>Next Reference Postion: {{= v.pnext }}</td>
+           <td>Map Quality: {{= v.map_quality }}</td>
+        </tr>
+        <tr>
+          <td colspan='3'>CIGAR: {{= v.cigar }}</td>
         </tr>
         <tr>
           <td>Template Length: {{= v.temp_len }}</td>

@@ -28,7 +28,7 @@
           <td>{{= v.reference }}</td>
           <td>{{= v.position }}</td>
           <td>{{= v.map_quality }}</td>
-          <td>{{= v.cigar }}</td>
+          <td>{{= v.cigar.trunc(20) }}</td>
           <td>{{= v.rnext }}</td>
           <td>{{= v.pnext }}</td>
           <td>{{= v.temp_len }}</td>

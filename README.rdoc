@@ -6,6 +6,7 @@ Quorum is a Rails 3.1 mountable engine that supports the following
 bioinformatics search tools.
 
 * NCBI Blast+ (http://blast.ncbi.nlm.nih.gov)
+* GMAP (http://research-pub.gene.com/gmap/)
 
 Dependencies:
 
@@ -14,6 +15,7 @@ Dependencies:
 * Redis >= 0.900 for Resque (https://github.com/defunkt/resque)
 * NCBI Blast+ (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST)
 * Emboss (http://emboss.sourceforge.net)
+* GMAP (http://research-pub.gene.com/gmap/)
 
 See the gem in action.
 
@@ -73,6 +75,42 @@ Follow these steps to safely upgrade Quorum.
 * Update the remote machine(s).
 
 == Getting Started
+
+=== GMAP Setup
+
+Build your GMAP database(s) using the rake task below.
+
+  rake quorum:gmapdb:build
+
+Arguments:
+
+* DIR= - path to {.fa, .fa.gz} files containing raw data. Separate multiple \
+  directories with a colon (:).
+
+  DIR=/path/to/dir:/path/to/another/dir
+
+* REBUILD_DB= - removes existing GMAP database(s) before building {true or
+  false}. Defaults to false.
+
+* EMPTY= - skip gmap_build and create necessary directories {true or false}.
+  Defaults to false. Set this argument to true if you wish to create your own
+  GMAP database(s).
+
+Example:
+
+  rake quorum:gmapdb:build DIR=/path/to/dir:/path/to/another/dir \
+  REBUILD_DB=true
+
+Empty example:
+
+  rake quorum:gmapdb:build EMPTY=true
+
+For a full list of supported arguments.
+
+  rake -D
+
+Don't forget to update "config/quorum_settings.yml" with your newly created
+database(s).
 
 === NCBI Blast+ Setup
 
@@ -163,7 +201,7 @@ Follow the steps below to execute Quorum remotely via Net::SSH.
 * Ensure you have supplied the necessary information in
   "config/quorum_settings.yml" to execute Quorum remotely.
 
-  blast:
+  <algorithm>:
     remote: true
     ssh_host: remote.machine.org
     ssh_user: remote_user

@@ -53,7 +53,7 @@ namespace :quorum do
     "{valid extensions: .fa .fa.gz} " <<
     "-- separate multiple directories with a colon. " <<
     "REBUILD_DB={true of false} -- remove existing gmap database(s). " <<
-    "Defaults to false."
+    "Defaults to false. " <<
     "EMPTY={true or false} -- skip gmap_build and create empty directory. " <<
     "Use this option if you prefer to create your own GMAP database. " <<
     "Defaults to false.)"

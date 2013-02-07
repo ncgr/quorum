@@ -1,3 +1,8 @@
+## 0.8.2 (2013-2-07)
+
+* Namespace change for bio-blastxmlparser v1.1.1
+* Upgrading? Run generators.
+
 ## 0.8.1 (2012-12-06)
 
 * SSH bug fix.

@@ -330,7 +330,7 @@ module Quorum
         @results = false # Did the xml contain results?
 
         if File.size(@out) > 0
-          report = Bio::Blast::XmlIterator.new(@out)
+          report = Bio::BlastXMLParser::XmlIterator.new(@out)
           report.to_enum.each do |iteration|
 
             @data = {}

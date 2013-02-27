@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 3.1"
   s.add_dependency "jquery-rails"
-  s.add_dependency "net-ssh", "~> 2.3.0"
-  s.add_dependency "resque", "~> 1.20.0"
+  s.add_dependency "net-ssh", "~> 2.3"
+  s.add_dependency "resque", "~> 1.20"
   s.add_dependency "resque-result", "~> 1.0.1"
   s.add_dependency "bio-blastxmlparser", "~> 1.1.1"
 
@@ -28,5 +28,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "resque_spec", "~> 0.12"
   s.add_development_dependency "capybara", "~> 1.1"
   s.add_development_dependency "database_cleaner", "~> 0.8"
-  s.add_development_dependency "jasmine", "~> 1.2"
+  s.add_development_dependency "jasmine", "1.3.0"
 end
